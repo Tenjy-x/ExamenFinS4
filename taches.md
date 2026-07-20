@@ -1,11 +1,24 @@
 # TACHES DU PROJET 
-
-# ETU4161
+## V1
+### ETU4161
 - Conception De base de Donnees
     - Table 
-        -  
+        -Client
+        -Prefix_operateur
+        -Operateur
+        -Type_transaction
+        -Tranche
+        -Transaction
 
-# ETU 3920
+- Creation des Models:
+    - ClientModel.php
+    - OperateurModel.php
+    - PrefixeOperateurModel.php
+    - TrancheModel.php
+    - TransactionModel.php
+    - TypeTrasactionModel.php
+
+### ETU 3920
 - Environnement 
     - Preparation github
     - Preparation Environnement Codigneiter
@@ -30,8 +43,24 @@
 - Controller
     - AuthController
         - Login 
+        - logout
     - ClientController
         - index
+            - Avoir solde
+        - depot(aller dans la page depot)
+        - retrait(aller dans la page retrait)
+        - transfert(aller dans la page transfert)
 - Route
-    - Creation des routes necessaires     
+    - Creation des routes necessaires
+
+
+Non fini :
+- Traitement depots , Transfert , Retrait
+- Configuration des préfixes valable de l’opérateur (ex: 033 et 037)
+- Situation gain via les différents frais ( retrait et transfert)
+- Situation des comptes clients 
+ 
+
+
+
 
