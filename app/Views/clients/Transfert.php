@@ -97,16 +97,14 @@
                                     compte externe ou interne.</p>
                             </div>
                         </div>
-                        <form class="space-y-md">
+                        <form class="space-y-md" action="<?= base_url('transfert_traitement')?>">
                             <!-- Beneficiary Selection -->
                             <div class="space-y-xs">
-                                <label class="font-label-md text-on-surface-variant">Bénéficiaire / IBAN</label>
+                                <label class="font-label-md text-on-surface-variant">Bénéficiaire (numero)</label>
                                 <div class="relative">
                                     <input
                                         class="w-full h-12 bg-surface-container-low border-none rounded-lg px-md focus:ring-2 focus:ring-primary/20 text-body-md"
-                                        placeholder="Entrez le nom ou l'IBAN" type="text" />
-                                    <span
-                                        class="material-symbols-outlined absolute right-md top-1/2 -translate-y-1/2 text-outline">search</span>
+                                        placeholder="Entrez le numero" type="text" name="numero"/>
                                 </div>
                             </div>
                             <div class="grid grid-cols-1 md:grid-cols-2 gap-md">
@@ -116,14 +114,14 @@
                                     <div class="relative">
                                         <input
                                             class="w-full h-12 bg-surface-container-low border-none rounded-lg px-md pr-16 focus:ring-2 focus:ring-primary/20 text-headline-md font-bold text-primary"
-                                            placeholder="0.00" type="number" />
+                                            placeholder="0.00" type="number" name="amount" />
                                         <span
-                                            class="absolute right-md top-1/2 -translate-y-1/2 font-bold text-primary">EUR</span>
+                                            class="absolute right-md top-1/2 -translate-y-1/2 font-bold text-primary">Ar</span>
                                     </div>
-                                    <p class="font-label-sm text-outline-variant">Solde disponible : 142 500,00 €</p>
+                                    <p class="font-label-sm text-outline-variant">Solde disponible : <?= $solde ?> Ar </p>
                                 </div>
                                 <!-- Date/Frequency -->
-                                <div class="space-y-xs">
+                                <!-- <div class="space-y-xs">
                                     <label class="font-label-md text-on-surface-variant">Exécution</label>
                                     <select
                                         class="w-full h-12 bg-surface-container-low border-none rounded-lg px-md focus:ring-2 focus:ring-primary/20 text-body-md appearance-none">
@@ -131,7 +129,7 @@
                                         <option>Programmée</option>
                                         <option>Récurrente (Mensuel)</option>
                                     </select>
-                                </div>
+                                </div> -->
                             </div>
                             <!-- Motif -->
                             <div class="space-y-xs">
@@ -142,7 +140,7 @@
                                     placeholder="Ex: Achat immobilier, Honoraires conseil..." rows="3"></textarea>
                             </div>
                             <!-- Fees Estimation (Optimized Box) -->
-                            <div
+                            <!-- <div
                                 class="bg-surface-container-highest/30 border border-outline-variant/30 rounded-xl p-md">
                                 <h4 class="font-label-md text-primary mb-sm flex items-center gap-xs">
                                     <span class="material-symbols-outlined text-[18px]">info</span>
@@ -163,7 +161,7 @@
                                         <span class="text-primary">0,45 €</span>
                                     </div>
                                 </div>
-                            </div>
+                            </div> -->
                             <!-- Action Button -->
                             <button
                                 class="w-full h-12 bg-primary text-white rounded-lg font-headline-md text-[16px] hover:bg-primary-container transition-all active:scale-[0.98] flex items-center justify-center gap-sm">
@@ -173,92 +171,7 @@
                         </form>
                     </div>
                 </div>
-                <!-- Right: Favorites & Info (4 Columns) -->
-                <div class="lg:col-span-4 space-y-gutter">
-                    <!-- Favorites Section -->
-                    <div class="glass-card rounded-xl p-md">
-                        <div class="flex items-center justify-between mb-md">
-                            <h3 class="font-label-md text-primary uppercase tracking-wider">Favoris récents</h3>
-                            <button class="text-primary font-label-sm hover:underline">Voir tout</button>
-                        </div>
-                        <div class="space-y-sm">
-                            <!-- Favorite Item -->
-                            <div
-                                class="flex items-center gap-md p-sm rounded-lg hover:bg-surface-container transition-colors cursor-pointer group">
-                                <div class="w-10 h-10 rounded-full overflow-hidden bg-outline-variant">
-                                    <img class="w-full h-full object-cover"
-                                        data-alt="Minimalist abstract avatar of a corporate executive, clean facial features, neutral lighting, high-end professional headshot style. Emerald and soft gray tones in the background to match a premium wealth management UI. Modern and sophisticated aesthetic."
-                                        src="https://lh3.googleusercontent.com/aida-public/AB6AXuAo8hSo72hnFAsZyvIiKpk1J1QdzP-xnYpoTTBAgYKREJxrTjC0cqAojFBa4uNGr86-nBjKLojeYPvmvHHJF9JxMPeXXtgyzwCreGj5818k_0hJAIu1i3A4FHsG22ZtA1c7w260nArKogaXYFan8duAhpJ3o1Sv2Izcg9fKt9RdZRk658j-gYLupqXJwU6bWUWu-a6QQmiv6UoSDVRNNnuZLY2O_1Gv76tM5NVJYSDR3zfYfxko_Skn" />
-                                </div>
-                                <div class="flex-1">
-                                    <p class="font-label-md text-on-surface">Jean-Luc Moreau</p>
-                                    <p class="font-label-sm text-outline-variant">FR76 1234 ... 5678</p>
-                                </div>
-                                <span
-                                    class="material-symbols-outlined text-outline group-hover:text-primary transition-colors">bolt</span>
-                            </div>
-                            <div
-                                class="flex items-center gap-md p-sm rounded-lg hover:bg-surface-container transition-colors cursor-pointer group">
-                                <div class="w-10 h-10 rounded-full overflow-hidden bg-outline-variant">
-                                    <img class="w-full h-full object-cover"
-                                        data-alt="Abstract modern logo of a luxury property group, clean geometric lines, metallic emerald finish on a white background. High-contrast, sophisticated branding suitable for a high-net-worth financial interface."
-                                        src="https://lh3.googleusercontent.com/aida-public/AB6AXuDf796KGcDU_yPMsCkDhWNQgPFx_6BGlk-RCyD_7o--gFVEs22q4tsWMb1ekSEYiwFEveBTlunx1AFOuGRVmTl_x4hrzVH055IBPBLd2FpEJSTYVp4ETYOaIJoNZM-X7jWq9CmAqBfz3uYykT0f2ofWE2__0SlZxrDrXi1ptkx0rWD9x03MrKur-QnnhF9Y9ne-YL0Zaq73DqG4fQAxh3cvaOVdfWIlrHrs0z6S6EkV_2eeH8DF9GWM" />
-                                </div>
-                                <div class="flex-1">
-                                    <p class="font-label-md text-on-surface">Luxe Realty SA</p>
-                                    <p class="font-label-sm text-outline-variant">LU34 9876 ... 1122</p>
-                                </div>
-                                <span
-                                    class="material-symbols-outlined text-outline group-hover:text-primary transition-colors">bolt</span>
-                            </div>
-                            <div
-                                class="flex items-center gap-md p-sm rounded-lg hover:bg-surface-container transition-colors cursor-pointer group">
-                                <div class="w-10 h-10 rounded-full overflow-hidden bg-outline-variant">
-                                    <img class="w-full h-full object-cover"
-                                        data-alt="Sophisticated female professional portrait for a luxury bank app, soft natural lighting, elegant minimalist business attire, deep green background accents. Crisp and high-quality photography."
-                                        src="https://lh3.googleusercontent.com/aida-public/AB6AXuCnmS_qVISJWTzaZjzs1M6ss2sYOW9MtVmi5_m0L0EzVT5245yrVIp7efphFE4Yw_yeoTRSIF-Scok0Qs0DPTCLuP0WixM28Fq23C_JOVScEImUZyRKTtL4ZS_OvlCr_miuw9vuC24YclKI-dOjKuQPxDjV-ji8JlayP647hE-bGxHYJCYWyitNY4reHEVDZijxyY4Ln2d6FROgJab9AXk484irFIha-aLR1BluQnceycYoDzIze2bt" />
-                                </div>
-                                <div class="flex-1">
-                                    <p class="font-label-md text-on-surface">Sarah Bernhardt</p>
-                                    <p class="font-label-sm text-outline-variant">FR12 4455 ... 9900</p>
-                                </div>
-                                <span
-                                    class="material-symbols-outlined text-outline group-hover:text-primary transition-colors">bolt</span>
-                            </div>
-                        </div>
-                    </div>
-                    <!-- Transfer Policy / Security -->
-                    <div class="bg-primary text-white rounded-xl p-md relative overflow-hidden">
-                        <!-- Subtle Pattern Overlay -->
-                        <div class="absolute inset-0 opacity-10 pointer-events-none"
-                            style="background-image: radial-gradient(circle at 2px 2px, white 1px, transparent 0); background-size: 24px 24px;">
-                        </div>
-                        <div class="relative z-10">
-                            <span
-                                class="material-symbols-outlined text-on-tertiary-container mb-sm text-[32px] filled-icon">verified_user</span>
-                            <h4 class="font-headline-md text-[18px] mb-xs">Sécurité Emerald Luxe</h4>
-                            <p class="font-body-md text-sm text-primary-fixed opacity-90 leading-relaxed">
-                                Chaque transfert est protégé par notre cryptage de grade institutionnel. Un code de
-                                validation peut vous être demandé sur votre application mobile Emerald pour finaliser
-                                l'opération.
-                            </p>
-                            <div class="mt-md flex items-center gap-xs text-on-tertiary-container font-label-sm">
-                                <span class="material-symbols-outlined text-[16px]">lock</span>
-                                <span>Certifié PCI-DSS Level 1</span>
-                            </div>
-                        </div>
-                    </div>
-                    <!-- Quick Support -->
-                    <div class="border border-outline-variant/30 rounded-xl p-md flex items-center gap-md">
-                        <div class="bg-surface-container-high p-sm rounded-lg">
-                            <span class="material-symbols-outlined text-primary">contact_support</span>
-                        </div>
-                        <div>
-                            <p class="font-label-md text-on-surface">Besoin d'aide ?</p>
-                            <p class="font-label-sm text-outline-variant">Contactez votre conseiller dédié.</p>
-                        </div>
-                    </div>
-                </div>
+                
             </div>
         </div>
     </main>

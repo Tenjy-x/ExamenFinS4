@@ -43,9 +43,13 @@ class ClientController extends BaseController
 
     public function transfert() {
         $user = session()->get('user');
+        $transaction = new TransactionModel();
+
+        $solde = $transaction->getSolde($user['id']);
 
         return view('clients/Transfert', [
-            'user'=> $user
+            'user'=> $user,
+            'solde' => $solde,
         ]);
     }
 }
