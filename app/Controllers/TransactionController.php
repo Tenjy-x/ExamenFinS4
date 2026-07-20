@@ -14,6 +14,11 @@ class TransactionController extends BaseController
         $user = session()->get('user');
         $transaction = new TransactionModel();
         $montant = $this->request->getVar('amount');
+
+        if (!$montant) {
+            return redirect()->back()->with('error', 'Montant invalide');
+        }
+
         $transaction->insert([
             'id_type'    => 1,
             'id_tranche' => 1,
@@ -27,6 +32,11 @@ class TransactionController extends BaseController
     public function traiter_retrait() {
         $user = session()->get('user');
         $montant = $this->request->getVar('amount');
+
+        if (!$montant) {
+            return redirect()->back()->with('error', 'Montant invalide');
+        }
+
         $transaction = new TransactionModel();
         $trancheModel = new TrancheModel();
         $tranche = $trancheModel->findTranche(2, $montant);
@@ -43,8 +53,17 @@ class TransactionController extends BaseController
 
     public function traiter_transfert() {
         $user = session()->get('user');
-        $montant = $this->request->getVar('amount');
-        $id_client2 = $this->request->getVar('id_client2');
+        $Clients = new ClientModel();
+        $numero = $this->request->getVar('numero');
+
+        if (!$montant || !$numero) {
+            return redirect()->back()->with('error', 'Montant ou numéro invalide');
+        }
+
+        $client2 = $Clients->getClientByNumero($numero);
+        if (!$client2) {
+            return redirect()->back()->with('error', 'Bénéficiaire introuvable');
+        }
 
         $transaction = new TransactionModel();
         $trancheModel = new TrancheModel();
@@ -61,7 +80,7 @@ class TransactionController extends BaseController
         $prefixEmetteur = substr($clientEmetteur->numero, 0, 3);
         $operateurEmetteur = $operateurModel->getOperateurByPrefix($prefixEmetteur);
 
-        $clientDestinataire = $clientModel->find($id_client2);
+        $clientDestinataire = $clientModel->find($client2->id);
         if ($clientDestinataire) {
             $prefixDestinataire = substr($clientDestinataire->numero, 0, 3);
             $operateurDestinataire = $operateurModel->getOperateurByPrefix($prefixDestinataire);
@@ -81,7 +100,7 @@ class TransactionController extends BaseController
             'montant'    => $montant,
             'frais'      => $frais,
             'id_client'  => $user['id'],
-            'id_client2' => $id_client2,
+            'id_client2' => $client2->id,
             'commission_inter_operateur' => $commission_inter,
             'operateur_destinataire_id'  => $operateur_destinataire_id,
         ]);
