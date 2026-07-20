@@ -54,6 +54,7 @@ class TransactionController extends BaseController
     public function traiter_transfert() {
         $user = session()->get('user');
         $Clients = new ClientModel();
+        $montant = $this->request->getVar('amount');
         $numero = $this->request->getVar('numero');
 
         if (!$montant || !$numero) {
