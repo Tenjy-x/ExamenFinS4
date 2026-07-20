@@ -8,6 +8,7 @@ use App\Models\TypeTransactionModel;
 use App\Models\TrancheModel;
 use App\Models\TransactionModel;
 use App\Models\ClientModel;
+use App\Models\CommissionInterOperateurModel;
 
 use CodeIgniter\HTTP\ResponseInterface;
 
@@ -98,14 +99,19 @@ class OperateurController extends BaseController {
         $session = session();
         if (!$session->get('operateur')) return redirect()->to('/login_Operateur');
 
+        $operateurSession = $session->get('operateur');
+        $operateurModel = new OperateurModel();
         $typeModel = new TypeTransactionModel();
         $trancheModel = new TrancheModel();
         $prefixeModel = new PrefixeOperateurModel();
         $transactionModel = new TransactionModel();
+        $commissionModel = new CommissionInterOperateurModel();
 
         $types = $typeModel->findAll();
         $prefixes = $prefixeModel->findAll();
         $gains = $transactionModel->getGainsByType();
+        $operateurs = $operateurModel->getAllOperateurs();
+        $commissions = $commissionModel->getAll();
 
         $totalGains = 0;
         foreach ($gains as $g) $totalGains += $g->total_gains;
@@ -115,13 +121,53 @@ class OperateurController extends BaseController {
             $tranches[$t->id] = $trancheModel->getTrancheByType($t->id);
         }
 
+        $gainsPropres = $transactionModel->getGainsByOperateur($operateurSession->id, 'propre');
+        $gainsInter = $transactionModel->getGainsByOperateur($operateurSession->id, 'inter');
+
+        $montantsAPayer = $transactionModel->getMontantsAPayer($operateurSession->id);
+        $montantsARecevoir = $transactionModel->getMontantsARecevoir($operateurSession->id);
+
         return view('admin/Gestion_Frais', [
-            'types' => $types,
-            'prefixe' => $prefixes,
-            'gains' => $gains,
-            'tranches' => $tranches,
-            'totalGains' => $totalGains
+            'types'       => $types,
+            'prefixe'     => $prefixes,
+            'gains'       => $gains,
+            'tranches'    => $tranches,
+            'totalGains'  => $totalGains,
+            'operateurs'  => $operateurs,
+            'commissions' => $commissions,
+            'gainsPropres' => $gainsPropres,
+            'gainsInter'   => $gainsInter,
+            'montantsAPayer'   => $montantsAPayer,
+            'montantsARecevoir' => $montantsARecevoir,
         ]);
+    }
+
+    public function saveCommission() {
+        $session = session();
+        if (!$session->get('operateur')) {
+            return $this->response->setJSON(['success' => false]);
+        }
+
+        $json = $this->request->getJSON();
+        $commissionModel = new CommissionInterOperateurModel();
+
+        $data = [
+            'operateur_emetteur_id'     => (int) $json->emetteur_id,
+            'operateur_destinataire_id' => (int) $json->destinataire_id,
+            'commission_pourcentage'    => (float) $json->pourcentage,
+        ];
+
+        $existing = $commissionModel->where('operateur_emetteur_id', $data['operateur_emetteur_id'])
+            ->where('operateur_destinataire_id', $data['operateur_destinataire_id'])
+            ->first();
+
+        if ($existing) {
+            $commissionModel->update($existing->id, $data);
+        } else {
+            $commissionModel->insert($data);
+        }
+
+        return $this->response->setJSON(['success' => true]);
     }
 
     public function updateTranche() {

@@ -121,6 +121,7 @@
                 </div>
             </div>
         </div>
+
         <div class="grid grid-cols-1 lg:grid-cols-12 gap-gutter">
             <!-- Fee Brackets Table -->
             <div class="lg:col-span-8 space-y-md">
@@ -165,6 +166,44 @@
                     <?php endforeach; ?>
                     <?php endif; ?>
                 </div>
+                <!-- Configuration Commissions Inter-Opérateurs -->
+                <div class="glass-card rounded-xl p-md shadow-sm">
+                    <h4 class="font-headline-md text-headline-md text-on-surface mb-sm">Commissions Inter-Opérateurs</h4>
+                    <p class="font-body-md text-body-md text-outline mb-md">Commission supplémentaire (%) pour les transferts entre opérateurs (revient à l'opérateur destinataire).</p>
+                    <table class="w-full text-left">
+                        <thead><tr class="border-b border-outline-variant"><th class="py-2 px-1 font-label-sm text-outline uppercase">Émetteur</th><th class="py-2 px-1 font-label-sm text-outline uppercase">Destinataire</th><th class="py-2 px-1 font-label-sm text-outline uppercase">Commission (%)</th><th class="py-2 px-1 font-label-sm text-outline uppercase text-right">Actions</th></tr></thead>
+                        <tbody class="divide-y divide-outline-variant/30">
+                            <?php if (isset($operateurs)): ?>
+                            <?php foreach ($operateurs as $oe): ?>
+                            <?php foreach ($operateurs as $od): ?>
+                            <?php if ($oe->id === $od->id) continue; ?>
+                            <?php
+                            $com = null;
+                            if (isset($commissions)) foreach ($commissions as $c) {
+                                if ($c->operateur_emetteur_id == $oe->id && $c->operateur_destinataire_id == $od->id) {
+                                    $com = $c;
+                                    break;
+                                }
+                            }
+                            $val = $com ? $com->commission_pourcentage : 0;
+                            $pairId = $oe->id . '-' . $od->id;
+                            ?>
+                            <tr class="hover:bg-surface-container-low transition-colors">
+                                <td class="py-2 px-1 font-body-md"><?= $oe->nom ?></td>
+                                <td class="py-2 px-1 font-body-md"><?= $od->nom ?></td>
+                                <td class="py-2 px-1">
+                                    <input class="w-20 bg-surface-container-high rounded px-1 py-0.5 text-sm com-input-<?= $pairId ?>" type="number" step="0.1" value="<?= $val ?>" />
+                                </td>
+                                <td class="py-2 px-1 text-right">
+                                    <button class="p-1 text-primary hover:text-on-tertiary-container transition-colors" onclick="saveCommission(<?= $oe->id ?>, <?= $od->id ?>, '<?= $pairId ?>')" title="Sauvegarder"><span class="material-symbols-outlined text-[18px]">check</span></button>
+                                </td>
+                            </tr>
+                            <?php endforeach; ?>
+                            <?php endforeach; ?>
+                            <?php endif; ?>
+                        </tbody>
+                    </table>
+                </div>
             </div>
             <!-- Prefix Configuration Side Panel -->
             <div class="lg:col-span-4 space-y-md">
@@ -193,6 +232,87 @@
                 </div>
             </div>
         </div>
+
+        <!-- Situation des Gains -->
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-gutter mt-xl">
+            <div class="glass-card rounded-xl p-md shadow-sm">
+                <h4 class="font-headline-md text-headline-md text-on-surface mb-sm">Gains de vos clients</h4>
+                <p class="font-body-md text-body-md text-outline mb-md">Frais perçus sur les opérations de vos propres clients.</p>
+                <?php if (isset($gainsPropres) && !empty($gainsPropres)): ?>
+                <table class="w-full text-left">
+                    <thead><tr class="border-b border-outline-variant"><th class="py-2 px-1 font-label-sm text-outline uppercase">Type</th><th class="py-2 px-1 font-label-sm text-outline uppercase text-right">Total (Ar)</th><th class="py-2 px-1 font-label-sm text-outline uppercase text-right">Nb Opérations</th></tr></thead>
+                    <tbody class="divide-y divide-outline-variant/30">
+                        <?php foreach ($gainsPropres as $gp): ?>
+                        <tr class="hover:bg-surface-container-low transition-colors">
+                            <td class="py-2 px-1 font-body-md"><?= $gp->libelle ?></td>
+                            <td class="py-2 px-1 font-body-md text-right font-bold"><?= number_format($gp->total_gains, 0) ?></td>
+                            <td class="py-2 px-1 font-body-md text-right"><?= $gp->nb_transactions ?></td>
+                        </tr>
+                        <?php endforeach; ?>
+                    </tbody>
+                </table>
+                <?php else: ?>
+                <p class="text-outline font-body-md">Aucun gain pour le moment.</p>
+                <?php endif; ?>
+            </div>
+
+            <div class="glass-card rounded-xl p-md shadow-sm">
+                <h4 class="font-headline-md text-headline-md text-on-surface mb-sm">Commissions Inter-Opérateurs reçues</h4>
+                <p class="font-body-md text-body-md text-outline mb-md">Commissions reçues des autres opérateurs pour les transferts vers vos clients.</p>
+                <?php if (isset($gainsInter) && !empty($gainsInter)): ?>
+                <table class="w-full text-left">
+                    <thead><tr class="border-b border-outline-variant"><th class="py-2 px-1 font-label-sm text-outline uppercase">Type</th><th class="py-2 px-1 font-label-sm text-outline uppercase text-right">Total (Ar)</th><th class="py-2 px-1 font-label-sm text-outline uppercase text-right">Nb Opérations</th></tr></thead>
+                    <tbody class="divide-y divide-outline-variant/30">
+                        <?php foreach ($gainsInter as $gi): ?>
+                        <tr class="hover:bg-surface-container-low transition-colors">
+                            <td class="py-2 px-1 font-body-md"><?= $gi->libelle ?></td>
+                            <td class="py-2 px-1 font-body-md text-right font-bold"><?= number_format($gi->total_gains, 0) ?></td>
+                            <td class="py-2 px-1 font-body-md text-right"><?= $gi->nb_transactions ?></td>
+                        </tr>
+                        <?php endforeach; ?>
+                    </tbody>
+                </table>
+                <?php else: ?>
+                <p class="text-outline font-body-md">Aucune commission reçue pour le moment.</p>
+                <?php endif; ?>
+            </div>
+        </div>
+
+        <!-- Montants à envoyer aux opérateurs -->
+        <div class="glass-card rounded-xl p-md shadow-sm mt-xl">
+            <h4 class="font-headline-md text-headline-md text-on-surface mb-sm">Montants à envoyer aux opérateurs</h4>
+            <p class="font-body-md text-body-md text-outline mb-md">Commissions inter-opérateurs : montants dus et à recevoir par opérateur.</p>
+            <?php
+            $allOpIds = [];
+            if (isset($montantsAPayer)) foreach ($montantsAPayer as $m) $allOpIds[$m->id] = $m->nom;
+            if (isset($montantsARecevoir)) foreach ($montantsARecevoir as $m) $allOpIds[$m->id] = $m->nom;
+            ?>
+            <?php if (!empty($allOpIds)): ?>
+            <table class="w-full text-left">
+                <thead><tr class="border-b border-outline-variant"><th class="py-2 px-1 font-label-sm text-outline uppercase">Opérateur</th><th class="py-2 px-1 font-label-sm text-outline uppercase text-right">Total dû (Ar)</th><th class="py-2 px-1 font-label-sm text-outline uppercase text-right">Total à recevoir (Ar)</th><th class="py-2 px-1 font-label-sm text-outline uppercase text-right">Net (Ar)</th></tr></thead>
+                <tbody class="divide-y divide-outline-variant/30">
+                    <?php foreach ($allOpIds as $oid => $onom): ?>
+                    <?php
+                    $du = 0; $recevoir = 0;
+                    if (isset($montantsAPayer)) foreach ($montantsAPayer as $m) { if ($m->id == $oid) { $du = $m->total; break; } }
+                    if (isset($montantsARecevoir)) foreach ($montantsARecevoir as $m) { if ($m->id == $oid) { $recevoir = $m->total; break; } }
+                    $net = $du - $recevoir;
+                    ?>
+                    <tr class="hover:bg-surface-container-low transition-colors">
+                        <td class="py-2 px-1 font-body-md font-bold"><?= $onom ?></td>
+                        <td class="py-2 px-1 font-body-md text-right"><?= number_format($du, 0) ?></td>
+                        <td class="py-2 px-1 font-body-md text-right"><?= number_format($recevoir, 0) ?></td>
+                        <td class="py-2 px-1 font-body-md text-right font-bold <?= $net > 0 ? 'text-error' : 'text-on-tertiary-container' ?>">
+                            <?= number_format($net, 0) ?>
+                        </td>
+                    </tr>
+                    <?php endforeach; ?>
+                </tbody>
+            </table>
+            <?php else: ?>
+            <p class="text-outline font-body-md">Aucun montant inter-opérateur pour le moment.</p>
+            <?php endif; ?>
+        </div>
     </main>
     <!-- Bottom Navigation (Mobile Only) -->
     <nav
@@ -214,7 +334,7 @@
             <span class="font-label-sm text-[10px]">Menu</span>
         </a>
     </nav>
-    <!-- Floating Action Button (Only relevant on main pages) -->
+    <!-- Floating Action Button -->
     <button
         class="fixed bottom-20 right-6 md:bottom-8 md:right-8 w-14 h-14 bg-primary text-on-primary rounded-full shadow-2xl flex items-center justify-center hover:scale-110 active:scale-95 transition-transform z-40">
         <span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">add</span>
@@ -261,6 +381,23 @@
                 views[2].textContent = Number(inputs[2].value).toLocaleString() + ' Ar';
                 document.querySelectorAll('.view-' + id).forEach(el => el.classList.remove('hidden'));
                 document.querySelectorAll('.edit-' + id).forEach(el => el.classList.add('hidden'));
+            } else {
+                alert('Erreur lors de la sauvegarde');
+            }
+        });
+    }
+
+    function saveCommission(emetteurId, destinataireId, pairId) {
+        const val = document.querySelector('.com-input-' + pairId).value;
+        fetch('<?= base_url('saveCommission') ?>', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ emetteur_id: emetteurId, destinataire_id: destinataireId, pourcentage: val })
+        })
+        .then(r => r.json())
+        .then(r => {
+            if (r.success) {
+                alert('Commission sauvegardée');
             } else {
                 alert('Erreur lors de la sauvegarde');
             }

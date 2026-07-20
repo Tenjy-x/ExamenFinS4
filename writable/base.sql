@@ -44,10 +44,22 @@ CREATE TABLE "Transaction" (
     id_tranche INTEGER,
     montant REAL NOT NULL,
     frais REAL DEFAULT 0,
+    commission_operateur REAL DEFAULT 0,
+    operateur_destinataire INTEGER,
     FOREIGN KEY (id_client) REFERENCES Client(id),
     FOREIGN KEY (id_client2) REFERENCES Client(id),
     FOREIGN KEY (id_type) REFERENCES Type_transaction(id),
-    FOREIGN KEY (id_tranche) REFERENCES Tranche(id)
+    FOREIGN KEY (id_tranche) REFERENCES Tranche(id),
+    FOREIGN KEY (operateur_destinataire) REFERENCES Operateur(id)
+);
+
+CREATE TABLE Commission (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    id_operateur1 INTEGER NOT NULL,
+    id_operateur2 INTEGER,
+    pourcentage REAL DEFAULT 0,
+    FOREIGN KEY (id_operateur1) REFERENCES Operateur(id),
+    FOREIGN KEY (id_operateur2) REFERENCES Operateur(id)   
 );
 
 INSERT INTO Type_transaction (libelle) VALUES ('depot');
