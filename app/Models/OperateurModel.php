@@ -23,15 +23,11 @@ class OperateurModel extends Model {
     }
 
     public function getOperateurByPrefix($prefix) {
-        $db = $this->db->table('Operateur_prefix op');
-        $db->select('o.id, o.nom');
-        $db->join('Operateur o', 'op.operateur_id = o.id');
-        $db->join('Prefix_operateur p', 'op.prefix_id = p.id');
-        $db->where('p.Prefix', $prefix);
-        return $db->get()->getRow();
-    }
-
-    public function getAllOperateurs() {
-        return $this->findAll();
+        $row = $this->db->table('Operateur_prefix op')
+            ->select('op.operateur_id')
+            ->join('Prefix_operateur p', 'op.prefix_id = p.id')
+            ->where('p.Prefix', $prefix)
+            ->get()->getRow();
+        return $row ? $row->operateur_id : null;
     }
 }

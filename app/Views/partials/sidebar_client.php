@@ -1,5 +1,6 @@
 <?php
 $active = $active ?? 'dashboard';
+$user = session()->get('user');
 
 $navItems = [
     'dashboard'  => ['icon' => 'dashboard', 'label' => 'Tableau de Bord', 'url' => base_url('/index')],
@@ -18,6 +19,9 @@ $bottomItems = [
     <div class="flex items-center gap-sm px-sm mb-lg">
         <div>
             <h1 class="font-headline-md text-[18px] font-bold text-primary">AuraWealth</h1>
+            <?php if ($user): ?>
+                <p class="font-label-sm text-outline"><?= $user['numero'] ?></p>
+            <?php endif; ?>
         </div>
     </div>
     <nav class="flex-1 space-y-xs">

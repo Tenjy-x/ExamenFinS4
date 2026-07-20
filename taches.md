@@ -64,6 +64,12 @@ Non fini :
 ### ETU 003920
 * Faire marcher les operations
 
+- Ajout Checkbox frais de retrait
+- Modifier Fonction traiter_transfert
+
+- Ajouter Bouton "Ajouter Numero"
+- Modifier Fonction traitement_transfert 
+
 ### ETU 004161
 - operateur
     - Creation table Commission

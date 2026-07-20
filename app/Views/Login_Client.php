@@ -99,6 +99,12 @@
           Accédez à votre espace client privé
         </p>
       </div>
+      <?php $error = session()->getFlashdata('error'); ?>
+      <?php if ($error): ?>
+        <div class="rounded-lg border border-red-200 bg-red-50 px-md py-sm text-red-700 font-body-md text-body-md">
+          <?= $error ?>
+        </div>
+      <?php endif; ?>
       <!-- Form -->
       <form class="space-y-gutter" method="POST" action="<?= base_url('loginClient')?>">
         <div class="space-y-xs">
