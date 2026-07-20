@@ -18,12 +18,9 @@ $routes->get('/depot','ClientController::depot');
 $routes->get('/retrait','ClientController::retrait');
 $routes->get('/transfert','ClientController::transfert');
 
-<<<<<<< HEAD
 //admin
 $routes->get('/indexAdmin','AdminController::index');
-=======
 $routes->get('/admin','OperateurController::index');
 $routes->get('/gestionClients','OperateurController::gestionClients');
 $routes->get('/gestionFrais','OperateurController::gestionFrais');
 $routes->post('/updateTranche','OperateurController::updateTranche');
->>>>>>> main
