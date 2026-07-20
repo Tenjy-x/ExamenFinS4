@@ -61,8 +61,8 @@
                     <div class="flex items-center gap-sm">
                         <span class="material-symbols-outlined text-primary-fixed text-4xl"
                             style="font-variation-settings: 'FILL' 1;">account_balance</span>
-                        <h1 class="font-headline-lg text-headline-lg text-white font-extrabold tracking-tight">Emerald
-                            Ledger</h1>
+                        <h1 class="font-headline-lg text-headline-lg text-white font-extrabold tracking-tight">Aura
+                            Wealth</h1>
                     </div>
                 </div>
                 <div class="max-w-md">

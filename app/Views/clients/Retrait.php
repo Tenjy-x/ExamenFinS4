@@ -116,6 +116,13 @@
                     <p class="font-body-md text-on-surface-variant">Gérez vos liquidités en toute sécurité.</p>
                 </div>
             </div>
+            <?php $erreur = session()->getFlashdata('error'); ?>
+            <?php if ($erreur): ?>
+                <div class="flex items-center gap-sm rounded-lg border border-red-200 bg-red-50 px-md py-sm text-red-700 font-body-md mb-md">
+                    <span class="material-symbols-outlined text-[20px]">error</span>
+                    <?= $erreur ?>
+                </div>
+            <?php endif; ?>
             <form class="space-y-md" id="withdrawalForm" action="<?= base_url('traitement_retrait')?>">
                 <div class="space-y-sm">
                     <label class="font-label-md text-on-surface-variant" for="amount">Montant du retrait (Ar)</label>
