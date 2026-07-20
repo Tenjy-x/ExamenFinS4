@@ -48,7 +48,7 @@
 </head>
 
 <body class="min-h-screen flex">
-    <?= view('partials/sidebar', ['active' => 'transfert']); ?>
+    <?= view('partials/sidebar_client', ['active' => 'transfert']); ?>
     <!-- Main Canvas -->
     <main class="flex-1 md:ml-64 bg-background min-h-screen">
         <!-- TopNavBar (Authority Source: JSON) -->

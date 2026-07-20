@@ -41,7 +41,7 @@
 </head>
 
 <body class="bg-background text-on-surface font-body-md min-h-screen">
-    <?= view('partials/sidebar', ['active' => 'depot']); ?>
+    <?= view('partials/sidebar_client', ['active' => 'depot']); ?>
     <!-- TopAppBar (Mobile & Shared Context) -->
     <header
         class="w-full h-16 sticky top-0 z-40 bg-surface shadow-sm flex justify-between items-center px-margin-mobile md:pl-[280px] md:pr-margin-desktop">

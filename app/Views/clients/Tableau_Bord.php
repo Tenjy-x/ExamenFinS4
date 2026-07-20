@@ -49,7 +49,7 @@
 </head>
 
 <body class="font-body-md text-body-md overflow-x-hidden">
-    <?= view('partials/sidebar', ['active' => 'dashboard']); ?>
+    <?= view('partials/sidebar_client', ['active' => 'dashboard']); ?>
     <!-- Top AppBar Mobile/Desktop Header -->
     <header
         class="w-full h-16 sticky top-0 z-50 bg-surface shadow-sm md:ml-64 md:w-[calc(100%-16rem)] flex justify-between items-center px-margin-mobile md:px-margin-desktop">

@@ -43,7 +43,7 @@
 </head>
 
 <body class="bg-surface text-on-surface font-body-md text-body-md min-h-screen">
-    <?= view('partials/sidebar', ['active' => 'dashboard']); ?>
+    <?= view('partials/sidebar_admin', ['active' => 'dashboard']); ?>
     <!-- Top Navigation Bar -->
     <header
         class="sticky top-0 z-40 w-full h-16 bg-surface shadow-sm md:pl-64 flex justify-between items-center px-margin-mobile md:px-margin-desktop transition-all">
@@ -83,18 +83,6 @@
                     <p class="text-on-surface-variant mt-1">Résumé exécutif de la performance mensuelle d'AuraWealth.
                     </p>
                 </div>
-                <div class="flex gap-3">
-                    <button
-                        class="flex items-center gap-2 px-4 py-2 border border-outline rounded-lg font-label-md text-label-md text-on-surface-variant hover:bg-surface-container-low transition-colors">
-                        <span class="material-symbols-outlined text-sm">calendar_today</span>
-                        Derniers 30 jours
-                    </button>
-                    <button
-                        class="flex items-center gap-2 px-4 py-2 bg-primary text-on-primary rounded-lg font-label-md text-label-md shadow-md hover:opacity-90 transition-all">
-                        <span class="material-symbols-outlined text-sm">download</span>
-                        Exporter
-                    </button>
-                </div>
             </div>
             <!-- Executive Summary Bento Grid -->
             <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-gutter">
@@ -106,16 +94,6 @@
                     </div>
                     <div class="mt-2">
                         <h3 class="font-display-lg text-headline-lg text-on-surface"><?= number_format($totalGains ?? 0, 0) ?> Ar</h3>
-                    </div>
-                </div>
-                <!-- Transaction Volume Card -->
-                <div
-                    class="glass-card p-md rounded-xl tonal-elevation flex flex-col justify-between h-40 group transition-transform hover:scale-[1.02]">
-                    <div class="flex justify-between items-start">
-                        <p class="font-label-sm text-label-sm text-outline uppercase tracking-wider">Volume Transac.</p>
-                    </div>
-                    <div class="mt-2">
-                        <h3 class="font-display-lg text-headline-lg text-on-surface"><?= $transactionCount ?? 0 ?></h3>
                     </div>
                 </div>
                 <!-- New Clients Card -->

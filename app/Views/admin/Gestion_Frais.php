@@ -44,7 +44,7 @@
 </head>
 
 <body class="text-on-surface">
-    <?= view('partials/sidebar', ['active' => 'fees']); ?>
+    <?= view('partials/sidebar_admin', ['active' => 'fees']); ?>
     <!-- Top Bar -->
     <header class="w-full h-16 sticky top-0 z-30 bg-surface shadow-sm md:pl-64">
         <div class="flex justify-between items-center px-margin-mobile md:px-margin-desktop h-full">
