@@ -4,6 +4,7 @@ namespace App\Controllers;
 use App\Models\TransactionModel;
 use App\Models\TrancheModel;
 use App\Models\ClientModel;
+use App\Models\OperateurModel;
 class TransactionController extends BaseController
 {
     public function traiter_depot() {
@@ -51,45 +52,69 @@ class TransactionController extends BaseController
         $user = session()->get('user');
         $Clients = new ClientModel();
         $montant = $this->request->getVar('amount');
-        $numero = $this->request->getVar('numero');
+        $numeros = $this->request->getVar('numero');
         $inclureFrais = $this->request->getVar('include_fee') === '1';
 
-        if (!$montant || !$numero) {
+        // Normalise: accepte un seul string ou un tableau
+        if (!is_array($numeros)) {
+            $numeros = [$numeros];
+        }
+        // Supprime les entrées vides
+        $numeros = array_values(array_filter($numeros, fn($n) => $n !== null && $n !== ''));
+
+        if (!$montant || empty($numeros)) {
             return redirect()->back()->with('error', 'Montant ou numéro invalide');
         }
 
-        $client2 = $Clients->getClientByNumero($numero);
-        if (!$client2) {
-            return redirect()->back()->with('error', 'Bénéficiaire introuvable');
+        $operateurModel = new OperateurModel();
+        $opExpediteur   = $operateurModel->getOperateurByPrefix(substr($user['numero'], 0, 3));
+
+        // Résoudre tous les bénéficiaires et valider (même opérateur)
+        $beneficiaires = [];
+        foreach ($numeros as $numero) {
+            $client2 = $Clients->getClientByNumero($numero);
+            if (!$client2) {
+                return redirect()->back()
+                    ->withInput()
+                    ->with('error', 'Aucun compte trouvé pour le numéro « ' . htmlspecialchars($numero, ENT_QUOTES, 'UTF-8') . ' ».');
+            }
+            $opBenef = $operateurModel->getOperateurByPrefix(substr($client2->numero, 0, 3));
+            if ($opExpediteur === null || $opBenef !== $opExpediteur) {
+                return redirect()->back()
+                    ->withInput()
+                    ->with('error', 'Le numéro « ' . htmlspecialchars($numero, ENT_QUOTES, 'UTF-8') . ' » n\'appartient pas au même opérateur.');
+            }
+            $beneficiaires[] = $client2;
         }
 
-        $transaction = new TransactionModel();
+        $transaction  = new TransactionModel();
         $trancheModel = new TrancheModel();
-        $tranche = $trancheModel->findTranche(3, $montant);
+        $nb           = count($beneficiaires);
+        $montantPart  = intval($montant / $nb); // divisé équitablement
 
-        if ($inclureFrais) {
-        
-            $memeOperateur = substr($user['numero'], 0, 3) === substr($client2->numero, 0, 3);
-            $fraisRetrait  = 0;
-            if ($memeOperateur) {
-                $trancheRetrait = $trancheModel->findTranche(2, $montant);
+        foreach ($beneficiaires as $client2) {
+            $tranche = $trancheModel->findTranche(3, $montantPart);
+
+            if ($inclureFrais) {
+                // Même opérateur déjà validé — on applique les frais de retrait
+                $trancheRetrait = $trancheModel->findTranche(2, $montantPart);
                 $fraisRetrait   = $trancheRetrait->Frais ?? 0;
+                $montantNet     = $montantPart - $fraisRetrait;
+            } else {
+                $fraisRetrait = $tranche->Frais ?? 0;
+                $montantNet   = $montantPart;
             }
 
-            $montantNet = $montant - $fraisRetrait;
-        } else {
-            $fraisRetrait = $tranche->Frais ?? 0;
-            $montantNet   = $montant;
+            $transaction->insert([
+                'id_type'    => 3,
+                'id_tranche' => $tranche->id ?? 1,
+                'montant'    => $montantNet,
+                'frais'      => $fraisRetrait,
+                'id_client'  => $user['id'],
+                'id_client2' => $client2->id,
+            ]);
         }
 
-        $transaction->insert([
-            'id_type'    => 3,
-            'id_tranche' => $tranche->id ?? 1,
-            'montant'    => $montantNet,
-            'frais'      => $fraisRetrait,
-            'id_client'  => $user['id'],
-            'id_client2' => $client2->id,
-        ]);
         return redirect()->to('/index');
     }
 }

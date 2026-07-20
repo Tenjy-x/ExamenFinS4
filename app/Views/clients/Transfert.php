@@ -97,15 +97,36 @@
                                     compte externe ou interne.</p>
                             </div>
                         </div>
+                        <?php $erreur = session()->getFlashdata('error'); ?>
+                        <?php if ($erreur): ?>
+                            <div class="flex items-center gap-sm rounded-lg border border-red-200 bg-red-50 px-md py-sm text-red-700 font-body-md mb-md">
+                                <span class="material-symbols-outlined text-[20px]">error</span>
+                                <?= $erreur ?>
+                            </div>
+                        <?php endif; ?>
                         <form class="space-y-md" method="get" action="<?= base_url('traitement_transfert')?>">
-                            <!-- Beneficiary Selection -->
+                            <!-- Beneficiary Selection (multiple) -->
                             <div class="space-y-xs">
-                                <label class="font-label-md text-on-surface-variant">Bénéficiaire (numero)</label>
-                                <div class="relative">
-                                    <input
-                                        class="w-full h-12 bg-surface-container-low border-none rounded-lg px-md focus:ring-2 focus:ring-primary/20 text-body-md"
-                                        placeholder="Entrez le numero" type="text" name="numero"/>
+                                <div class="flex items-center justify-between mb-xs">
+                                    <label class="font-label-md text-on-surface-variant">Bénéficiaires (même opérateur)</label>
+                                    <button type="button" id="btn-add-numero"
+                                        class="flex items-center gap-xs text-primary text-label-md hover:underline">
+                                        <span class="material-symbols-outlined text-[18px]">add_circle</span>
+                                        Ajouter un numéro
+                                    </button>
                                 </div>
+                                <div id="numeros-list" class="space-y-xs">
+                                    <div class="numero-row flex items-center gap-sm">
+                                        <input
+                                            class="flex-1 h-12 bg-surface-container-low border-none rounded-lg px-md focus:ring-2 focus:ring-primary/20 text-body-md"
+                                            placeholder="Numéro du bénéficiaire" type="text" name="numero[]" />
+                                        <button type="button"
+                                            class="btn-remove-numero p-2 text-red-400 hover:text-red-600 transition-colors hidden">
+                                            <span class="material-symbols-outlined text-[20px]">remove_circle</span>
+                                        </button>
+                                    </div>
+                                </div>
+                                <p id="montant-par-beneficiaire" class="font-label-sm text-primary hidden"></p>
                             </div>
                             <div class="grid grid-cols-1 md:grid-cols-2 gap-md">
                                 <!-- Amount -->
@@ -203,10 +224,59 @@
             });
         });
 
-        // Numeric animation for balance (simple version)
-        function animateValue(id, start, end, duration) {
-            // Implementation if needed for premium feel
+        // ---- Envoi multiple ----
+        const list        = document.getElementById('numeros-list');
+        const btnAdd      = document.getElementById('btn-add-numero');
+        const amountInput = document.querySelector('input[name="amount"]');
+        const infoDiv     = document.getElementById('montant-par-beneficiaire');
+
+        function rowCount() { return list.querySelectorAll('.numero-row').length; }
+
+        function updateRemoveButtons() {
+            const rows = list.querySelectorAll('.numero-row');
+            rows.forEach(row => {
+                row.querySelector('.btn-remove-numero').classList.toggle('hidden', rows.length === 1);
+            });
         }
+
+        function updateInfo() {
+            const n = rowCount();
+            const m = parseFloat(amountInput.value);
+            if (n > 1 && m > 0) {
+                const part = Math.floor(m / n);
+                infoDiv.textContent = '→ ' + part + ' Ar par bénéficiaire (' + n + ' bénéficiaires)';
+                infoDiv.classList.remove('hidden');
+            } else {
+                infoDiv.classList.add('hidden');
+            }
+        }
+
+        btnAdd.addEventListener('click', () => {
+            const row = document.createElement('div');
+            row.className = 'numero-row flex items-center gap-sm';
+            row.innerHTML = `
+                <input class="flex-1 h-12 bg-surface-container-low border-none rounded-lg px-md focus:ring-2 focus:ring-primary/20 text-body-md"
+                       placeholder="Numéro du bénéficiaire" type="text" name="numero[]" />
+                <button type="button" class="btn-remove-numero p-2 text-red-400 hover:text-red-600 transition-colors">
+                    <span class="material-symbols-outlined text-[20px]">remove_circle</span>
+                </button>`;
+            row.querySelector('.btn-remove-numero').addEventListener('click', () => {
+                row.remove();
+                updateRemoveButtons();
+                updateInfo();
+            });
+            list.appendChild(row);
+            updateRemoveButtons();
+            updateInfo();
+        });
+
+        list.querySelector('.btn-remove-numero').addEventListener('click', function () {
+            this.closest('.numero-row').remove();
+            updateRemoveButtons();
+            updateInfo();
+        });
+
+        amountInput.addEventListener('input', updateInfo);
     </script>
 </body>
 
