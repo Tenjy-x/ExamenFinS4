@@ -41,55 +41,7 @@
 </head>
 
 <body class="bg-background text-on-surface font-body-md min-h-screen">
-    <!-- SideNavBar (Desktop) -->
-    <aside
-        class="h-screen w-64 fixed left-0 top-0 hidden md:flex flex-col bg-surface-container-lowest border-r border-outline-variant p-md gap-base z-50">
-        <div class="font-headline-md text-headline-md font-bold text-primary mb-lg px-2">AuraWealth</div>
-        <nav class="flex-grow flex flex-col gap-1">
-            <a class="flex items-center gap-sm p-3 text-on-surface-variant hover:bg-surface-container-high rounded-lg transition-all font-label-md"
-                href="#">
-                <span class="material-symbols-outlined">dashboard</span>
-                Dashboard
-            </a>
-            <a class="flex items-center gap-sm p-3 bg-secondary-container text-on-secondary-container rounded-lg font-bold transition-all font-label-md"
-                href="#">
-                <span class="material-symbols-outlined">swap_horiz</span>
-                Operations
-            </a>
-            <a class="flex items-center gap-sm p-3 text-on-surface-variant hover:bg-surface-container-high rounded-lg transition-all font-label-md"
-                href="#">
-                <span class="material-symbols-outlined">history</span>
-                History
-            </a>
-            <a class="flex items-center gap-sm p-3 text-on-surface-variant hover:bg-surface-container-high rounded-lg transition-all font-label-md"
-                href="#">
-                <span class="material-symbols-outlined">group</span>
-                Clients
-            </a>
-            <a class="flex items-center gap-sm p-3 text-on-surface-variant hover:bg-surface-container-high rounded-lg transition-all font-label-md"
-                href="#">
-                <span class="material-symbols-outlined">payments</span>
-                Fees
-            </a>
-            <a class="flex items-center gap-sm p-3 text-on-surface-variant hover:bg-surface-container-high rounded-lg transition-all font-label-md"
-                href="#">
-                <span class="material-symbols-outlined">settings</span>
-                Settings
-            </a>
-        </nav>
-        <div class="mt-auto flex flex-col gap-1 border-t border-outline-variant pt-md">
-            <a class="flex items-center gap-sm p-3 text-on-surface-variant hover:bg-surface-container-high rounded-lg transition-all font-label-md"
-                href="#">
-                <span class="material-symbols-outlined">help</span>
-                Support
-            </a>
-            <a class="flex items-center gap-sm p-3 text-on-surface-variant hover:bg-surface-container-high rounded-lg transition-all font-label-md"
-                href="#">
-                <span class="material-symbols-outlined">logout</span>
-                Logout
-            </a>
-        </div>
-    </aside>
+    <?= view('partials/sidebar', ['active' => 'depot']); ?>
     <!-- TopAppBar (Mobile & Shared Context) -->
     <header
         class="w-full h-16 sticky top-0 z-40 bg-surface shadow-sm flex justify-between items-center px-margin-mobile md:pl-[280px] md:pr-margin-desktop">

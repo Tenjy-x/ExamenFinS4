@@ -49,59 +49,7 @@
 </head>
 
 <body class="font-body-md text-body-md overflow-x-hidden">
-    <!-- Desktop Side Navigation Shell -->
-    <aside
-        class="h-screen w-64 fixed left-0 top-0 hidden md:flex flex-col p-md gap-base bg-surface-container-lowest border-r border-outline-variant z-40"
-        id="sidebar">
-        <div class="font-headline-md text-headline-md font-bold text-primary mb-lg px-xs">
-            AuraWealth
-            <div class="font-label-sm text-outline font-normal uppercase tracking-widest mt-1">Premium Management</div>
-        </div>
-        <nav class="flex flex-col gap-xs flex-grow">
-            <a class="flex items-center gap-sm p-sm bg-secondary-container text-on-secondary-container rounded-lg font-bold transition-all duration-200"
-                href="#">
-                <span class="material-symbols-outlined">dashboard</span>
-                <span class="font-label-md text-label-md">Dashboard</span>
-            </a>
-            <a class="flex items-center gap-sm p-sm text-on-surface-variant hover:bg-surface-container-high rounded-lg transition-all"
-                href="#">
-                <span class="material-symbols-outlined">swap_horiz</span>
-                <span class="font-label-md text-label-md">Operations</span>
-            </a>
-            <a class="flex items-center gap-sm p-sm text-on-surface-variant hover:bg-surface-container-high rounded-lg transition-all"
-                href="#">
-                <span class="material-symbols-outlined">history</span>
-                <span class="font-label-md text-label-md">History</span>
-            </a>
-            <a class="flex items-center gap-sm p-sm text-on-surface-variant hover:bg-surface-container-high rounded-lg transition-all"
-                href="#">
-                <span class="material-symbols-outlined">group</span>
-                <span class="font-label-md text-label-md">Clients</span>
-            </a>
-            <a class="flex items-center gap-sm p-sm text-on-surface-variant hover:bg-surface-container-high rounded-lg transition-all"
-                href="#">
-                <span class="material-symbols-outlined">payments</span>
-                <span class="font-label-md text-label-md">Fees</span>
-            </a>
-            <a class="flex items-center gap-sm p-sm text-on-surface-variant hover:bg-surface-container-high rounded-lg transition-all"
-                href="#">
-                <span class="material-symbols-outlined">settings</span>
-                <span class="font-label-md text-label-md">Settings</span>
-            </a>
-        </nav>
-        <div class="mt-auto flex flex-col gap-xs">
-            <a class="flex items-center gap-sm p-sm text-on-surface-variant hover:bg-surface-container-high rounded-lg transition-all"
-                href="#">
-                <span class="material-symbols-outlined">help</span>
-                <span class="font-label-md text-label-md">Support</span>
-            </a>
-            <a class="flex items-center gap-sm p-sm text-error hover:bg-error-container/20 rounded-lg transition-all"
-                href="#">
-                <span class="material-symbols-outlined">logout</span>
-                <span class="font-label-md text-label-md">Logout</span>
-            </a>
-        </div>
-    </aside>
+    <?= view('partials/sidebar', ['active' => 'dashboard']); ?>
     <!-- Top AppBar Mobile/Desktop Header -->
     <header
         class="w-full h-16 sticky top-0 z-50 bg-surface shadow-sm md:ml-64 md:w-[calc(100%-16rem)] flex justify-between items-center px-margin-mobile md:px-margin-desktop">
@@ -128,12 +76,12 @@
                 <div class="relative z-10 flex flex-col gap-base">
                     <span class="font-label-sm text-primary-fixed-dim uppercase tracking-[0.2em]">Solde
                         Disponible</span>
-                    <h2 class="font-display-lg text-display-lg">1,482,900.00 €</h2>
+                    <h2 class="font-display-lg text-display-lg"><?= $solde ?> Ar</h2>
                     <div class="flex items-center gap-sm mt-md">
                         <span
                             class="px-sm py-xs bg-tertiary-container text-on-tertiary-container rounded-full font-label-sm flex items-center gap-1">
-                            <span class="material-symbols-outlined text-[14px]">trending_up</span>
-                            +2.4%
+                            <!-- <span class="material-symbols-outlined text-[14px]">trending_up</span> -->
+                            <?= $user['numero']?>
                         </span>
                         <span class="text-primary-fixed-dim font-label-md">vs mois dernier</span>
                     </div>
@@ -149,19 +97,19 @@
                         <div class="space-y-xs">
                             <div class="flex justify-between items-end">
                                 <span class="font-label-md text-on-surface-variant">Entrées</span>
-                                <span class="font-headline-md text-primary">+ 12,450 €</span>
+                                <span class="font-headline-md text-primary">+ 0 €</span>
                             </div>
                             <div class="w-full h-2 bg-surface-container-highest rounded-full overflow-hidden">
-                                <div class="h-full bg-on-tertiary-container w-[75%] rounded-full"></div>
+                                <div class="h-full bg-on-tertiary-container w-[0%] rounded-full"></div>
                             </div>
                         </div>
                         <div class="space-y-xs">
                             <div class="flex justify-between items-end">
                                 <span class="font-label-md text-on-surface-variant">Sorties</span>
-                                <span class="font-headline-md text-error">- 4,200 €</span>
+                                <span class="font-headline-md text-error">- 0 €</span>
                             </div>
                             <div class="w-full h-2 bg-surface-container-highest rounded-full overflow-hidden">
-                                <div class="h-full bg-error w-[30%] rounded-full"></div>
+                                <div class="h-full bg-error w-[0%] rounded-full"></div>
                             </div>
                         </div>
                     </div>
@@ -174,38 +122,47 @@
         </section>
         <!-- Quick Actions -->
         <section class="grid grid-cols-2 md:grid-cols-4 gap-gutter">
-            <button
-                class="group flex flex-col items-center justify-center gap-sm p-xl rounded-xl border border-outline-variant hover:border-primary hover:shadow-md transition-all duration-200">
-                <div
-                    class="w-12 h-12 rounded-full bg-primary-container text-on-primary-container flex items-center justify-center group-hover:scale-110 transition-transform">
-                    <span class="material-symbols-outlined">add_circle</span>
-                </div>
-                <span class="font-label-md text-on-surface">Dépôt</span>
-            </button>
-            <button
-                class="group flex flex-col items-center justify-center gap-sm p-xl rounded-xl border border-outline-variant hover:border-primary hover:shadow-md transition-all duration-200">
-                <div
-                    class="w-12 h-12 rounded-full bg-surface-container-highest text-primary flex items-center justify-center group-hover:scale-110 transition-transform">
-                    <span class="material-symbols-outlined">remove_circle</span>
-                </div>
-                <span class="font-label-md text-on-surface">Retrait</span>
-            </button>
-            <button
-                class="group flex flex-col items-center justify-center gap-sm p-xl rounded-xl border border-outline-variant hover:border-primary hover:shadow-md transition-all duration-200">
-                <div
-                    class="w-12 h-12 rounded-full bg-surface-container-highest text-primary flex items-center justify-center group-hover:scale-110 transition-transform">
-                    <span class="material-symbols-outlined">send</span>
-                </div>
-                <span class="font-label-md text-on-surface">Transfert</span>
-            </button>
-            <button
-                class="group flex flex-col items-center justify-center gap-sm p-xl rounded-xl border border-outline-variant hover:border-primary hover:shadow-md transition-all duration-200">
-                <div
-                    class="w-12 h-12 rounded-full bg-surface-container-highest text-primary flex items-center justify-center group-hover:scale-110 transition-transform">
-                    <span class="material-symbols-outlined">list_alt</span>
-                </div>
-                <span class="font-label-md text-on-surface">Historique</span>
-            </button>
+
+            <form action="<?= base_url('depot') ?>" method="get" class="w-full">
+                <button type="submit"
+                    class="w-full group flex flex-col items-center justify-center gap-sm p-xl rounded-xl border border-outline-variant hover:border-primary hover:shadow-md transition-all duration-200">
+                    <div class="w-12 h-12 rounded-full bg-primary-container text-on-primary-container flex items-center justify-center group-hover:scale-110 transition-transform">
+                        <span class="material-symbols-outlined">add_circle</span>
+                    </div>
+                    <span class="font-label-md text-on-surface">Dépôt</span>
+                </button>
+            </form>
+
+            <form action="<?= base_url('retrait') ?>" method="get" class="w-full">
+                <button type="submit"
+                    class="w-full group flex flex-col items-center justify-center gap-sm p-xl rounded-xl border border-outline-variant hover:border-primary hover:shadow-md transition-all duration-200">
+                    <div class="w-12 h-12 rounded-full bg-surface-container-highest text-primary flex items-center justify-center group-hover:scale-110 transition-transform">
+                        <span class="material-symbols-outlined">remove_circle</span>
+                    </div>
+                    <span class="font-label-md text-on-surface">Retrait</span>
+                </button>
+            </form>
+
+            <form action="<?= base_url('transfert') ?>" method="get" class="w-full">
+                <button type="submit"
+                    class="w-full group flex flex-col items-center justify-center gap-sm p-xl rounded-xl border border-outline-variant hover:border-primary hover:shadow-md transition-all duration-200">
+                    <div class="w-12 h-12 rounded-full bg-surface-container-highest text-primary flex items-center justify-center group-hover:scale-110 transition-transform">
+                        <span class="material-symbols-outlined">send</span>
+                    </div>
+                    <span class="font-label-md text-on-surface">Transfert</span>
+                </button>
+            </form>
+
+            <form action="<?= base_url('historique') ?>" method="get" class="w-full">
+                <button type="submit"
+                    class="w-full group flex flex-col items-center justify-center gap-sm p-xl rounded-xl border border-outline-variant hover:border-primary hover:shadow-md transition-all duration-200">
+                    <div class="w-12 h-12 rounded-full bg-surface-container-highest text-primary flex items-center justify-center group-hover:scale-110 transition-transform">
+                        <span class="material-symbols-outlined">list_alt</span>
+                    </div>
+                    <span class="font-label-md text-on-surface">Historique</span>
+                </button>
+            </form>
+
         </section>
         <!-- Recent Activity & Performance -->
         <section class="grid grid-cols-1 lg:grid-cols-3 gap-gutter pb-xl">

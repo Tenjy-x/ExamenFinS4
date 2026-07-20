@@ -2,49 +2,79 @@
 
 namespace App\Models;
 
-use CodeIgniter\Models;
+use CodeIgniter\Model;
 
-class TransacrionModel extends Model {
+class TransactionModel extends Model
+{
     protected $table = 'Transaction';
-    protected $primarykey = 'id';
-    protected $allowedFields = ['id_client', 'id_client2', 'id_type', 'id_tranche', 'montant'];
+    protected $primaryKey = 'id';
 
-    public function getByClient($id_client){
-        return $this->where('id_client', $id_client)->orderBy('id', 'DESC')->findAll();
+    protected $allowedFields = [
+        'id_client',
+        'id_client2',
+        'id_type',
+        'id_tranche',
+        'montant'
+    ];
+
+    public function getByClient($id_client)
+    {
+        return $this->where('id_client', $id_client)
+                    ->orderBy('id', 'DESC')
+                    ->findAll();
     }
 
-    public function getSolde($id_client){
-        $soldes = 0;
-        $depots = $this->selectSum('montant')->where('id_client', $id_client)
-        ->where('id_type', 1)->get()->getRow()->montant;
+    public function getSolde($id_client)
+    {
+        // Dépôts
+        $depots = $this->db->table('Transaction')
+            ->selectSum('montant')
+            ->where('id_client', $id_client)
+            ->where('id_type', 1)
+            ->get()
+            ->getRow()
+            ->montant ?? 0;
 
-        $retraits = $this->select('SUM(t.montant + tr.Frais) as total_retrait')
-        ->from('Transaction t')
-        ->join('Tranche tr', 't.id_tranche = tr.id')
-        ->where('t.id_client', $id_client)
-        ->where('t.id_type', 2)->get()->getRow()->total_retrait;
+        // Retraits
+        $retraits = $this->db->table('Transaction t')
+            ->select('SUM(t.montant + tr.Frais) AS total_retrait')
+            ->join('Tranche tr', 't.id_tranche = tr.id')
+            ->where('t.id_client', $id_client)
+            ->where('t.id_type', 2)
+            ->get()
+            ->getRow()
+            ->total_retrait ?? 0;
 
-        $transferts_evoyes = $this->select('SUM(t.montant + tr.Frais) as total_transfert')
-        ->from('Transaction t')
-        ->join('Tranche tr', 't.id_tranche = tr.id')
-        ->where('t.id_client', $id_client)
-        ->where('t.id_type', 3)->get()->getRow()->total_transfert;
+        // Transferts envoyés
+        $transfertsEnvoyes = $this->db->table('Transaction t')
+            ->select('SUM(t.montant + tr.Frais) AS total_transfert')
+            ->join('Tranche tr', 't.id_tranche = tr.id')
+            ->where('t.id_client', $id_client)
+            ->where('t.id_type', 3)
+            ->get()
+            ->getRow()
+            ->total_transfert ?? 0;
 
-        $transferts_recu = $this->selectSum('montant')
-        ->where('id_client2', $id_client)
-        ->where('id_type', 3)->get()->getRow()->montant;
+        // Transferts reçus
+        $transfertsRecus = $this->db->table('Transaction')
+            ->selectSum('montant')
+            ->where('id_client2', $id_client)
+            ->where('id_type', 3)
+            ->get()
+            ->getRow()
+            ->montant ?? 0;
 
-        $soldes = ($depots + $transferts_recu) - ($retraits + $transferts_evoyes);
-        return $soldes;
+        return ($depots + $transfertsRecus) - ($retraits + $transfertsEnvoyes);
     }
 
-    public function getGainsByType(){
-        return $this->select('tt.libelle, SUM(tr.Frais) as total_gains')
-        ->from('Transaction t')
-        ->join('Type_transaction tt', 't.id_type = tt.id')
-        ->join('Tranche tr', 't.id_tranche = tr.id')
-        ->groupBy('t.id_type')
-        ->get()->getResult();   
+    public function getGainsByType()
+    {
+        return $this->db->table('Transaction t')
+            ->select('tt.libelle, SUM(tr.Frais) AS total_gains')
+            ->join('Type_transaction tt', 't.id_type = tt.id')
+            ->join('Tranche tr', 't.id_tranche = tr.id')
+            ->groupBy('tt.libelle')
+            ->get()
+            ->getResult();
     }
-
 }

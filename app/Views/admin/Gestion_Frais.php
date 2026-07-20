@@ -44,58 +44,7 @@
 </head>
 
 <body class="text-on-surface">
-    <!-- Sidebar Navigation (Desktop) -->
-    <aside
-        class="h-screen w-64 fixed left-0 top-0 hidden md:flex flex-col p-md gap-base bg-surface-container-lowest border-r border-outline-variant z-40">
-        <div class="mb-lg">
-            <h1 class="font-headline-md text-headline-md font-bold text-primary">AuraWealth</h1>
-            <p class="font-label-sm text-label-sm text-secondary">Premium Management</p>
-        </div>
-        <nav class="flex flex-col gap-xs flex-grow">
-            <a class="flex items-center gap-sm p-sm text-on-surface-variant hover:bg-surface-container-high transition-all rounded-lg"
-                href="#">
-                <span class="material-symbols-outlined">dashboard</span>
-                <span class="font-label-md text-label-md">Dashboard</span>
-            </a>
-            <a class="flex items-center gap-sm p-sm text-on-surface-variant hover:bg-surface-container-high transition-all rounded-lg"
-                href="#">
-                <span class="material-symbols-outlined">swap_horiz</span>
-                <span class="font-label-md text-label-md">Operations</span>
-            </a>
-            <a class="flex items-center gap-sm p-sm text-on-surface-variant hover:bg-surface-container-high transition-all rounded-lg"
-                href="#">
-                <span class="material-symbols-outlined">history</span>
-                <span class="font-label-md text-label-md">History</span>
-            </a>
-            <a class="flex items-center gap-sm p-sm text-on-surface-variant hover:bg-surface-container-high transition-all rounded-lg"
-                href="#">
-                <span class="material-symbols-outlined">group</span>
-                <span class="font-label-md text-label-md">Clients</span>
-            </a>
-            <a class="flex items-center gap-sm p-sm bg-secondary-container text-on-secondary-container rounded-lg font-bold"
-                href="#">
-                <span class="material-symbols-outlined active-tab">payments</span>
-                <span class="font-label-md text-label-md">Fees</span>
-            </a>
-            <a class="flex items-center gap-sm p-sm text-on-surface-variant hover:bg-surface-container-high transition-all rounded-lg"
-                href="#">
-                <span class="material-symbols-outlined">settings</span>
-                <span class="font-label-md text-label-md">Settings</span>
-            </a>
-        </nav>
-        <div class="mt-auto flex flex-col gap-xs pt-base border-t border-outline-variant">
-            <a class="flex items-center gap-sm p-sm text-on-surface-variant hover:bg-surface-container-high transition-all rounded-lg"
-                href="#">
-                <span class="material-symbols-outlined">help</span>
-                <span class="font-label-md text-label-md">Support</span>
-            </a>
-            <a class="flex items-center gap-sm p-sm text-error hover:bg-error-container transition-all rounded-lg"
-                href="#">
-                <span class="material-symbols-outlined">logout</span>
-                <span class="font-label-md text-label-md">Logout</span>
-            </a>
-        </div>
-    </aside>
+    <?= view('partials/sidebar', ['active' => 'fees']); ?>
     <!-- Top Bar -->
     <header class="w-full h-16 sticky top-0 z-30 bg-surface shadow-sm md:pl-64">
         <div class="flex justify-between items-center px-margin-mobile md:px-margin-desktop h-full">
