@@ -2,12 +2,13 @@
 
 namespace App\Models;
 
-use CodeIgniter\Models;
+use CodeIgniter\Model;
 
 class PrefixeOperateurModel extends Model {
-    protected $table = 'Prefixe_operateur';
+    protected $table = 'Prefix_operateur';
     protected $primarykey = 'id';
     protected $allowedFields = ['prefixe'];
+    protected $returnType = 'object';
 
     public function getAllPrefix(){
         return $this->findAll();
