@@ -14,3 +14,6 @@ $routes->get('/index','ClientController::index');
 $routes->get('/depot','ClientController::depot');
 $routes->get('/retrait','ClientController::retrait');
 $routes->get('/transfert','ClientController::transfert');
+
+//admin
+$routes->get('/indexAdmin','AdminController::index');
