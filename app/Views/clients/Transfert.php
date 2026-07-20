@@ -120,6 +120,17 @@
                                     </div>
                                     <p class="font-label-sm text-outline-variant">Solde disponible : <?= $solde ?> Ar </p>
                                 </div>
+
+                                <div class="space-y-xs flex items-end">
+                                    <label class="inline-flex items-center gap-sm text-body-md text-on-surface-variant cursor-pointer">
+                                        <input
+                                            class="w-4 h-4 rounded border-outline-variant text-primary focus:ring-primary"
+                                            type="checkbox"
+                                            name="include_fee"
+                                            value="1" />
+                                        <span>Inclure les frais de retrait</span>
+                                    </label>
+                                </div>
                                 <!-- Date/Frequency -->
                                 <!-- <div class="space-y-xs">
                                     <label class="font-label-md text-on-surface-variant">Exécution</label>
