@@ -43,58 +43,7 @@
 </head>
 
 <body class="bg-surface text-on-surface font-body-md text-body-md min-h-screen">
-    <!-- Sidebar (Desktop) -->
-    <aside
-        class="h-screen w-64 fixed left-0 top-0 hidden md:flex flex-col bg-surface-container-lowest border-r border-outline-variant p-md gap-base z-50">
-        <div class="mb-lg px-2">
-            <h1 class="font-headline-md text-headline-md font-bold text-primary">AuraWealth</h1>
-            <p class="font-label-sm text-label-sm text-outline uppercase tracking-widest mt-1">Premium Management</p>
-        </div>
-        <nav class="flex-1 flex flex-col gap-2">
-            <a class="flex items-center gap-3 px-4 py-3 text-on-surface-variant hover:bg-surface-container-high transition-all rounded-lg"
-                href="#">
-                <span class="material-symbols-outlined">dashboard</span>
-                <span class="font-label-md text-label-md">Dashboard</span>
-            </a>
-            <a class="flex items-center gap-3 px-4 py-3 bg-secondary-container text-on-secondary-container rounded-lg font-bold"
-                href="#">
-                <span class="material-symbols-outlined">swap_horiz</span>
-                <span class="font-label-md text-label-md">Operations</span>
-            </a>
-            <a class="flex items-center gap-3 px-4 py-3 text-on-surface-variant hover:bg-surface-container-high transition-all rounded-lg"
-                href="#">
-                <span class="material-symbols-outlined">history</span>
-                <span class="font-label-md text-label-md">History</span>
-            </a>
-            <a class="flex items-center gap-3 px-4 py-3 text-on-surface-variant hover:bg-surface-container-high transition-all rounded-lg"
-                href="#">
-                <span class="material-symbols-outlined">group</span>
-                <span class="font-label-md text-label-md">Clients</span>
-            </a>
-            <a class="flex items-center gap-3 px-4 py-3 text-on-surface-variant hover:bg-surface-container-high transition-all rounded-lg"
-                href="#">
-                <span class="material-symbols-outlined">payments</span>
-                <span class="font-label-md text-label-md">Fees</span>
-            </a>
-            <a class="flex items-center gap-3 px-4 py-3 text-on-surface-variant hover:bg-surface-container-high transition-all rounded-lg"
-                href="#">
-                <span class="material-symbols-outlined">settings</span>
-                <span class="font-label-md text-label-md">Settings</span>
-            </a>
-        </nav>
-        <div class="pt-base border-t border-outline-variant flex flex-col gap-2">
-            <a class="flex items-center gap-3 px-4 py-3 text-on-surface-variant hover:bg-surface-container-high transition-all rounded-lg"
-                href="#">
-                <span class="material-symbols-outlined">help</span>
-                <span class="font-label-md text-label-md">Support</span>
-            </a>
-            <a class="flex items-center gap-3 px-4 py-3 text-on-surface-variant hover:bg-surface-container-high transition-all rounded-lg"
-                href="#">
-                <span class="material-symbols-outlined">logout</span>
-                <span class="font-label-md text-label-md">Logout</span>
-            </a>
-        </div>
-    </aside>
+    <?= view('partials/sidebar', ['active' => 'dashboard']); ?>
     <!-- Top Navigation Bar -->
     <header
         class="sticky top-0 z-40 w-full h-16 bg-surface shadow-sm md:pl-64 flex justify-between items-center px-margin-mobile md:px-margin-desktop transition-all">
