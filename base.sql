@@ -1,7 +1,6 @@
 CREATE TABLE Client (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
-    nom TEXT NOT NULL,
-    numero TEXT NOT NULL
+    numero TEXT 
 );
 
 
@@ -43,3 +42,10 @@ CREATE TABLE "Transaction" (
     FOREIGN KEY (id_type) REFERENCES Type_transaction(id),
     FOREIGN KEY (id_tranche) REFERENCES Tranche(id)
 );
+
+Insert into Client (numero) VALUES
+('0341234567'),
+('0329876543'),
+('0334567890'),
+('0345678901'),
+('0323456789');

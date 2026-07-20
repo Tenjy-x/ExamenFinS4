@@ -2,12 +2,12 @@
 
 namespace App\Models;
 
-use CodeIgniter\Models;
+use CodeIgniter\Model;
 
 class ClientModel extends Model {
     protected $table = 'Client';
     protected $primarykey = 'id';
-    protected $allowedFields = ['nom', 'numero'];
+    protected $allowedFields = ['numero'];
     
     public function getClientByNumero ($numero){
         return $this->where('numero', $numero)->first();
