@@ -31,7 +31,11 @@ function simulateLogin() {
         }, 1500);
       }
 
-      // Minimalist input mask logic or hover effect
+      document.getElementById('loginForm').addEventListener('submit', function(e) {
+        e.preventDefault();
+        simulateLogin();
+      });
+
       const input = document.getElementById("phone");
       input.addEventListener("focus", () => {
         input.parentElement.classList.add("scale-[1.01]");
