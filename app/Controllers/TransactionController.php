@@ -1,6 +1,7 @@
 <?php
 
 namespace App\Controllers;
+
 use App\Models\TransactionModel;
 use App\Models\TrancheModel;
 use App\Models\ClientModel;
