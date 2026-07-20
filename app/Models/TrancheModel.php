@@ -2,12 +2,13 @@
 
 namespace App\Models;
 
-use CodeIgniter\Models;
+use CodeIgniter\Model;
 
 class TrancheModel extends Model {
     protected $table = 'Tranche';
     protected $primarykey = 'id';
     protected $allowedFields = ['id_type', 'montant_min', 'montant_max', 'Frais'];
+    protected $returnType = 'object';
 
     public function getTrancheByType($id_type) {
         return $this->where('id_type', $id_type)->findAll();

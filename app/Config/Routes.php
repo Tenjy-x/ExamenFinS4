@@ -6,7 +6,10 @@ use CodeIgniter\Router\RouteCollection;
  * @var RouteCollection $routes
  */
 $routes->get('/', 'Home::index');
-$routes->get('/login_Operateur','Home::operateur');
+$routes->get('/login_Operateur','OperateurController::login');
+
+$routes->post('/auth_operateur','OperateurController::authentification');
+$routes->get('/logout','OperateurController::logout');
 
 $routes->post('/loginClient','AuthController::login');
 $routes->get('/index','ClientController::index');
@@ -15,5 +18,12 @@ $routes->get('/depot','ClientController::depot');
 $routes->get('/retrait','ClientController::retrait');
 $routes->get('/transfert','ClientController::transfert');
 
+<<<<<<< HEAD
 //admin
 $routes->get('/indexAdmin','AdminController::index');
+=======
+$routes->get('/admin','OperateurController::index');
+$routes->get('/gestionClients','OperateurController::gestionClients');
+$routes->get('/gestionFrais','OperateurController::gestionFrais');
+$routes->post('/updateTranche','OperateurController::updateTranche');
+>>>>>>> main

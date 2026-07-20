@@ -103,18 +103,9 @@
                     class="glass-card p-md rounded-xl tonal-elevation flex flex-col justify-between h-40 group transition-transform hover:scale-[1.02]">
                     <div class="flex justify-between items-start">
                         <p class="font-label-sm text-label-sm text-outline uppercase tracking-wider">Revenu Total</p>
-                        <span
-                            class="text-on-tertiary-container bg-tertiary-fixed px-2 py-0.5 rounded-full text-[10px] font-bold">+12.4%</span>
                     </div>
                     <div class="mt-2">
-                        <h3 class="font-display-lg text-headline-lg text-on-surface">€ 142,500.00</h3>
-                        <div class="h-10 mt-2">
-                            <!-- Minimalist Sparkline Placeholder -->
-                            <svg class="w-full h-full" viewbox="0 0 100 40">
-                                <path d="M0,35 Q10,32 20,38 T40,30 T60,35 T80,20 T100,5" fill="none" stroke="#31c98f"
-                                    stroke-width="2" vector-effect="non-scaling-stroke"></path>
-                            </svg>
-                        </div>
+                        <h3 class="font-display-lg text-headline-lg text-on-surface"><?= number_format($totalGains ?? 0, 0) ?> Ar</h3>
                     </div>
                 </div>
                 <!-- Transaction Volume Card -->
@@ -122,17 +113,9 @@
                     class="glass-card p-md rounded-xl tonal-elevation flex flex-col justify-between h-40 group transition-transform hover:scale-[1.02]">
                     <div class="flex justify-between items-start">
                         <p class="font-label-sm text-label-sm text-outline uppercase tracking-wider">Volume Transac.</p>
-                        <span
-                            class="text-on-tertiary-container bg-tertiary-fixed px-2 py-0.5 rounded-full text-[10px] font-bold">+8.1%</span>
                     </div>
                     <div class="mt-2">
-                        <h3 class="font-display-lg text-headline-lg text-on-surface">1,284</h3>
-                        <div class="h-10 mt-2">
-                            <svg class="w-full h-full" viewbox="0 0 100 40">
-                                <path d="M0,30 Q10,25 20,32 T40,28 T60,20 T80,30 T100,25" fill="none" stroke="#2b6954"
-                                    stroke-width="2" vector-effect="non-scaling-stroke"></path>
-                            </svg>
-                        </div>
+                        <h3 class="font-display-lg text-headline-lg text-on-surface"><?= $transactionCount ?? 0 ?></h3>
                     </div>
                 </div>
                 <!-- New Clients Card -->
@@ -141,17 +124,9 @@
                     <div class="flex justify-between items-start">
                         <p class="font-label-sm text-label-sm text-outline uppercase tracking-wider">Nouveaux Clients
                         </p>
-                        <span
-                            class="text-on-error-container bg-error-container px-2 py-0.5 rounded-full text-[10px] font-bold">-2.4%</span>
                     </div>
                     <div class="mt-2">
-                        <h3 class="font-display-lg text-headline-lg text-on-surface">42</h3>
-                        <div class="h-10 mt-2">
-                            <svg class="w-full h-full" viewbox="0 0 100 40">
-                                <path d="M0,10 Q10,15 20,12 T40,25 T60,20 T80,35 T100,38" fill="none" stroke="#ba1a1a"
-                                    stroke-width="2" vector-effect="non-scaling-stroke"></path>
-                            </svg>
-                        </div>
+                        <h3 class="font-display-lg text-headline-lg text-on-surface"><?= $clientCount ?? 0 ?></h3>
                     </div>
                 </div>
                 <!-- Fee Income Card -->
@@ -160,17 +135,9 @@
                     <div class="flex justify-between items-start">
                         <p class="font-label-sm text-label-sm text-outline uppercase tracking-wider">Frais de Gestion
                         </p>
-                        <span
-                            class="text-on-tertiary-container bg-tertiary-fixed px-2 py-0.5 rounded-full text-[10px] font-bold">+15.7%</span>
                     </div>
                     <div class="mt-2">
-                        <h3 class="font-display-lg text-headline-lg text-on-surface">€ 18,920.00</h3>
-                        <div class="h-10 mt-2">
-                            <svg class="w-full h-full" viewbox="0 0 100 40">
-                                <path d="M0,38 Q10,35 20,25 T40,20 T60,28 T80,10 T100,2" fill="none" stroke="#31c98f"
-                                    stroke-width="2" vector-effect="non-scaling-stroke"></path>
-                            </svg>
-                        </div>
+                        <h3 class="font-display-lg text-headline-lg text-on-surface"><?= number_format($totalGains ?? 0, 0) ?> Ar</h3>
                     </div>
                 </div>
             </div>
@@ -235,43 +202,25 @@
                 <!-- Fee Distribution -->
                 <div class="glass-card p-md rounded-xl tonal-elevation space-y-md">
                     <h3 class="font-headline-md text-headline-md text-primary">Répartition des Frais</h3>
+                    <?php
+                    $totalG = 0;
+                    if (isset($gains)) foreach ($gains as $g) $totalG += $g->total_gains;
+                    ?>
                     <div class="flex flex-col gap-6 pt-4">
+                        <?php if (isset($gains)): ?>
+                        <?php foreach ($gains as $g): ?>
+                        <?php $pct = $totalG > 0 ? round($g->total_gains / $totalG * 100) : 0; ?>
                         <div class="space-y-2">
                             <div class="flex justify-between items-center">
-                                <span class="font-label-md text-label-md text-on-surface">Frais de conseil</span>
-                                <span class="font-label-md text-label-md font-bold">55%</span>
+                                <span class="font-label-md text-label-md text-on-surface"><?= $g->libelle ?? '' ?></span>
+                                <span class="font-label-md text-label-md font-bold"><?= $pct ?>%</span>
                             </div>
                             <div class="w-full bg-surface-container-high rounded-full h-2">
-                                <div class="bg-primary-container h-full rounded-full" style="width: 55%"></div>
+                                <div class="bg-primary-container h-full rounded-full" style="width: <?= $pct ?>%"></div>
                             </div>
                         </div>
-                        <div class="space-y-2">
-                            <div class="flex justify-between items-center">
-                                <span class="font-label-md text-label-md text-on-surface">Commissions d'échange</span>
-                                <span class="font-label-md text-label-md font-bold">28%</span>
-                            </div>
-                            <div class="w-full bg-surface-container-high rounded-full h-2">
-                                <div class="bg-primary h-full rounded-full" style="width: 28%"></div>
-                            </div>
-                        </div>
-                        <div class="space-y-2">
-                            <div class="flex justify-between items-center">
-                                <span class="font-label-md text-label-md text-on-surface">Frais de garde</span>
-                                <span class="font-label-md text-label-md font-bold">12%</span>
-                            </div>
-                            <div class="w-full bg-surface-container-high rounded-full h-2">
-                                <div class="bg-tertiary-fixed-dim h-full rounded-full" style="width: 12%"></div>
-                            </div>
-                        </div>
-                        <div class="space-y-2">
-                            <div class="flex justify-between items-center">
-                                <span class="font-label-md text-label-md text-on-surface">Autres services</span>
-                                <span class="font-label-md text-label-md font-bold">5%</span>
-                            </div>
-                            <div class="w-full bg-surface-container-high rounded-full h-2">
-                                <div class="bg-secondary h-full rounded-full" style="width: 5%"></div>
-                            </div>
-                        </div>
+                        <?php endforeach; ?>
+                        <?php endif; ?>
                     </div>
                     <div class="pt-6">
                         <button
@@ -305,21 +254,23 @@
                             </tr>
                         </thead>
                         <tbody class="divide-y divide-outline-variant/30">
+                            <?php if (isset($recentTransactions)): ?>
+                            <?php foreach ($recentTransactions as $rt): ?>
                             <tr class="hover:bg-surface-container-low/50 transition-colors group">
-                                <td class="px-md py-4 font-label-md text-label-md text-on-surface">#TRX-9482</td>
+                                <td class="px-md py-4 font-label-md text-label-md text-on-surface">#TRX-<?= $rt->id ?></td>
                                 <td class="px-md py-4">
                                     <div class="flex items-center gap-3">
                                         <div
                                             class="h-8 w-8 rounded-full bg-secondary-container flex items-center justify-center text-on-secondary-container text-xs font-bold">
-                                            JD</div>
-                                        <span class="font-label-md text-label-md">Julien Dubois</span>
+                                            <?= strtoupper(substr($rt->nom ?? '?', 0, 1)) . strtoupper(substr($rt->prenom ?? '?', 0, 1)) ?></div>
+                                        <span class="font-label-md text-label-md"><?= ($rt->nom ?? '') . ' ' . ($rt->prenom ?? '') ?></span>
                                     </div>
                                 </td>
-                                <td class="px-md py-4 font-label-md text-label-md font-bold">€ 12,450.00</td>
-                                <td class="px-md py-4 text-on-surface-variant">14 Juin, 14:30</td>
+                                <td class="px-md py-4 font-label-md text-label-md font-bold"><?= number_format($rt->montant ?? 0, 0) ?> Ar</td>
+                                <td class="px-md py-4 text-on-surface-variant"><?= $rt->date_transaction ?? '' ?></td>
                                 <td class="px-md py-4">
                                     <span
-                                        class="inline-flex items-center px-2.5 py-1 rounded-full text-xs font-bold bg-tertiary-fixed text-on-tertiary-fixed-variant uppercase tracking-wider">Complété</span>
+                                        class="inline-flex items-center px-2.5 py-1 rounded-full text-xs font-bold bg-tertiary-fixed text-on-tertiary-fixed-variant uppercase tracking-wider"><?= $rt->type ?? '' ?></span>
                                 </td>
                                 <td class="px-md py-4">
                                     <button class="p-2 text-outline hover:text-primary transition-colors">
@@ -327,73 +278,8 @@
                                     </button>
                                 </td>
                             </tr>
-                            <tr class="hover:bg-surface-container-low/50 transition-colors group">
-                                <td class="px-md py-4 font-label-md text-label-md text-on-surface">#TRX-9481</td>
-                                <td class="px-md py-4">
-                                    <div class="flex items-center gap-3">
-                                        <div
-                                            class="h-8 w-8 rounded-full bg-primary-container flex items-center justify-center text-on-primary text-xs font-bold">
-                                            SM</div>
-                                        <span class="font-label-md text-label-md">Sophie Martin</span>
-                                    </div>
-                                </td>
-                                <td class="px-md py-4 font-label-md text-label-md font-bold">€ 4,200.00</td>
-                                <td class="px-md py-4 text-on-surface-variant">14 Juin, 11:15</td>
-                                <td class="px-md py-4">
-                                    <span
-                                        class="inline-flex items-center px-2.5 py-1 rounded-full text-xs font-bold bg-secondary-fixed text-on-secondary-fixed-variant uppercase tracking-wider">En
-                                        attente</span>
-                                </td>
-                                <td class="px-md py-4">
-                                    <button class="p-2 text-outline hover:text-primary transition-colors">
-                                        <span class="material-symbols-outlined">more_horiz</span>
-                                    </button>
-                                </td>
-                            </tr>
-                            <tr class="hover:bg-surface-container-low/50 transition-colors group">
-                                <td class="px-md py-4 font-label-md text-label-md text-on-surface">#TRX-9480</td>
-                                <td class="px-md py-4">
-                                    <div class="flex items-center gap-3">
-                                        <div
-                                            class="h-8 w-8 rounded-full bg-surface-container-highest flex items-center justify-center text-on-surface text-xs font-bold">
-                                            PL</div>
-                                        <span class="font-label-md text-label-md">Pierre Lefebvre</span>
-                                    </div>
-                                </td>
-                                <td class="px-md py-4 font-label-md text-label-md font-bold">€ 28,000.00</td>
-                                <td class="px-md py-4 text-on-surface-variant">13 Juin, 09:45</td>
-                                <td class="px-md py-4">
-                                    <span
-                                        class="inline-flex items-center px-2.5 py-1 rounded-full text-xs font-bold bg-tertiary-fixed text-on-tertiary-fixed-variant uppercase tracking-wider">Complété</span>
-                                </td>
-                                <td class="px-md py-4">
-                                    <button class="p-2 text-outline hover:text-primary transition-colors">
-                                        <span class="material-symbols-outlined">more_horiz</span>
-                                    </button>
-                                </td>
-                            </tr>
-                            <tr class="hover:bg-surface-container-low/50 transition-colors group">
-                                <td class="px-md py-4 font-label-md text-label-md text-on-surface">#TRX-9479</td>
-                                <td class="px-md py-4">
-                                    <div class="flex items-center gap-3">
-                                        <div
-                                            class="h-8 w-8 rounded-full bg-error-container flex items-center justify-center text-on-error-container text-xs font-bold">
-                                            MG</div>
-                                        <span class="font-label-md text-label-md">Marc Girard</span>
-                                    </div>
-                                </td>
-                                <td class="px-md py-4 font-label-md text-label-md font-bold">€ 1,500.00</td>
-                                <td class="px-md py-4 text-on-surface-variant">12 Juin, 16:20</td>
-                                <td class="px-md py-4">
-                                    <span
-                                        class="inline-flex items-center px-2.5 py-1 rounded-full text-xs font-bold bg-error-container text-on-error-container uppercase tracking-wider">Échoué</span>
-                                </td>
-                                <td class="px-md py-4">
-                                    <button class="p-2 text-outline hover:text-primary transition-colors">
-                                        <span class="material-symbols-outlined">more_horiz</span>
-                                    </button>
-                                </td>
-                            </tr>
+                            <?php endforeach; ?>
+                            <?php endif; ?>
                         </tbody>
                     </table>
                 </div>
@@ -424,7 +310,6 @@
             <span class="font-label-sm text-[10px] uppercase">Menu</span>
         </a>
     </nav>
-    <script src="<?= base_url('Js/Index.js') ?>"></script>
 </body>
 
 </html>

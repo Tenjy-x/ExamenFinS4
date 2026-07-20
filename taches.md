@@ -64,3 +64,11 @@ Non fini :
 
 
 
+# ETU 004161
+- Creation des Models:
+    - ClientModel.php
+    - OperateurModel.php
+    - PrefixeOperateurModel.php
+    - TrancheModel.php
+    - TransactionModel.php
+    - TypeTrasactionModel.php

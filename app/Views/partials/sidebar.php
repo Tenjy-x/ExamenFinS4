@@ -2,19 +2,13 @@
 $active = $active ?? 'dashboard';
 
 $navItems = [
-    'dashboard'  => ['icon' => 'dashboard', 'label' => 'Dashboard', 'url' => base_url('/index')],
-    'depot'      => ['icon' => 'add_circle', 'label' => 'Dépôt', 'url' => base_url('/depot')],
-    'retrait'    => ['icon' => 'remove_circle', 'label' => 'Retrait', 'url' => base_url('/retrait')],
-    'transfert'  => ['icon' => 'send', 'label' => 'Transfert', 'url' => base_url('/transfert')],
-    'history'    => ['icon' => 'history', 'label' => 'History', 'url' => '#'],
-    'clients'    => ['icon' => 'group', 'label' => 'Clients', 'url' => '#'],
-    'fees'       => ['icon' => 'payments', 'label' => 'Fees', 'url' => '#'],
-    'settings'   => ['icon' => 'settings', 'label' => 'Settings', 'url' => '#'],
+    'dashboard'  => ['icon' => 'dashboard', 'label' => 'Dashboard', 'url' => base_url('/admin')],
+    'clients'    => ['icon' => 'group', 'label' => 'Clients', 'url' => base_url('/gestionClients')],
+    'fees'       => ['icon' => 'payments', 'label' => 'Frais', 'url' => base_url('/gestionFrais')],
 ];
 
 $bottomItems = [
-    'support' => ['icon' => 'help', 'label' => 'Support', 'url' => '#'],
-    'logout'  => ['icon' => 'logout', 'label' => 'Logout', 'url' => base_url('/')],
+    'logout'  => ['icon' => 'logout', 'label' => 'Déconnexion', 'url' => base_url('/logout')],
 ];
 ?>
 
