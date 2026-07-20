@@ -3,7 +3,12 @@
 # ETU4161
 - Conception De base de Donnees
     - Table 
-        -  
+        -Client
+        -Prefix_operateur
+        -Operateur
+        -Type_transaction
+        -Tranche
+        -Transaction
 
 # ETU 3920
 - Environnement 
@@ -35,3 +40,11 @@
 - Route
     - Creation des routes necessaires     
 
+# ETU 004161
+- Creation des Models:
+    - ClientModel.php
+    - OperateurModel.php
+    - PrefixeOperateurModel.php
+    - TrancheModel.php
+    - TransactionModel.php
+    - TypeTrasactionModel.php

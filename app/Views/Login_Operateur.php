@@ -86,21 +86,24 @@
                 <div class="text-center md:text-left">
                     <h2 class="font-headline-lg text-headline-lg text-primary font-bold mb-xs">Espace Opérateur</h2>
                     <p class="font-body-md text-body-md text-on-surface-variant">Accédez à votre console de gestion</p>
+                    <?php if (isset($error)): ?>
+                    <div class="bg-error-container text-on-error-container p-sm rounded-lg font-label-md text-label-md mt-sm"><?= $error ?></div>
+                    <?php endif; ?>
                 </div>
                 <!-- Form Card -->
-                <form class="space-y-md">
+                <form class="space-y-md" action="<?= base_url('auth_operateur') ?>" method="POST">
                     <!-- Prefix Selector -->
                     <div class="space-y-xs">
                         <label
                             class="font-label-sm text-label-sm text-on-surface-variant uppercase tracking-wider block"
-                            for="prefix">Préfixe Opérateur</label>
+                            for="id_prefix">Préfixe Opérateur</label>
                         <div class="relative">
-                            <select
+                            <select name="id_prefix"
                                 class="custom-input w-full h-[56px] px-md bg-surface-container-low border border-outline-variant rounded-lg font-body-md appearance-none"
-                                id="prefix">
-                                <option value="033">033 - Mobile Pro</option>
-                                <option value="034">034 - Classic Connect</option>
-                                <option value="037">037 - Emerald Private</option>
+                                id="id_prefix">
+                                <?php foreach ($prefixe as $p): ?>
+                                <option value="<?= $p->id ?>"><?= $p->Prefix ?></option>
+                                <?php endforeach; ?>
                             </select>
                             <div class="absolute right-md top-1/2 -translate-y-1/2 pointer-events-none">
                                 <span class="material-symbols-outlined text-on-surface-variant">expand_more</span>
@@ -111,11 +114,11 @@
                     <div class="space-y-xs">
                         <label
                             class="font-label-sm text-label-sm text-on-surface-variant uppercase tracking-wider block"
-                            for="password">Mot de passe</label>
+                            for="mot_de_passe">Mot de passe</label>
                         <div class="relative">
-                            <input
+                            <input name="mot_de_passe"
                                 class="custom-input w-full h-[56px] px-md pl-12 bg-surface-container-low border border-outline-variant rounded-lg font-body-md"
-                                id="password" placeholder="••••••••" type="password" />
+                                id="mot_de_passe" placeholder="••••••••" type="password" />
                             <span
                                 class="material-symbols-outlined absolute left-md top-1/2 -translate-y-1/2 text-on-surface-variant">lock</span>
                         </div>
@@ -159,7 +162,6 @@
             </div>
         </div>
     </main>
-    <script src="<?= base_url('Js/Login_Operateur.js') ?>"></script>
 </body>
 
 </html>

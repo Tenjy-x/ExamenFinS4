@@ -77,4 +77,22 @@ class TransactionModel extends Model
             ->get()
             ->getResult();
     }
+
+    public function getRecentTransactions($limit = 4)
+    {
+        return $this->db->table('Transaction t')
+            ->select('t.id, t.montant, t.id_type, t.id_client, c.numero, tt.libelle')
+            ->join('Client c', 't.id_client = c.id')
+            ->join('Type_transaction tt', 't.id_type = tt.id')
+            ->orderBy('t.id', 'DESC')
+            ->limit($limit)
+            ->get()
+            ->getResult();
+    }
+
+    public function getCount()
+    {
+        return $this->db->table('Transaction')
+            ->countAllResults();
+    }
 }
