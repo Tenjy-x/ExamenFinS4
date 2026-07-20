@@ -2,7 +2,7 @@
 
 namespace App\Models;
 
-use CodeIgniter\Models;
+use CodeIgniter\Model;
 
 class TrancheModel extends Model {
     protected $table = 'Tranche';

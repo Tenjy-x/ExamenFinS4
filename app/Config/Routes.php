@@ -17,3 +17,8 @@ $routes->get('/transfert','ClientController::transfert');
 
 //admin
 $routes->get('/indexAdmin','AdminController::index');
+
+//depot
+$routes->get('traitement_depot','TransactionController::traiter_depot');
+$routes->get('traitement_retrait','TransactionController::traiter_retrait');
+$routes->get('traitement_transfert','TransactionController::traiter_transfert');

@@ -19,17 +19,25 @@ class ClientController extends BaseController
 
     public function depot() {
         $user = session()->get('user');
+        $transaction = new TransactionModel();
+
+        $solde = $transaction->getSolde($user['id']);
 
         return view('clients/Depot' , [
-            'user'=> $user
-        ]);
+            'user'=> $user,
+            'solde' => $solde,
+        ]); 
     }
 
     public function retrait() {
+        $transaction = new TransactionModel();
+        
         $user = session()->get('user');
+        $solde = $transaction->getSolde($user['id']);
 
         return view('clients/Retrait', [
-            'user' => $user
+            'user' => $user,
+            'solde' => $solde,
         ] );
     }
 

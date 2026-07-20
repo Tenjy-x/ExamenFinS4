@@ -1,4 +1,4 @@
-DROP TABLE IF EXISTS Transaction;
+DROP TABLE IF EXISTS "Transaction";
 DROP TABLE IF EXISTS Tranche;
 DROP TABLE IF EXISTS Type_transaction;
 DROP TABLE IF EXISTS Operateur;
@@ -36,7 +36,7 @@ CREATE TABLE Tranche (
     FOREIGN KEY (id_type) REFERENCES Type_transaction(id)
 );
 
-CREATE TABLE Transaction (
+CREATE TABLE "Transaction" (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
     id_client INTEGER NOT NULL,
     id_client2 INTEGER,

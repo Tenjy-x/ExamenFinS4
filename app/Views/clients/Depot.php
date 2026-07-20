@@ -80,7 +80,7 @@
                 <!-- Deposit Form Column -->
                 <div class="lg:col-span-2 space-y-gutter">
                     <section class="glass-card rounded-xl p-md lg:p-lg">
-                        <form class="space-y-lg" id="deposit-form">
+                        <form class="space-y-lg" method= "get"id="deposit-form" action="<?= base_url('traitement_depot')?>">
                             <!-- Method Selection -->
                             <!-- <div>
                                 <label class="block font-label-md text-on-surface-variant mb-md">Mode de dépôt</label>
@@ -116,12 +116,12 @@
                                     déposer</label>
                                 <div class="relative">
                                     <span
-                                        class="absolute left-md top-1/2 -translate-y-1/2 font-headline-md text-primary">€</span>
+                                        class="absolute left-md top-1/2 -translate-y-1/2 font-headline-md text-primary">Ar</span>
                                     <input
                                         class="w-full bg-surface-container-low border-none rounded-xl py-4 pl-12 pr-md text-headline-md focus:ring-2 focus:ring-primary transition-all"
                                         id="amount" name="amount" placeholder="0.00" step="0.01" type="number" />
                                 </div>
-                                <div class="flex flex-wrap gap-xs mt-sm">
+                                <!-- <div class="flex flex-wrap gap-xs mt-sm">
                                     <button
                                         class="px-md py-xs bg-surface-container-high rounded-full font-label-sm hover:bg-primary hover:text-white transition-colors"
                                         onclick="setAmount(1000)" type="button">1 000 €</button>
@@ -131,7 +131,7 @@
                                     <button
                                         class="px-md py-xs bg-surface-container-high rounded-full font-label-sm hover:bg-primary hover:text-white transition-colors"
                                         onclick="setAmount(10000)" type="button">10 000 €</button>
-                                </div>
+                                </div> -->
                             </div>
                             <!-- Submit Button -->
                             <button

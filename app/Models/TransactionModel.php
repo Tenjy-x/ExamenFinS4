@@ -14,7 +14,8 @@ class TransactionModel extends Model
         'id_client2',
         'id_type',
         'id_tranche',
-        'montant'
+        'montant',
+        'frais'
     ];
 
     public function getByClient($id_client)
@@ -26,8 +27,9 @@ class TransactionModel extends Model
 
     public function getSolde($id_client)
     {
-        // Dépôts
-        $depots = $this->db->table('Transaction')
+        $db = $this->db->table('Transaction');
+
+        $depots = $db
             ->selectSum('montant')
             ->where('id_client', $id_client)
             ->where('id_type', 1)
@@ -35,27 +37,22 @@ class TransactionModel extends Model
             ->getRow()
             ->montant ?? 0;
 
-        // Retraits
-        $retraits = $this->db->table('Transaction t')
-            ->select('SUM(t.montant + tr.Frais) AS total_retrait')
-            ->join('Tranche tr', 't.id_tranche = tr.id')
-            ->where('t.id_client', $id_client)
-            ->where('t.id_type', 2)
+        $retraits = $this->db->table('Transaction')
+            ->select('COALESCE(SUM(montant + frais), 0) AS total')
+            ->where('id_client', $id_client)
+            ->where('id_type', 2)
             ->get()
             ->getRow()
-            ->total_retrait ?? 0;
+            ->total;
 
-        // Transferts envoyés
-        $transfertsEnvoyes = $this->db->table('Transaction t')
-            ->select('SUM(t.montant + tr.Frais) AS total_transfert')
-            ->join('Tranche tr', 't.id_tranche = tr.id')
-            ->where('t.id_client', $id_client)
-            ->where('t.id_type', 3)
+        $transfertsEnvoyes = $this->db->table('Transaction')
+            ->select('COALESCE(SUM(montant + frais), 0) AS total')
+            ->where('id_client', $id_client)
+            ->where('id_type', 3)
             ->get()
             ->getRow()
-            ->total_transfert ?? 0;
+            ->total;
 
-        // Transferts reçus
         $transfertsRecus = $this->db->table('Transaction')
             ->selectSum('montant')
             ->where('id_client2', $id_client)
@@ -70,9 +67,8 @@ class TransactionModel extends Model
     public function getGainsByType()
     {
         return $this->db->table('Transaction t')
-            ->select('tt.libelle, SUM(tr.Frais) AS total_gains')
+            ->select('tt.libelle, SUM(t.frais) AS total_gains')
             ->join('Type_transaction tt', 't.id_type = tt.id')
-            ->join('Tranche tr', 't.id_tranche = tr.id')
             ->groupBy('tt.libelle')
             ->get()
             ->getResult();
