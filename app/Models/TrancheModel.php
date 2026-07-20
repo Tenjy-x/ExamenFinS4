@@ -6,7 +6,7 @@ use CodeIgniter\Model;
 
 class TrancheModel extends Model {
     protected $table = 'Tranche';
-    protected $primarykey = 'id';
+    protected $primaryKey = 'id';
     protected $allowedFields = ['id_type', 'montant_min', 'montant_max', 'Frais'];
     protected $returnType = 'object';
 
