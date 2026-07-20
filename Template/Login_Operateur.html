@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+
+<html class="light" lang="fr"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Emerald Ledger - Connexion Opérateur</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&amp;family=Inter:wght@300;400;500;600&amp;family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@100..900&amp;family=Plus+Jakarta+Sans:wght@100..900&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "surface-tint": "#2b6954",
+                        "surface-dim": "#d8dadc",
+                        "surface-bright": "#f7f9fb",
+                        "tertiary-fixed-dim": "#4edea3",
+                        "on-primary-container": "#80bea6",
+                        "inverse-on-surface": "#eff1f3",
+                        "primary-fixed-dim": "#95d3ba",
+                        "on-error-container": "#93000a",
+                        "surface": "#f7f9fb",
+                        "outline-variant": "#bfc9c3",
+                        "secondary": "#565e74",
+                        "surface-container-high": "#e6e8ea",
+                        "surface-container-lowest": "#ffffff",
+                        "error": "#ba1a1a",
+                        "on-primary-fixed-variant": "#0b513d",
+                        "primary": "#003527",
+                        "on-surface": "#191c1e",
+                        "on-secondary-fixed": "#131b2e",
+                        "tertiary": "#003623",
+                        "on-error": "#ffffff",
+                        "surface-container": "#eceef0",
+                        "on-background": "#191c1e",
+                        "inverse-surface": "#2d3133",
+                        "on-secondary": "#ffffff",
+                        "surface-container-highest": "#e0e3e5",
+                        "on-tertiary-container": "#31c98f",
+                        "error-container": "#ffdad6",
+                        "on-primary": "#ffffff",
+                        "surface-variant": "#e0e3e5",
+                        "on-surface-variant": "#404944",
+                        "tertiary-container": "#004f34",
+                        "secondary-fixed": "#dae2fd",
+                        "on-secondary-container": "#5c647a",
+                        "primary-fixed": "#b0f0d6",
+                        "on-primary-fixed": "#002117",
+                        "surface-container-low": "#f2f4f6",
+                        "on-tertiary-fixed-variant": "#005236",
+                        "secondary-container": "#dae2fd",
+                        "tertiary-fixed": "#6ffbbe",
+                        "primary-container": "#064e3b",
+                        "on-tertiary": "#ffffff",
+                        "background": "#f7f9fb",
+                        "on-tertiary-fixed": "#002113",
+                        "inverse-primary": "#95d3ba",
+                        "outline": "#707974",
+                        "on-secondary-fixed-variant": "#3f465c",
+                        "secondary-fixed-dim": "#bec6e0"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                    "spacing": {
+                        "md": "24px",
+                        "sm": "12px",
+                        "margin-desktop": "48px",
+                        "xl": "64px",
+                        "base": "8px",
+                        "lg": "40px",
+                        "margin-mobile": "16px",
+                        "gutter": "24px",
+                        "xs": "4px"
+                    },
+                    "fontFamily": {
+                        "display-lg": ["Plus Jakarta Sans"],
+                        "body-lg": ["Inter"],
+                        "headline-md": ["Plus Jakarta Sans"],
+                        "label-sm": ["Inter"],
+                        "headline-lg": ["Plus Jakarta Sans"],
+                        "display-lg-mobile": ["Plus Jakarta Sans"],
+                        "label-md": ["Inter"],
+                        "body-md": ["Inter"]
+                    },
+                    "fontSize": {
+                        "display-lg": ["48px", {"lineHeight": "56px", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+                        "body-lg": ["18px", {"lineHeight": "28px", "fontWeight": "400"}],
+                        "headline-md": ["24px", {"lineHeight": "32px", "fontWeight": "600"}],
+                        "label-sm": ["12px", {"lineHeight": "16px", "letterSpacing": "0.04em", "fontWeight": "600"}],
+                        "headline-lg": ["30px", {"lineHeight": "38px", "fontWeight": "600"}],
+                        "display-lg-mobile": ["32px", {"lineHeight": "40px", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+                        "label-md": ["14px", {"lineHeight": "20px", "letterSpacing": "0.01em", "fontWeight": "500"}],
+                        "body-md": ["16px", {"lineHeight": "24px", "fontWeight": "400"}]
+                    }
+                },
+            },
+        }
+    </script>
+<style>
+        body {
+            background-color: #f7f9fb;
+            font-family: 'Inter', sans-serif;
+            margin: 0;
+            padding: 0;
+            overflow-x: hidden;
+        }
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .glass-card {
+            background: rgba(255, 255, 255, 0.85);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.4);
+            box-shadow: 0px 4px 20px rgba(15, 23, 42, 0.05);
+        }
+        .custom-input:focus {
+            outline: none;
+            border-color: #2b6954;
+            box-shadow: 0 0 0 2px rgba(43, 105, 84, 0.2);
+        }
+    </style>
+</head>
+<body class="antialiased text-on-surface">
+<main class="min-h-screen flex flex-col md:flex-row">
+<!-- Left Side: Premium Image Section -->
+<div class="hidden md:flex md:w-1/2 lg:w-3/5 relative overflow-hidden bg-primary">
+<div class="absolute inset-0 z-0">
+<img class="w-full h-full object-cover opacity-90" data-alt="A high-end, minimalist architectural shot of a modern financial district building with clean lines and glass surfaces. The lighting is early morning soft blue and green tones, reflecting a quiet luxury aesthetic. Subtle emerald green glass panels catch the light, creating a sense of transparency and institutional stability for a wealth management brand." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDscqw1m036nAXykDdVjlKE-1YlsNm5XIBW9KmWzIW4I4EgTDY9qMbmh9qu88p_sLXdFInIG0shpEvgSHag1ZejpIFXtLaEaOt-m3hfEopsuR8zKkuocY8O2fBSkL5j6RhJQ_vh1PLaEZEEuwpZwzou5WthFvIpwazlHEVXNjKeINpvF65XFVqsw0BDBrNIypqHFgrDJyRbR1MKetIs_M4SQhJR2gdH8cQ4DfyldcknUX9p4REU0q1F"/>
+</div>
+<!-- Overlay Content -->
+<div class="relative z-10 p-xl flex flex-col justify-between h-full bg-gradient-to-t from-primary/60 to-transparent">
+<div>
+<div class="flex items-center gap-sm">
+<span class="material-symbols-outlined text-primary-fixed text-4xl" style="font-variation-settings: 'FILL' 1;">account_balance</span>
+<h1 class="font-headline-lg text-headline-lg text-white font-extrabold tracking-tight">Emerald Ledger</h1>
+</div>
+</div>
+<div class="max-w-md">
+<p class="font-display-lg text-display-lg text-white mb-md">L'excellence dans la gestion de patrimoine.</p>
+<p class="font-body-lg text-body-lg text-primary-fixed opacity-90">Une interface sécurisée pour piloter vos opérations financières avec une précision absolue.</p>
+</div>
+</div>
+</div>
+<!-- Right Side: Login Form Section -->
+<div class="w-full md:w-1/2 lg:w-2/5 flex flex-col justify-center items-center p-margin-mobile md:p-xl bg-surface-container-lowest">
+<div class="w-full max-w-md space-y-lg">
+<!-- Branding for Mobile -->
+<div class="md:hidden flex items-center justify-center gap-xs mb-lg">
+<span class="material-symbols-outlined text-primary text-3xl">account_balance</span>
+<span class="font-headline-md text-headline-md font-bold text-primary">Emerald Ledger</span>
+</div>
+<!-- Header -->
+<div class="text-center md:text-left">
+<h2 class="font-headline-lg text-headline-lg text-primary font-bold mb-xs">Espace Opérateur</h2>
+<p class="font-body-md text-body-md text-on-surface-variant">Accédez à votre console de gestion</p>
+</div>
+<!-- Form Card -->
+<form class="space-y-md">
+<!-- Prefix Selector -->
+<div class="space-y-xs">
+<label class="font-label-sm text-label-sm text-on-surface-variant uppercase tracking-wider block" for="prefix">Préfixe Opérateur</label>
+<div class="relative">
+<select class="custom-input w-full h-[56px] px-md bg-surface-container-low border border-outline-variant rounded-lg font-body-md appearance-none" id="prefix">
+<option value="033">033 - Mobile Pro</option>
+<option value="034">034 - Classic Connect</option>
+<option value="037">037 - Emerald Private</option>
+</select>
+<div class="absolute right-md top-1/2 -translate-y-1/2 pointer-events-none">
+<span class="material-symbols-outlined text-on-surface-variant">expand_more</span>
+</div>
+</div>
+</div>
+<!-- Password Field -->
+<div class="space-y-xs">
+<label class="font-label-sm text-label-sm text-on-surface-variant uppercase tracking-wider block" for="password">Mot de passe</label>
+<div class="relative">
+<input class="custom-input w-full h-[56px] px-md pl-12 bg-surface-container-low border border-outline-variant rounded-lg font-body-md" id="password" placeholder="••••••••" type="password"/>
+<span class="material-symbols-outlined absolute left-md top-1/2 -translate-y-1/2 text-on-surface-variant">lock</span>
+</div>
+</div>
+<!-- Options -->
+<div class="flex items-center justify-between">
+<label class="flex items-center gap-xs cursor-pointer group">
+<input class="w-4 h-4 rounded border-outline text-primary focus:ring-primary" type="checkbox"/>
+<span class="font-label-md text-label-md text-on-surface-variant group-hover:text-primary transition-colors">Se souvenir de moi</span>
+</label>
+<a class="font-label-md text-label-md text-primary font-semibold hover:underline" href="#">Mot de passe oublié ?</a>
+</div>
+<!-- Action Button -->
+<button class="w-full h-[56px] bg-primary text-white font-label-md text-label-md font-bold rounded-lg hover:bg-primary-container transition-all duration-200 active:scale-[0.98] shadow-md flex items-center justify-center gap-sm" type="submit">
+<span>Se connecter</span>
+<span class="material-symbols-outlined text-[20px]">login</span>
+</button>
+</form>
+<!-- Secondary Action -->
+<div class="pt-md border-t border-outline-variant/30 text-center">
+<p class="font-body-md text-body-md text-on-surface-variant">
+                        Vous êtes un client ? 
+                        <a class="text-primary font-bold hover:text-surface-tint transition-colors ml-xs flex inline-flex items-center gap-xs" href="#">
+                            Accès Client <span class="material-symbols-outlined text-[18px]">arrow_forward</span>
+</a>
+</p>
+</div>
+</div>
+<!-- Footer Small Print -->
+<div class="mt-xl text-center md:absolute md:bottom-md">
+<p class="font-label-sm text-label-sm text-on-surface-variant/60">
+                    © 2024 Emerald Ledger Wealth Management. <br class="md:hidden"/> Tous droits réservés.
+                </p>
+</div>
+</div>
+</main>
+<script>
+        // Simple micro-interaction for the submit button
+        document.querySelector('form').addEventListener('submit', function(e) {
+            e.preventDefault();
+            const btn = this.querySelector('button');
+            const originalContent = btn.innerHTML;
+            
+            btn.disabled = true;
+            btn.innerHTML = '<span class="animate-spin material-symbols-outlined">progress_activity</span> Authentification...';
+            
+            setTimeout(() => {
+                btn.innerHTML = '<span class="material-symbols-outlined">check_circle</span> Bienvenue';
+                btn.classList.remove('bg-primary');
+                btn.classList.add('bg-tertiary-container', 'text-on-tertiary-container');
+                
+                // Simulate redirect
+                setTimeout(() => {
+                    alert('Connexion réussie ! Redirection vers le tableau de bord opérateur.');
+                    btn.innerHTML = originalContent;
+                    btn.disabled = false;
+                    btn.classList.add('bg-primary');
+                    btn.classList.remove('bg-tertiary-container', 'text-on-tertiary-container');
+                }, 1000);
+            }, 1500);
+        });
+    </script>
+</body></html>
