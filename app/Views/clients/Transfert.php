@@ -97,7 +97,7 @@
                                     compte externe ou interne.</p>
                             </div>
                         </div>
-                        <form class="space-y-md" action="<?= base_url('transfert_traitement')?>">
+                        <form class="space-y-md" method="get" action="<?= base_url('traitement_transfert')?>">
                             <!-- Beneficiary Selection -->
                             <div class="space-y-xs">
                                 <label class="font-label-md text-on-surface-variant">Bénéficiaire (numero)</label>

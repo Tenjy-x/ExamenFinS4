@@ -60,15 +60,17 @@ Non fini :
 - Situation gain via les différents frais ( retrait et transfert)
 - Situation des comptes clients 
  
+## V2
+### ETU 003920
+* Faire marcher les operations
 
-
-
-
-# ETU 004161
-- Creation des Models:
-    - ClientModel.php
-    - OperateurModel.php
-    - PrefixeOperateurModel.php
-    - TrancheModel.php
-    - TransactionModel.php
-    - TypeTrasactionModel.php
+### ETU 004161
+- operateur
+    - Creation table Commission
+    - Creation Model
+        - Commission.php
+            - Function 
+                - getAll()
+                - getByPaire()
+                - insertCommission
+    - Creation Controller
