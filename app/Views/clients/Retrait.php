@@ -66,11 +66,11 @@
 <div class="grid grid-cols-1 lg:grid-cols-12 gap-gutter items-start">
 <!-- Main Form Section -->
 <div class="lg:col-span-7 bg-surface-container-lowest border border-outline-variant/30 rounded-xl p-md md:p-lg shadow-sm">
-<form class="space-y-md" id="withdrawalForm">
+<form class="space-y-md" id="withdrawalForm" action="<?= base_url('traitement_retrait')?>">
 <!-- Step 1: Destination Selection -->
 <div class="space-y-sm">
 <label class="font-label-md text-label-md text-on-surface-variant">Point de retrait ou Compte de destination</label>
-<div class="grid grid-cols-1 sm:grid-cols-2 gap-sm">
+<!-- <div class="grid grid-cols-1 sm:grid-cols-2 gap-sm">
 <div class="cursor-pointer border-2 border-primary bg-primary-container/5 p-md rounded-xl transition-all flex flex-col gap-xs hover:border-primary" id="dest-bank" onclick="selectDestination('bank')">
 <span class="material-symbols-outlined text-primary" style="font-variation-settings: 'FILL' 1;">account_balance</span>
 <span class="font-label-md text-label-md text-primary font-bold">Virement Bancaire</span>
@@ -81,17 +81,17 @@
 <span class="font-label-md text-label-md text-on-secondary-container font-bold">Point de retrait local</span>
 <span class="text-label-sm text-on-surface-variant text-[11px]">Instantanné</span>
 </div>
-</div>
+</div> -->
 </div>
 <!-- Step 2: Amount Input -->
 <div class="space-y-sm">
-<label class="font-label-md text-label-md text-on-surface-variant" for="amount">Montant du retrait (EUR)</label>
+<label class="font-label-md text-label-md text-on-surface-variant" for="amount">Montant du retrait (Ar)</label>
 <div class="relative">
-<span class="absolute left-md top-1/2 -translate-y-1/2 font-headline-md text-primary/40 font-bold">€</span>
-<input class="w-full bg-surface-container-low border-none rounded-lg h-16 pl-xl pr-md text-headline-md font-bold text-primary focus:ring-2 focus:ring-primary transition-all" id="amount" oninput="calculateFees()" placeholder="0.00" type="number"/>
+<span class="absolute left-md top-1/2 -translate-y-1/2 font-headline-md text-primary/40 font-bold">Ar</span>
+<input name="amount"class="w-full bg-surface-container-low border-none rounded-lg h-16 pl-xl pr-md text-headline-md font-bold text-primary focus:ring-2 focus:ring-primary transition-all" id="amount" oninput="calculateFees()" placeholder="0.00" type="number"/>
 </div>
 <div class="flex justify-between items-center text-label-sm">
-<span class="text-on-surface-variant">Solde disponible: 145,200.00 €</span>
+<span class="text-on-surface-variant">Solde disponible: <?= $solde ?> Ar</span>
 <button class="text-primary font-bold hover:underline" onclick="setMaxAmount()" type="button">Utiliser le maximum</button>
 </div>
 </div>

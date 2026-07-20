@@ -24,3 +24,8 @@ $routes->get('/admin','OperateurController::index');
 $routes->get('/gestionClients','OperateurController::gestionClients');
 $routes->get('/gestionFrais','OperateurController::gestionFrais');
 $routes->post('/updateTranche','OperateurController::updateTranche');
+
+// transactions client
+$routes->get('traitement_depot','TransactionController::traiter_depot');
+$routes->get('traitement_retrait','TransactionController::traiter_retrait');
+$routes->get('traitement_transfert','TransactionController::traiter_transfert');
