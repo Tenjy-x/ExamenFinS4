@@ -28,9 +28,9 @@ class TransactionController extends BaseController
 
         $transaction->insert([
             'id_type'    => 2,
-            'id_tranche' => $tranche['id'] ?? 1,
+            'id_tranche' => $tranche->id ?? 1,
             'montant'    => $montant,
-            'frais'      => $tranche['Frais'] ?? 0,
+            'frais'      => $tranche->Frais ?? 0,
             'id_client'  => $user['id'],
         ]);
         return redirect()->to('/index');
@@ -46,9 +46,9 @@ class TransactionController extends BaseController
 
         $transaction->insert([
             'id_type'    => 3,
-            'id_tranche' => $tranche['id'] ?? 1,
+            'id_tranche' => $tranche->id ?? 1,
             'montant'    => $montant,
-            'frais'      => $tranche['Frais'] ?? 0,
+            'frais'      => $tranche->Frais ?? 0,
             'id_client'  => $user['id'],
             'id_client2' => $id_client2,
         ]);

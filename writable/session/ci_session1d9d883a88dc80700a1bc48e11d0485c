@@ -1,0 +1,1 @@
+__ci_last_regenerate|i:1784552700;operateur|O:8:"stdClass":3:{s:2:"id";i:1;s:3:"nom";s:5:"admin";s:12:"mot_de_passe";s:5:"admin";}operateur_prefixes|a:2:{i:0;O:8:"stdClass":2:{s:2:"id";i:1;s:6:"Prefix";s:3:"034";}i:1;O:8:"stdClass":2:{s:2:"id";i:2;s:6:"Prefix";s:3:"038";}}_ci_previous_url|s:37:"http://localhost:8080/index.php/admin";
