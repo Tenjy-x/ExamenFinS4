@@ -41,7 +41,7 @@
 
 </head>
 <body class="font-body-md text-on-surface">
-<?= view('partials/sidebar', ['active' => 'retrait']); ?>
+<?= view('partials/sidebar_client', ['active' => 'retrait']); ?>
 <!-- Top AppBar (Mobile/Compact) -->
 <header class="md:hidden flex justify-between items-center px-md w-full h-16 sticky top-0 z-50 bg-surface-container-lowest shadow-sm">
 <h1 class="font-headline-md text-headline-md font-bold text-primary">Emerald Ledger</h1>

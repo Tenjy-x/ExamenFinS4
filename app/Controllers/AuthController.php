@@ -19,16 +19,16 @@ class AuthController extends BaseController
         $user = $model->getClientByNumero($telephone);
         if (! $user) {
             $id = $model->insert(['numero' => $telephone]);
-            session()->set('user',[
-                'id' => $id,
-                'numero' => $telephone,
-            ]);
-            return redirect()->to('/index')->with('success','Utilisateur cree');
+        session()->set('user',[
+            'id' => $id,
+            'numero' => $telephone,
+        ]);
+        return redirect()->to('/index')->with('success','Utilisateur cree');
         }
 
         session()->set('user', [
-            'id'    => $user['id'],
-            'numero'  => $user['numero'],
+            'id'    => $user->id,
+            'numero'  => $user->numero,
         ]);
 
         return redirect()->to('/index');

@@ -13,27 +13,25 @@ use CodeIgniter\HTTP\ResponseInterface;
 
 class OperateurController extends BaseController {
     public function login() {
-        $prefixeOperateurModel = new PrefixeOperateurModel();
-        $prefixe = $prefixeOperateurModel->getAllPrefix();
-        return view('Login_Operateur', ['prefixe' => $prefixe]);
+        return view('Login_Operateur');
     }
 
     public function authentification(){
         $session = session();
-        $prefixeOperateurModel = new PrefixeOperateurModel();
-        $prefixe = $prefixeOperateurModel->getAllPrefix();
 
-        $id_prefix = $this->request->getPost('id_prefix');
+        $nom = $this->request->getPost('nom');
         $mot_de_passe = $this->request->getPost('mot_de_passe');
 
         $operateurModel = new OperateurModel();
-        $operateur = $operateurModel->getOperateurByprefixAndPassword($id_prefix, $mot_de_passe);
+        $operateur = $operateurModel->getOperateurByNomAndPassword($nom, $mot_de_passe);
 
         if ($operateur) {
+            $prefixes = $operateurModel->getPrefixesByOperateur($operateur->id);
             $session->set('operateur', $operateur);
+            $session->set('operateur_prefixes', $prefixes);
             return redirect()->to('/admin');
         }
-        return view('Login_Operateur', ['error' => 'Mot de passe incorrect', 'prefixe' => $prefixe]);
+        return view('Login_Operateur', ['error' => 'Nom ou mot de passe incorrect']);
     }
 
     public function logout() {
@@ -41,21 +39,27 @@ class OperateurController extends BaseController {
         return redirect()->to('/login_Operateur');
     }
 
+    private function getPrefixNumbers() {
+        $prefixes = session()->get('operateur_prefixes');
+        if (!$prefixes) return [];
+        return array_map(function($p) { return $p->Prefix; }, $prefixes);
+    }
+
     public function index() {
         $session = session();
         $operateur = $session->get('operateur');
         if (!$operateur) return redirect()->to('/login_Operateur');
 
-        $prefixeOperateurModel = new PrefixeOperateurModel();
         $transactionModel = new TransactionModel();
         $clientModel = new ClientModel();
 
-        $prefixe = $prefixeOperateurModel->getAllPrefix();
+        $prefixNumbers = $this->getPrefixNumbers();
+
         $gains = $transactionModel->getGainsByType();
         $totalGains = 0;
         foreach ($gains as $g) $totalGains += $g->total_gains;
 
-        $clients = $clientModel->findAll();
+        $clients = $clientModel->whereIn('SUBSTR(numero, 1, 3)', $prefixNumbers)->findAll();
         $clientCount = count($clients);
 
         $transactionCount = $transactionModel->getCount();
@@ -63,7 +67,6 @@ class OperateurController extends BaseController {
 
         return view('admin/Index', [
             'operateur' => $operateur,
-            'prefixe' => $prefixe,
             'gains' => $gains,
             'totalGains' => $totalGains,
             'clientCount' => $clientCount,
@@ -79,7 +82,9 @@ class OperateurController extends BaseController {
         $clientModel = new ClientModel();
         $transactionModel = new TransactionModel();
 
-        $clients = $clientModel->findAll();
+        $prefixNumbers = $this->getPrefixNumbers();
+
+        $clients = $clientModel->whereIn('SUBSTR(numero, 1, 3)', $prefixNumbers)->findAll();
         $count = count($clients);
 
         foreach ($clients as $c) {

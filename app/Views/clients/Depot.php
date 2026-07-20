@@ -42,7 +42,7 @@
 </head>
 
 <body class="font-body-md text-body-md overflow-x-hidden">
-    <?= view('partials/sidebar', ['active' => 'depot']); ?>
+    <?= view('partials/sidebar_client', ['active' => 'depot']); ?>
     <!-- Header / Top Bar -->
     <header
         class="flex justify-between items-center px-md w-full sticky top-0 z-30 bg-surface-container-lowest h-16 shadow-sm md:pl-[280px]">

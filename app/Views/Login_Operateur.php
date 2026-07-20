@@ -92,22 +92,17 @@
                 </div>
                 <!-- Form Card -->
                 <form class="space-y-md" action="<?= base_url('auth_operateur') ?>" method="POST">
-                    <!-- Prefix Selector -->
+                    <!-- Nom Field -->
                     <div class="space-y-xs">
                         <label
                             class="font-label-sm text-label-sm text-on-surface-variant uppercase tracking-wider block"
-                            for="id_prefix">Préfixe Opérateur</label>
+                            for="nom">Nom d'utilisateur</label>
                         <div class="relative">
-                            <select name="id_prefix"
-                                class="custom-input w-full h-[56px] px-md bg-surface-container-low border border-outline-variant rounded-lg font-body-md appearance-none"
-                                id="id_prefix">
-                                <?php foreach ($prefixe as $p): ?>
-                                <option value="<?= $p->id ?>"><?= $p->Prefix ?></option>
-                                <?php endforeach; ?>
-                            </select>
-                            <div class="absolute right-md top-1/2 -translate-y-1/2 pointer-events-none">
-                                <span class="material-symbols-outlined text-on-surface-variant">expand_more</span>
-                            </div>
+                            <input name="nom"
+                                class="custom-input w-full h-[56px] px-md pl-12 bg-surface-container-low border border-outline-variant rounded-lg font-body-md"
+                                id="nom" placeholder="admin" type="text" />
+                            <span
+                                class="material-symbols-outlined absolute left-md top-1/2 -translate-y-1/2 text-on-surface-variant">person</span>
                         </div>
                     </div>
                     <!-- Password Field -->

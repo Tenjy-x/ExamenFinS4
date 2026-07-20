@@ -1,6 +1,7 @@
 DROP TABLE IF EXISTS Transaction;
 DROP TABLE IF EXISTS Tranche;
 DROP TABLE IF EXISTS Type_transaction;
+DROP TABLE IF EXISTS Operateur_prefix;
 DROP TABLE IF EXISTS Operateur;
 DROP TABLE IF EXISTS Prefix_operateur;
 DROP TABLE IF EXISTS Client;
@@ -17,9 +18,16 @@ CREATE TABLE Prefix_operateur (
 
 CREATE TABLE Operateur (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
-    id_prefix INTEGER NOT NULL,
-    mot_de_passe TEXT NOT NULL,
-    FOREIGN KEY (id_prefix) REFERENCES Prefix_operateur(id)
+    nom TEXT NOT NULL,
+    mot_de_passe TEXT NOT NULL
+);
+
+CREATE TABLE Operateur_prefix (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    operateur_id INTEGER NOT NULL,
+    prefix_id INTEGER NOT NULL,
+    FOREIGN KEY (operateur_id) REFERENCES Operateur(id),
+    FOREIGN KEY (prefix_id) REFERENCES Prefix_operateur(id)
 );
 
 CREATE TABLE Type_transaction (
@@ -65,9 +73,18 @@ INSERT INTO Tranche (id_type, montant_min, montant_max, Frais) VALUES (2, 250001
 INSERT INTO Tranche (id_type, montant_min, montant_max, Frais) VALUES (2, 500001, 1000000, 2500);
 INSERT INTO Tranche (id_type, montant_min, montant_max, Frais) VALUES (2, 1000001, 2000000, 3000);
 
+INSERT INTO Prefix_operateur (Prefix) VALUES ('034');
+INSERT INTO Prefix_operateur (Prefix) VALUES ('038');
+
+INSERT INTO Operateur (nom, mot_de_passe) VALUES ('admin', 'admin');
+
+INSERT INTO Operateur_prefix (operateur_id, prefix_id) VALUES (1, 1);
+INSERT INTO Operateur_prefix (operateur_id, prefix_id) VALUES (1, 2);
+
 INSERT INTO Client (numero) VALUES ('0341234567');
 INSERT INTO Client (numero) VALUES ('0329876543');
 INSERT INTO Client (numero) VALUES ('0334567890');
 INSERT INTO Client (numero) VALUES ('0345678901');
 INSERT INTO Client (numero) VALUES ('0323456789');
 INSERT INTO Client (numero) VALUES ('0333333333');
+INSERT INTO Client (numero) VALUES ('0381234567');

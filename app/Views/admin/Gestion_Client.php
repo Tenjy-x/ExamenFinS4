@@ -61,7 +61,7 @@
 </head>
 
 <body class="font-body-md text-on-surface">
-    <?= view('partials/sidebar', ['active' => 'clients']); ?>
+    <?= view('partials/sidebar_admin', ['active' => 'clients']); ?>
     <!-- Top AppBar (Mobile/Desktop) -->
     <header
         class="w-full h-16 sticky top-0 z-40 bg-surface shadow-sm flex justify-between items-center px-margin-mobile md:px-margin-desktop md:pl-[18rem]">
