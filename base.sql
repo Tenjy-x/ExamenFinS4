@@ -52,10 +52,13 @@ CREATE TABLE Transaction (
     id_tranche INTEGER,
     montant REAL NOT NULL,
     frais REAL DEFAULT 0,
+    commission_inter_operateur REAL DEFAULT 0,
+    operateur_destinataire_id INTEGER,
     FOREIGN KEY (id_client) REFERENCES Client(id),
     FOREIGN KEY (id_client2) REFERENCES Client(id),
     FOREIGN KEY (id_type) REFERENCES Type_transaction(id),
-    FOREIGN KEY (id_tranche) REFERENCES Tranche(id)
+    FOREIGN KEY (id_tranche) REFERENCES Tranche(id),
+    FOREIGN KEY (operateur_destinataire_id) REFERENCES Operateur(id)
 );
 
 INSERT INTO Type_transaction (libelle) VALUES ('depot');
@@ -73,13 +76,30 @@ INSERT INTO Tranche (id_type, montant_min, montant_max, Frais) VALUES (2, 250001
 INSERT INTO Tranche (id_type, montant_min, montant_max, Frais) VALUES (2, 500001, 1000000, 2500);
 INSERT INTO Tranche (id_type, montant_min, montant_max, Frais) VALUES (2, 1000001, 2000000, 3000);
 
+CREATE TABLE IF NOT EXISTS Commission_inter_operateur (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    operateur_emetteur_id INTEGER NOT NULL,
+    operateur_destinataire_id INTEGER NOT NULL,
+    commission_pourcentage REAL NOT NULL DEFAULT 0,
+    FOREIGN KEY (operateur_emetteur_id) REFERENCES Operateur(id),
+    FOREIGN KEY (operateur_destinataire_id) REFERENCES Operateur(id)
+);
+
 INSERT INTO Prefix_operateur (Prefix) VALUES ('034');
 INSERT INTO Prefix_operateur (Prefix) VALUES ('038');
+INSERT INTO Prefix_operateur (Prefix) VALUES ('032');
+INSERT INTO Prefix_operateur (Prefix) VALUES ('033');
 
 INSERT INTO Operateur (nom, mot_de_passe) VALUES ('admin', 'admin');
+INSERT INTO Operateur (nom, mot_de_passe) VALUES ('operateur_b', 'pass123');
 
 INSERT INTO Operateur_prefix (operateur_id, prefix_id) VALUES (1, 1);
 INSERT INTO Operateur_prefix (operateur_id, prefix_id) VALUES (1, 2);
+INSERT INTO Operateur_prefix (operateur_id, prefix_id) VALUES (2, 3);
+INSERT INTO Operateur_prefix (operateur_id, prefix_id) VALUES (2, 4);
+
+INSERT INTO Commission_inter_operateur (operateur_emetteur_id, operateur_destinataire_id, commission_pourcentage) VALUES (1, 2, 2.0);
+INSERT INTO Commission_inter_operateur (operateur_emetteur_id, operateur_destinataire_id, commission_pourcentage) VALUES (2, 1, 1.5);
 
 INSERT INTO Client (numero) VALUES ('0341234567');
 INSERT INTO Client (numero) VALUES ('0329876543');

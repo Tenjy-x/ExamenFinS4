@@ -120,15 +120,7 @@
                     </div>
                     <!-- Options -->
                     <div class="flex items-center justify-between">
-                        <label class="flex items-center gap-xs cursor-pointer group">
-                            <input class="w-4 h-4 rounded border-outline text-primary focus:ring-primary"
-                                type="checkbox" />
-                            <span
-                                class="font-label-md text-label-md text-on-surface-variant group-hover:text-primary transition-colors">Se
-                                souvenir de moi</span>
-                        </label>
-                        <a class="font-label-md text-label-md text-primary font-semibold hover:underline" href="#">Mot
-                            de passe oublié ?</a>
+                        <p>Mot de passe : admin et identifiant: admin</p>
                     </div>
                     <!-- Action Button -->
                     <button
