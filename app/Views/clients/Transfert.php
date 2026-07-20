@@ -5,7 +5,7 @@
 <head>
     <meta charset="utf-8" />
     <meta content="width=device-width, initial-scale=1.0" name="viewport" />
-    <title>Nouveau Transfert - Emerald Ledger</title>
+    <title>Transfert | AuraWealth</title>
     <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
     <script src="<?= base_url('Js/tailwind-config.js') ?>"></script>
     <link
@@ -19,212 +19,194 @@
         rel="stylesheet" />
     <style>
         body {
-            background-color: #f7f9fb;
-            color: #191c1e;
-            font-family: 'Inter', sans-serif;
+            background-color: #F8FAFC;
+            color: #191C1E;
+            -webkit-font-smoothing: antialiased;
         }
 
         .glass-card {
             background: rgba(255, 255, 255, 0.8);
             backdrop-filter: blur(12px);
-            border: 1px solid rgba(226, 232, 240, 0.6);
+            border: 1px solid rgba(226, 232, 240, 0.5);
             box-shadow: 0px 4px 20px rgba(15, 23, 42, 0.05);
-        }
-
-        .sidebar-active {
-            color: #003527;
-            background: rgba(218, 226, 253, 0.2);
-            font-weight: 700;
         }
 
         .material-symbols-outlined {
             font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
         }
 
-        .filled-icon {
-            font-variation-settings: 'FILL' 1;
+        .tap-highlight-none {
+            -webkit-tap-highlight-color: transparent;
         }
     </style>
 </head>
 
-<body class="min-h-screen flex">
+<body class="font-body-md text-body-md overflow-x-hidden">
     <?= view('partials/sidebar_client', ['active' => 'transfert']); ?>
-    <!-- Main Canvas -->
-    <main class="flex-1 md:ml-64 bg-background min-h-screen">
-        <!-- TopNavBar (Authority Source: JSON) -->
-        <header
-            class="flex justify-between items-center px-md md:px-xl w-full h-16 sticky top-0 z-40 bg-surface-container-lowest shadow-sm">
-            <div class="flex items-center gap-md">
-                <h2 class="font-headline-md text-headline-md font-bold text-primary">Nouveau Transfert</h2>
-            </div>
-            <div class="flex items-center gap-md">
-                <div class="hidden md:flex bg-surface-container-low rounded-full px-md py-xs items-center gap-sm w-80">
-                    <span class="material-symbols-outlined text-outline">search</span>
-                    <input class="bg-transparent border-none focus:ring-0 text-body-md w-full"
-                        placeholder="Rechercher une opération..." type="text" />
-                </div>
-                <div class="flex items-center gap-sm">
-                    <button
-                        class="p-2 rounded-full hover:bg-surface-container transition-colors text-on-surface-variant">
-                        <span class="material-symbols-outlined">notifications</span>
-                    </button>
-                    <button
-                        class="p-2 rounded-full hover:bg-surface-container transition-colors text-on-surface-variant">
-                        <span class="material-symbols-outlined">mail</span>
-                    </button>
-                    <div
-                        class="w-10 h-10 rounded-full border border-outline-variant overflow-hidden cursor-pointer active:opacity-80">
-                        <img class="w-full h-full object-cover"
-                            data-alt="Close-up professional portrait of a high-net-worth bank client, clean minimalist lighting, soft focus background of a modern luxury office space. The aesthetic is professional, quiet luxury, with a palette of soft grays and deep emerald greens, reflecting institutional stability and sophisticated boutique finance."
-                            src="https://lh3.googleusercontent.com/aida-public/AB6AXuCrYaCiYHSJa2wnrG3qzszGrnXEa2imkCgbXzq7PaYMa-cLFe4UfYDFOmfFW3witntCsdPpr1ZBOzr66VTEYmpBspIB0lTLtgCFmLd2gYpD-EYOVIb9kr2wMAjaZn5FyKeEbnqvtjE-FSYkYkKTRXJ8UeXcglVs0x74sdPlN6YM0d7HX6HLEl4DiN1J0B-ecU6SxIJpPUndaKXHjV6InY8FNK43epV47Q6LLNNtMxF-ZJaHIPNlF_VQ" />
-                    </div>
-                </div>
-            </div>
-        </header>
-        <!-- Page Content -->
-        <div class="p-md md:p-xl max-w-[1200px] mx-auto">
-            <div class="grid grid-cols-1 lg:grid-cols-12 gap-gutter items-start">
-                <!-- Left: Transfer Form (8 Columns) -->
-                <div class="lg:col-span-8 space-y-gutter">
-                    <div class="glass-card rounded-xl p-md md:p-lg">
-                        <div class="flex items-center gap-sm mb-lg">
-                            <div class="w-12 h-12 rounded-full bg-primary-container flex items-center justify-center">
-                                <span class="material-symbols-outlined text-on-tertiary-container">send</span>
-                            </div>
-                            <div>
-                                <h3 class="font-headline-md text-primary">Détails de la transaction</h3>
-                                <p class="font-body-md text-on-surface-variant">Effectuez un transfert sécurisé vers un
-                                    compte externe ou interne.</p>
-                            </div>
-                        </div>
-                        <?php $erreur = session()->getFlashdata('error'); ?>
-                        <?php if ($erreur): ?>
-                            <div class="flex items-center gap-sm rounded-lg border border-red-200 bg-red-50 px-md py-sm text-red-700 font-body-md mb-md">
-                                <span class="material-symbols-outlined text-[20px]">error</span>
-                                <?= $erreur ?>
-                            </div>
-                        <?php endif; ?>
-                        <form class="space-y-md" method="get" action="<?= base_url('traitement_transfert')?>">
-                            <!-- Beneficiary Selection (multiple) -->
-                            <div class="space-y-xs">
-                                <div class="flex items-center justify-between mb-xs">
-                                    <label class="font-label-md text-on-surface-variant">Bénéficiaires (même opérateur)</label>
-                                    <button type="button" id="btn-add-numero"
-                                        class="flex items-center gap-xs text-primary text-label-md hover:underline">
-                                        <span class="material-symbols-outlined text-[18px]">add_circle</span>
-                                        Ajouter un numéro
-                                    </button>
-                                </div>
-                                <div id="numeros-list" class="space-y-xs">
-                                    <div class="numero-row flex items-center gap-sm">
-                                        <input
-                                            class="flex-1 h-12 bg-surface-container-low border-none rounded-lg px-md focus:ring-2 focus:ring-primary/20 text-body-md"
-                                            placeholder="Numéro du bénéficiaire" type="text" name="numero[]" />
-                                        <button type="button"
-                                            class="btn-remove-numero p-2 text-red-400 hover:text-red-600 transition-colors hidden">
-                                            <span class="material-symbols-outlined text-[20px]">remove_circle</span>
-                                        </button>
-                                    </div>
-                                </div>
-                                <p id="montant-par-beneficiaire" class="font-label-sm text-primary hidden"></p>
-                            </div>
-                            <div class="grid grid-cols-1 md:grid-cols-2 gap-md">
-                                <!-- Amount -->
-                                <div class="space-y-xs">
-                                    <label class="font-label-md text-on-surface-variant">Montant du transfert</label>
-                                    <div class="relative">
-                                        <input
-                                            class="w-full h-12 bg-surface-container-low border-none rounded-lg px-md pr-16 focus:ring-2 focus:ring-primary/20 text-headline-md font-bold text-primary"
-                                            placeholder="0.00" type="number" name="amount" />
-                                        <span
-                                            class="absolute right-md top-1/2 -translate-y-1/2 font-bold text-primary">Ar</span>
-                                    </div>
-                                    <p class="font-label-sm text-outline-variant">Solde disponible : <?= $solde ?> Ar </p>
-                                </div>
-
-                                <div class="space-y-xs flex items-end">
-                                    <label class="inline-flex items-center gap-sm text-body-md text-on-surface-variant cursor-pointer">
-                                        <input
-                                            class="w-4 h-4 rounded border-outline-variant text-primary focus:ring-primary"
-                                            type="checkbox"
-                                            name="include_fee"
-                                            value="1" />
-                                        <span>Inclure les frais de retrait</span>
-                                    </label>
-                                </div>
-                                <!-- Date/Frequency -->
-                                <!-- <div class="space-y-xs">
-                                    <label class="font-label-md text-on-surface-variant">Exécution</label>
-                                    <select
-                                        class="w-full h-12 bg-surface-container-low border-none rounded-lg px-md focus:ring-2 focus:ring-primary/20 text-body-md appearance-none">
-                                        <option>Immédiate (Instantané)</option>
-                                        <option>Programmée</option>
-                                        <option>Récurrente (Mensuel)</option>
-                                    </select>
-                                </div> -->
-                            </div>
-                            <!-- Motif -->
-                            <div class="space-y-xs">
-                                <label class="font-label-md text-on-surface-variant">Motif du transfert
-                                    (Optionnel)</label>
-                                <textarea
-                                    class="w-full bg-surface-container-low border-none rounded-lg p-md focus:ring-2 focus:ring-primary/20 text-body-md resize-none"
-                                    placeholder="Ex: Achat immobilier, Honoraires conseil..." rows="3"></textarea>
-                            </div>
-                            <!-- Fees Estimation (Optimized Box) -->
-                            <!-- <div
-                                class="bg-surface-container-highest/30 border border-outline-variant/30 rounded-xl p-md">
-                                <h4 class="font-label-md text-primary mb-sm flex items-center gap-xs">
-                                    <span class="material-symbols-outlined text-[18px]">info</span>
-                                    Estimation des frais
-                                </h4>
-                                <div class="space-y-xs">
-                                    <div class="flex justify-between text-label-md">
-                                        <span class="text-on-surface-variant">Frais de traitement Emerald Luxe</span>
-                                        <span class="font-bold">0,00 €</span>
-                                    </div>
-                                    <div class="flex justify-between text-label-md">
-                                        <span class="text-on-surface-variant">Commission réseau (SEPA Instant)</span>
-                                        <span class="font-bold">0,45 €</span>
-                                    </div>
-                                    <div
-                                        class="border-t border-outline-variant/20 pt-xs mt-xs flex justify-between text-body-md font-bold">
-                                        <span class="text-primary">Total estimé</span>
-                                        <span class="text-primary">0,45 €</span>
-                                    </div>
-                                </div>
-                            </div> -->
-                            <!-- Action Button -->
-                            <button
-                                class="w-full h-12 bg-primary text-white rounded-lg font-headline-md text-[16px] hover:bg-primary-container transition-all active:scale-[0.98] flex items-center justify-center gap-sm">
-                                <span>Confirmer le transfert</span>
-                                <span class="material-symbols-outlined text-[20px]">arrow_forward</span>
-                            </button>
-                        </form>
-                    </div>
-                </div>
-
+    <!-- Top AppBar Mobile/Desktop Header -->
+    <header
+        class="w-full h-16 sticky top-0 z-50 bg-surface shadow-sm md:ml-64 md:w-[calc(100%-16rem)] flex justify-between items-center px-margin-mobile md:px-margin-desktop">
+        <h1 class="font-headline-md text-headline-md font-bold text-primary">Transfert</h1>
+        <div class="flex items-center gap-base">
+            <button class="p-sm rounded-full hover:bg-surface-container-low transition-colors text-on-surface-variant">
+                <span class="material-symbols-outlined">notifications</span>
+            </button>
+            <div
+                class="h-10 w-10 rounded-full bg-primary-fixed-dim flex items-center justify-center text-primary font-bold overflow-hidden cursor-pointer">
+                <img class="w-full h-full object-cover"
+                    data-alt="Professional portrait of a client."
+                    src="https://lh3.googleusercontent.com/aida-public/AB6AXuDV2JyOY01g6HPPbLe_n3pss7Ty7aXSG-ec_D30rhtOMsfzgSgrEIT8Dqv7Use1ftRMRotoJptpCpWjorWVqmmbezUs4tWf_theXFc99jTv3-YHwr5z9AFGXXdBTNpam1RkCqZMesreJ7Jo8wxHHz1Gf0qbEa-MwtICMKf7rLE8Y5g8n9JbnqGxCb0mTUAS307zoRm0gbwHCUtrClzlPtQXcU0CbKcUo-ASVaKj4WG2iFheYFY5vPEr" />
             </div>
         </div>
+    </header>
+    <!-- Main Content Canvas -->
+    <main class="md:ml-64 p-margin-mobile md:p-margin-desktop min-h-[calc(100vh-4rem)] flex flex-col gap-lg">
+        <!-- Balance Display -->
+        <section class="grid grid-cols-1 lg:grid-cols-3 gap-gutter">
+            <div
+                class="lg:col-span-2 relative overflow-hidden rounded-xl bg-primary text-on-primary p-xl shadow-lg group">
+                <div class="relative z-10 flex flex-col gap-base">
+                    <span class="font-label-sm text-primary-fixed-dim uppercase tracking-[0.2em]">Solde Disponible</span>
+                    <h2 class="font-display-lg text-display-lg"><?= $solde ?> Ar</h2>
+                    <div class="flex items-center gap-sm mt-md">
+                        <span class="px-sm py-xs bg-tertiary-container text-on-tertiary-container rounded-full font-label-sm flex items-center gap-1">
+                            <?= $user['numero']?>
+                        </span>
+                        <span class="text-primary-fixed-dim font-label-md">vs mois dernier</span>
+                    </div>
+                </div>
+                <div class="absolute right-xl bottom-xl hidden md:block opacity-10 scale-150 rotate-12">
+                    <span class="material-symbols-outlined text-[120px]">send</span>
+                </div>
+            </div>
+            <div class="glass-card rounded-xl p-md flex flex-col justify-between">
+                <div>
+                    <h3 class="font-label-sm text-outline uppercase mb-md">Flux Mensuel</h3>
+                    <div class="space-y-lg">
+                        <div class="space-y-xs">
+                            <div class="flex justify-between items-end">
+                                <span class="font-label-md text-on-surface-variant">Entrées</span>
+                                <span class="font-headline-md text-primary">+ 0 Ar</span>
+                            </div>
+                            <div class="w-full h-2 bg-surface-container-highest rounded-full overflow-hidden">
+                                <div class="h-full bg-on-tertiary-container w-[0%] rounded-full"></div>
+                            </div>
+                        </div>
+                        <div class="space-y-xs">
+                            <div class="flex justify-between items-end">
+                                <span class="font-label-md text-on-surface-variant">Sorties</span>
+                                <span class="font-headline-md text-error">- 0 Ar</span>
+                            </div>
+                            <div class="w-full h-2 bg-surface-container-highest rounded-full overflow-hidden">
+                                <div class="h-full bg-error w-[0%] rounded-full"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+        <!-- Transfer Form -->
+        <div class="glass-card rounded-xl p-md lg:p-lg">
+            <div class="flex items-center gap-sm mb-lg">
+                <div class="w-12 h-12 rounded-full bg-primary-container flex items-center justify-center">
+                    <span class="material-symbols-outlined text-on-tertiary-container">send</span>
+                </div>
+                <div>
+                    <h3 class="font-headline-md text-primary">Détails de la transaction</h3>
+                    <p class="font-body-md text-on-surface-variant">Effectuez un transfert sécurisé vers un compte externe ou interne.</p>
+                </div>
+            </div>
+            <?php $erreur = session()->getFlashdata('error'); ?>
+            <?php if ($erreur): ?>
+                <div class="flex items-center gap-sm rounded-lg border border-red-200 bg-red-50 px-md py-sm text-red-700 font-body-md mb-md">
+                    <span class="material-symbols-outlined text-[20px]">error</span>
+                    <?= $erreur ?>
+                </div>
+            <?php endif; ?>
+            <form class="space-y-md" method="get" action="<?= base_url('traitement_transfert')?>">
+                <div class="space-y-xs">
+                    <div class="flex items-center justify-between mb-xs">
+                        <label class="font-label-md text-on-surface-variant">Bénéficiaires (même opérateur)</label>
+                        <button type="button" id="btn-add-numero"
+                            class="flex items-center gap-xs text-primary text-label-md hover:underline">
+                            <span class="material-symbols-outlined text-[18px]">add_circle</span>
+                            Ajouter un numéro
+                        </button>
+                    </div>
+                    <div id="numeros-list" class="space-y-xs">
+                        <div class="numero-row flex items-center gap-sm">
+                            <input
+                                class="flex-1 h-12 bg-surface-container-low border-none rounded-lg px-md focus:ring-2 focus:ring-primary/20 text-body-md"
+                                placeholder="Numéro du bénéficiaire" type="text" name="numero[]" />
+                            <button type="button"
+                                class="btn-remove-numero p-2 text-red-400 hover:text-red-600 transition-colors hidden">
+                                <span class="material-symbols-outlined text-[20px]">remove_circle</span>
+                            </button>
+                        </div>
+                    </div>
+                    <p id="montant-par-beneficiaire" class="font-label-sm text-primary hidden"></p>
+                </div>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-md">
+                    <div class="space-y-xs">
+                        <label class="font-label-md text-on-surface-variant">Montant du transfert</label>
+                        <div class="relative">
+                            <input
+                                class="w-full h-12 bg-surface-container-low border-none rounded-lg px-md pr-16 focus:ring-2 focus:ring-primary/20 text-headline-md font-bold text-primary"
+                                placeholder="0.00" type="number" name="amount" />
+                            <span class="absolute right-md top-1/2 -translate-y-1/2 font-bold text-primary">Ar</span>
+                        </div>
+                        <p class="font-label-sm text-outline-variant">Solde disponible : <?= $solde ?> Ar</p>
+                    </div>
+                    <div class="space-y-xs flex items-end">
+                        <label class="inline-flex items-center gap-sm text-body-md text-on-surface-variant cursor-pointer">
+                            <input
+                                class="w-4 h-4 rounded border-outline-variant text-primary focus:ring-primary"
+                                type="checkbox"
+                                name="include_fee"
+                                value="1" />
+                            <span>Inclure les frais de retrait</span>
+                        </label>
+                    </div>
+                </div>
+                <div class="space-y-xs">
+                    <label class="font-label-md text-on-surface-variant">Motif du transfert (Optionnel)</label>
+                    <textarea
+                        class="w-full bg-surface-container-low border-none rounded-lg p-md focus:ring-2 focus:ring-primary/20 text-body-md resize-none"
+                        placeholder="Ex: Achat immobilier, Honoraires conseil..." rows="3"></textarea>
+                </div>
+                <button
+                    class="w-full h-12 bg-primary text-white rounded-lg font-headline-md text-[16px] hover:bg-primary-container transition-all active:scale-[0.98] flex items-center justify-center gap-sm">
+                    <span>Confirmer le transfert</span>
+                    <span class="material-symbols-outlined text-[20px]">arrow_forward</span>
+                </button>
+            </form>
+        </div>
     </main>
-    <!-- Background Atmospheric Effect -->
-    <div class="fixed inset-0 -z-10 overflow-hidden pointer-events-none">
-        <div class="absolute -top-[10%] -right-[5%] w-[40%] h-[40%] bg-primary/5 rounded-full blur-[120px]"></div>
-        <div class="absolute -bottom-[10%] -left-[5%] w-[30%] h-[30%] bg-tertiary/5 rounded-full blur-[100px]"></div>
-    </div>
+    <!-- Mobile Navigation Shell -->
+    <nav
+        class="fixed bottom-0 w-full z-50 md:hidden bg-surface border-t border-outline-variant shadow-lg h-16 flex justify-around items-center px-margin-mobile">
+        <a class="flex flex-col items-center justify-center text-primary font-bold transition-transform active:scale-90 tap-highlight-none"
+            href="<?= base_url('/index') ?>">
+            <span class="material-symbols-outlined">home</span>
+            <span class="font-label-sm text-[10px]">Home</span>
+        </a>
+        <a class="flex flex-col items-center justify-center text-on-surface-variant transition-transform active:scale-90 tap-highlight-none"
+            href="<?= base_url('/transfert') ?>">
+            <span class="material-symbols-outlined">sync_alt</span>
+            <span class="font-label-sm text-[10px]">Transfers</span>
+        </a>
+        <a class="flex flex-col items-center justify-center text-on-surface-variant transition-transform active:scale-90 tap-highlight-none"
+            href="#">
+            <span class="material-symbols-outlined">receipt_long</span>
+            <span class="font-label-sm text-[10px]">History</span>
+        </a>
+        <a class="flex flex-col items-center justify-center text-on-surface-variant transition-transform active:scale-90 tap-highlight-none"
+            href="#">
+            <span class="material-symbols-outlined">menu</span>
+            <span class="font-label-sm text-[10px]">Menu</span>
+        </a>
+    </nav>
     <script>
-        // Micro-interaction for inputs
-        const inputs = document.querySelectorAll('input, textarea, select');
-        inputs.forEach(input => {
-            input.addEventListener('focus', () => {
-                input.parentElement.closest('.glass-card')?.classList.add('shadow-md');
-            });
-            input.addEventListener('blur', () => {
-                input.parentElement.closest('.glass-card')?.classList.remove('shadow-md');
-            });
-        });
-
-        // ---- Envoi multiple ----
         const list        = document.getElementById('numeros-list');
         const btnAdd      = document.getElementById('btn-add-numero');
         const amountInput = document.querySelector('input[name="amount"]');
