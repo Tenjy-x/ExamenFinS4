@@ -13,4 +13,8 @@ class PrefixeOperateurModel extends Model {
     public function getAllPrefix(){
         return $this->findAll();
     }
+
+    public function getPrefixes(){
+        return $this->Where('id_operateur',1)->findAll();
+    }
 }
