@@ -37,13 +37,13 @@ class TransactionController extends BaseController
 
         $transaction = new TransactionModel();
         $solde = $transaction->getSolde($user['id']);
+        $trancheModel = new TrancheModel();
+        $tranche = $trancheModel->findTranche(2, $montant);
 
-        if ($montant > $solde) {
+        if ($montant + $tranche->Frais > $solde) {
             return redirect()->back()->with('error', 'Solde insuffisant. Votre solde disponible est de ' . $solde . ' Ar.');
         }
 
-        $trancheModel = new TrancheModel();
-        $tranche = $trancheModel->findTranche(2, $montant);
 
         $transaction->insert([
             'id_type'    => 2,
@@ -90,7 +90,8 @@ class TransactionController extends BaseController
         $trancheModel = new TrancheModel();
 
         $solde = $transaction->getSolde($user['id']);
-        if ($montant > $solde) {
+        $FRAIS = $trancheModel->findTranche(3 , $montant);
+        if ($montant + $FRAIS->Frais > $solde) {
             return redirect()->back()
                 ->withInput()
                 ->with('error', 'Solde insuffisant. Votre solde disponible est de ' . $solde . ' Ar.');
