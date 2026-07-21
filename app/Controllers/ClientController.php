@@ -52,4 +52,18 @@ class ClientController extends BaseController
             'solde' => $solde,
         ]);
     }
+
+    public function historique() {
+        $user = session()->get('user');
+        $transaction = new TransactionModel();
+
+        $historique = $transaction->getHistoriqueByClient($user['id']);
+        $solde = $transaction->getSolde($user['id']);
+
+        return view('clients/Historique', [
+            'user' => $user,
+            'solde' => $solde,
+            'historique' => $historique,
+        ]);
+    }
 }
