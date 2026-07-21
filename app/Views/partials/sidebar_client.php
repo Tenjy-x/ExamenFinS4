@@ -7,7 +7,7 @@ $navItems = [
     'depot'      => ['icon' => 'add_circle', 'label' => 'Dépôt', 'url' => base_url('/depot')],
     'retrait'    => ['icon' => 'remove_circle', 'label' => 'Retrait', 'url' => base_url('/retrait')],
     'transfert'  => ['icon' => 'send', 'label' => 'Transfert', 'url' => base_url('/transfert')],
-    'historique' => ['icon' => 'list_alt', 'label' => 'Historique', 'url' => '#'],
+    'historique' => ['icon' => 'list_alt', 'label' => 'Historique', 'url' => base_url('/historique')],
 ];
 
 $bottomItems = [

@@ -27,6 +27,19 @@ class TransactionModel extends Model
                     ->findAll();
     }
 
+    public function getHistoriqueByClient($id_client)
+    {
+        return $this->db->table('Transaction t')
+            ->select('t.*, tt.libelle as type_libelle, c.numero as client_numero, c2.numero as client2_numero')
+            ->join('Type_transaction tt', 't.id_type = tt.id')
+            ->join('Client c', 't.id_client = c.id', 'left')
+            ->join('Client c2', 't.id_client2 = c2.id', 'left')
+            ->where('t.id_client', $id_client)
+            ->orderBy('t.id', 'DESC')
+            ->get()
+            ->getResult();
+    }
+
     public function getSolde($id_client)
     {
         $db = $this->db->table('Transaction');
