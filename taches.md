@@ -80,3 +80,7 @@ Non fini :
                 - getByPaire()
                 - insertCommission
     - Creation Controller
+
+Creation Configuration dans la base
+    - Promotion
+        

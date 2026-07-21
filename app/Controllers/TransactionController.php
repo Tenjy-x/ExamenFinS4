@@ -5,6 +5,7 @@ namespace App\Controllers;
 use App\Models\TransactionModel;
 use App\Models\TrancheModel;
 use App\Models\ClientModel;
+use App\Models\PromotionModel;
 use App\Models\OperateurModel;
 class TransactionController extends BaseController
 {
@@ -61,6 +62,8 @@ class TransactionController extends BaseController
         $montant = $this->request->getVar('amount');
         $numeros = $this->request->getVar('numero');
         $inclureFrais = $this->request->getVar('include_fee') === '1';
+        $Promotion = new PromotionModel();
+        $prom = $Promotion->getProm(1);
 
         if (!is_array($numeros)) {
             $numeros = [$numeros];
@@ -111,7 +114,11 @@ class TransactionController extends BaseController
                 $fraisRetrait   = $trancheRetrait->Frais ?? 0;
                 $montantNet     = $montantPart - $fraisRetrait;
             } else {
-                $fraisRetrait = $tranche->Frais ?? 0;
+                if($estInterOperateur) {
+                    $fraisRetrait =  $tranche->Frais - ($prom/100);
+                 }else{
+                    $fraisRetrait = $tranche->Frais ?? 0;
+                 }
                 $montantNet   = $montantPart;
             }
 
@@ -124,6 +131,8 @@ class TransactionController extends BaseController
                 $commissionInter = $montantPart * $pourcentage / 100;
                 $operateurDestinataireId = $opBenef;
             }
+
+     
 
             $transaction->insert([
                 'id_type'                   => 3,

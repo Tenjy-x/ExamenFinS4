@@ -3,17 +3,21 @@
 namespace App\Controllers;
 use App\Models\ClientModel;
 use App\Models\TransactionModel;
+
+use App\Models\PromotionModel;
 class ClientController extends BaseController
 {
     public function index(): string
     {
         $transaction = new TransactionModel();
         $user = session()->get('user');
-
+        $promotion = new PromotionModel();
+        $prom = $promotion->getProm(1);
         $solde = $transaction->getSolde($user['id']);
         return view('clients/Tableau_Bord' , [
             'user' => $user,
             'solde' => $solde,
+            'prom' => $prom,
         ]);
     }
 

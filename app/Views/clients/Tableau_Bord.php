@@ -83,7 +83,7 @@
                             <!-- <span class="material-symbols-outlined text-[14px]">trending_up</span> -->
                             <?= $user['numero']?>
                         </span>
-                        <span class="text-primary-fixed-dim font-label-md">vs mois dernier</span>
+                        <span class="text-primary-fixed-dim font-label-md"><?= $prom['pourcentage'] ?></span>
                     </div>
                 </div>
                 <div class="absolute right-xl bottom-xl hidden md:block opacity-10 scale-150 rotate-12">

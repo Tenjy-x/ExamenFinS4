@@ -63,6 +63,13 @@ CREATE TABLE Commission_inter_operateur (
     FOREIGN KEY (id_operateur) REFERENCES Operateur(id)
 );
 
+CREATE TABLE Promotion(
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    pourcentage  REAL NOT NULL DEFAULT 0
+);
+INSERT INTO Promotion (pourcentage) VALUES
+(10);
+
 INSERT INTO Type_transaction (libelle) VALUES ('depot');
 INSERT INTO Type_transaction (libelle) VALUES ('retrait');
 INSERT INTO Type_transaction (libelle) VALUES ('transfert');
