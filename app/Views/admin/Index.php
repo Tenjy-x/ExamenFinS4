@@ -181,16 +181,20 @@
                 <div class="glass-card p-md rounded-xl tonal-elevation space-y-md">
                     <h3 class="font-headline-md text-headline-md text-primary">Répartition des Frais</h3>
                     <?php
-                    $totalG = 0;
-                    if (isset($gains)) foreach ($gains as $g) $totalG += $g->total_gains;
+                    $gainsS = $gainsSepares ?? ['retrait' => 0, 'interne' => 0, 'autres' => 0];
+                    $totalG = $gainsS['retrait'] + $gainsS['interne'] + $gainsS['autres'];
+                    $categories = [
+                        'Retrait' => $gainsS['retrait'],
+                        'Transfert Interne' => $gainsS['interne'],
+                        'Transfert Autres Op.' => $gainsS['autres'],
+                    ];
                     ?>
                     <div class="flex flex-col gap-6 pt-4">
-                        <?php if (isset($gains)): ?>
-                        <?php foreach ($gains as $g): ?>
-                        <?php $pct = $totalG > 0 ? round($g->total_gains / $totalG * 100) : 0; ?>
+                        <?php foreach ($categories as $label => $montant): ?>
+                        <?php $pct = $totalG > 0 ? round($montant / $totalG * 100) : 0; ?>
                         <div class="space-y-2">
                             <div class="flex justify-between items-center">
-                                <span class="font-label-md text-label-md text-on-surface"><?= $g->libelle ?? '' ?></span>
+                                <span class="font-label-md text-label-md text-on-surface"><?= $label ?></span>
                                 <span class="font-label-md text-label-md font-bold"><?= $pct ?>%</span>
                             </div>
                             <div class="w-full bg-surface-container-high rounded-full h-2">
@@ -198,7 +202,6 @@
                             </div>
                         </div>
                         <?php endforeach; ?>
-                        <?php endif; ?>
                     </div>
                     <div class="pt-6">
                         <button

@@ -3,6 +3,7 @@ DROP TABLE IF EXISTS Tranche;
 DROP TABLE IF EXISTS Type_transaction;
 DROP TABLE IF EXISTS Operateur;
 DROP TABLE IF EXISTS Prefix_operateur;
+DROP TABLE IF EXISTS Commission_inter_operateur;
 DROP TABLE IF EXISTS Client;
 
 CREATE TABLE Client (
@@ -12,14 +13,15 @@ CREATE TABLE Client (
 
 CREATE TABLE Prefix_operateur (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
-    Prefix TEXT NOT NULL
+    id_operateur INTEGER NOT NULL,
+    Prefix TEXT NOT NULL,
+    FOREIGN KEY (id_operateur) REFERENCES Operateur(id)
 );
 
 CREATE TABLE Operateur (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
-    id_prefix INTEGER NOT NULL,
-    mot_de_passe TEXT NOT NULL,
-    FOREIGN KEY (id_prefix) REFERENCES Prefix_operateur(id)
+    nom TEXT NOT NULL,
+    mot_de_passe TEXT NOT NULL
 );
 
 CREATE TABLE Type_transaction (
@@ -44,22 +46,20 @@ CREATE TABLE "Transaction" (
     id_tranche INTEGER,
     montant REAL NOT NULL,
     frais REAL DEFAULT 0,
-    commission_operateur REAL DEFAULT 0,
-    operateur_destinataire INTEGER,
+    commission_inter_operateur REAL DEFAULT 0,
+    operateur_destinataire_id INTEGER,
     FOREIGN KEY (id_client) REFERENCES Client(id),
     FOREIGN KEY (id_client2) REFERENCES Client(id),
     FOREIGN KEY (id_type) REFERENCES Type_transaction(id),
     FOREIGN KEY (id_tranche) REFERENCES Tranche(id),
-    FOREIGN KEY (operateur_destinataire) REFERENCES Operateur(id)
+    FOREIGN KEY (operateur_destinataire_id) REFERENCES Operateur(id)
 );
 
-CREATE TABLE Commission (
+CREATE TABLE Commission_inter_operateur (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
-    id_operateur1 INTEGER NOT NULL,
-    id_operateur2 INTEGER,
-    pourcentage REAL DEFAULT 0,
-    FOREIGN KEY (id_operateur1) REFERENCES Operateur(id),
-    FOREIGN KEY (id_operateur2) REFERENCES Operateur(id)   
+    id_operateur INTEGER NOT NULL,
+    pourcentage REAL NOT NULL DEFAULT 0,
+    FOREIGN KEY (id_operateur) REFERENCES Operateur(id)
 );
 
 INSERT INTO Type_transaction (libelle) VALUES ('depot');
@@ -76,6 +76,18 @@ INSERT INTO Tranche (id_type, montant_min, montant_max, Frais) VALUES (2, 100001
 INSERT INTO Tranche (id_type, montant_min, montant_max, Frais) VALUES (2, 250001, 500000, 1500);
 INSERT INTO Tranche (id_type, montant_min, montant_max, Frais) VALUES (2, 500001, 1000000, 2500);
 INSERT INTO Tranche (id_type, montant_min, montant_max, Frais) VALUES (2, 1000001, 2000000, 3000);
+
+INSERT INTO Operateur (nom, mot_de_passe) VALUES ('admin', 'admin');
+INSERT INTO Operateur (nom, mot_de_passe) VALUES ('orange', 'orange123');
+INSERT INTO Operateur (nom, mot_de_passe) VALUES ('airtel', 'airtel123');
+
+INSERT INTO Prefix_operateur (id_operateur, Prefix) VALUES (1, '034');
+INSERT INTO Prefix_operateur (id_operateur, Prefix) VALUES (1, '038');
+INSERT INTO Prefix_operateur (id_operateur, Prefix) VALUES (2, '032');
+INSERT INTO Prefix_operateur (id_operateur, Prefix) VALUES (3, '033');
+
+INSERT INTO Commission_inter_operateur (id_operateur, pourcentage) VALUES (2, 2.0);
+INSERT INTO Commission_inter_operateur (id_operateur, pourcentage) VALUES (3, 1.5);
 
 INSERT INTO Client (numero) VALUES ('0341234567');
 INSERT INTO Client (numero) VALUES ('0329876543');

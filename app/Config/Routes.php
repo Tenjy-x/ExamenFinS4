@@ -25,6 +25,7 @@ $routes->get('/gestionClients','OperateurController::gestionClients');
 $routes->get('/gestionFrais','OperateurController::gestionFrais');
 $routes->post('/updateTranche','OperateurController::updateTranche');
 $routes->post('/saveCommission','OperateurController::saveCommission');
+$routes->get('/montantsAEnvoyer','OperateurController::montantsAEnvoyer');
 
 // transactions client
 $routes->get('traitement_depot','TransactionController::traiter_depot');

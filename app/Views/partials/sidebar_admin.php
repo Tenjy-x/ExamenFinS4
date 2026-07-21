@@ -4,7 +4,8 @@ $active = $active ?? 'dashboard';
 $navItems = [
     'dashboard'  => ['icon' => 'dashboard', 'label' => 'Dashboard', 'url' => base_url('/admin')],
     'clients'    => ['icon' => 'group', 'label' => 'Clients', 'url' => base_url('/gestionClients')],
-    'frais'       => ['icon' => 'payments', 'label' => 'Frais', 'url' => base_url('/gestionFrais')],
+    'frais'      => ['icon' => 'payments', 'label' => 'Frais', 'url' => base_url('/gestionFrais')],
+    'montants'   => ['icon' => 'send_money', 'label' => 'Montants', 'url' => base_url('/montantsAEnvoyer')],
 ];
 
 $bottomItems = [

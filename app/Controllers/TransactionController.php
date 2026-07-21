@@ -56,11 +56,9 @@ class TransactionController extends BaseController
         $numeros = $this->request->getVar('numero');
         $inclureFrais = $this->request->getVar('include_fee') === '1';
 
-        // Normalise: accepte un seul string ou un tableau
         if (!is_array($numeros)) {
             $numeros = [$numeros];
         }
-        // Supprime les entrées vides
         $numeros = array_values(array_filter($numeros, fn($n) => $n !== null && $n !== ''));
 
         if (!$montant || empty($numeros)) {
@@ -68,9 +66,9 @@ class TransactionController extends BaseController
         }
 
         $operateurModel = new OperateurModel();
+        $commissionModel = new \App\Models\CommissionInterOperateurModel();
         $opExpediteur   = $operateurModel->getOperateurByPrefix(substr($user['numero'], 0, 3));
 
-        // Résoudre tous les bénéficiaires et valider (même opérateur)
         $beneficiaires = [];
         foreach ($numeros as $numero) {
             $client2 = $Clients->getClientByNumero($numero);
@@ -79,25 +77,21 @@ class TransactionController extends BaseController
                     ->withInput()
                     ->with('error', 'Aucun compte trouvé pour le numéro « ' . htmlspecialchars($numero, ENT_QUOTES, 'UTF-8') . ' ».');
             }
-            $opBenef = $operateurModel->getOperateurByPrefix(substr($client2->numero, 0, 3));
-            if ($opExpediteur === null || $opBenef !== $opExpediteur) {
-                return redirect()->back()
-                    ->withInput()
-                    ->with('error', 'Le numéro « ' . htmlspecialchars($numero, ENT_QUOTES, 'UTF-8') . ' » n\'appartient pas au même opérateur.');
-            }
             $beneficiaires[] = $client2;
         }
 
         $transaction  = new TransactionModel();
         $trancheModel = new TrancheModel();
         $nb           = count($beneficiaires);
-        $montantPart  = intval($montant / $nb); // divisé équitablement
+        $montantPart  = intval($montant / $nb);
 
         foreach ($beneficiaires as $client2) {
+            $opBenef = $operateurModel->getOperateurByPrefix(substr($client2->numero, 0, 3));
+            $estInterOperateur = ($opExpediteur !== null && $opBenef !== null && $opBenef !== $opExpediteur);
+
             $tranche = $trancheModel->findTranche(3, $montantPart);
 
             if ($inclureFrais) {
-                // Même opérateur déjà validé — on applique les frais de retrait
                 $trancheRetrait = $trancheModel->findTranche(2, $montantPart);
                 $fraisRetrait   = $trancheRetrait->Frais ?? 0;
                 $montantNet     = $montantPart - $fraisRetrait;
@@ -106,13 +100,25 @@ class TransactionController extends BaseController
                 $montantNet   = $montantPart;
             }
 
+            $commissionInter = 0;
+            $operateurDestinataireId = null;
+
+            if ($estInterOperateur) {
+                $commissionRecord = $commissionModel->getCommission($opBenef);
+                $pourcentage = $commissionRecord ? $commissionRecord->pourcentage : 0;
+                $commissionInter = $montantPart * $pourcentage / 100;
+                $operateurDestinataireId = $opBenef;
+            }
+
             $transaction->insert([
-                'id_type'    => 3,
-                'id_tranche' => $tranche->id ?? 1,
-                'montant'    => $montantNet,
-                'frais'      => $fraisRetrait,
-                'id_client'  => $user['id'],
-                'id_client2' => $client2->id,
+                'id_type'                   => 3,
+                'id_tranche'                => $tranche->id ?? 1,
+                'montant'                   => $montantNet,
+                'frais'                     => $fraisRetrait,
+                'commission_inter_operateur' => $commissionInter,
+                'operateur_destinataire_id'  => $operateurDestinataireId,
+                'id_client'                 => $user['id'],
+                'id_client2'                => $client2->id,
             ]);
         }
 
