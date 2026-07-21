@@ -35,7 +35,7 @@
                 <div class="glass-card p-md rounded-xl shadow-sm flex justify-between items-center">
                     <div>
                         <p class="font-label-sm text-label-sm text-outline uppercase"><?= $m->nom ?></p>
-                        <h3 class="font-headline-lg text-headline-lg text-on-surface mt-xs"><?= number_format($m->total, 0) ?> Ar</h3>
+                        <h3 class="font-headline-lg text-headline-lg text-on-surface mt-xs"><?= $m->total ?> Ar</h3>
                     </div>
                     <span class="material-symbols-outlined text-4xl opacity-30">send_money</span>
                 </div>
@@ -44,7 +44,7 @@
             <div class="stats-gradient-1 p-md rounded-xl shadow-lg mt-xl flex justify-between items-center">
                 <div>
                     <p class="font-label-sm text-label-sm opacity-80 uppercase tracking-wider">TOTAL GÉNÉRAL</p>
-                    <h2 class="font-display-lg text-display-lg mt-xs text-white"><?= number_format($totalGeneral ?? 0, 0) ?> Ar</h2>
+                    <h2 class="font-display-lg text-display-lg mt-xs text-white"><?= $totalGeneral ?> Ar</h2>
                 </div>
                 <span class="material-symbols-outlined text-5xl opacity-30 text-white">account_balance</span>
             </div>

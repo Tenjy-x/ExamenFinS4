@@ -72,12 +72,8 @@
     <!-- Main Content -->
     <main class="md:ml-64 p-margin-mobile md:p-margin-desktop min-h-[calc(100vh-64px)] pb-24 md:pb-margin-desktop">
         <?php
-        $gainsS = $gainsSepares ?? ['retrait' => 0, 'interne' => 0, 'autres' => 0];
-        $totalG = $gainsS['retrait'] + $gainsS['interne'] + $gainsS['autres'];
-        $pctR = $totalG > 0 ? round($gainsS['retrait'] / $totalG * 100) : 0;
-        $pctI = $totalG > 0 ? round($gainsS['interne'] / $totalG * 100) : 0;
-        $pctA = $totalG > 0 ? round($gainsS['autres'] / $totalG * 100) : 0;
-        ?>
+
+        ?> 
         <!-- Summary Stats Bento -->
         <div class="grid grid-cols-1 md:grid-cols-4 gap-gutter mb-xl">
             <div
@@ -92,37 +88,19 @@
             <div class="glass-card p-md rounded-xl shadow-sm flex flex-col justify-between h-40">
                 <div>
                     <p class="font-label-sm text-label-sm text-outline uppercase tracking-wider">Retrait</p>
-                    <h3 class="font-headline-lg text-headline-lg text-on-surface mt-xs"><?= number_format($gainsS['retrait'], 0) ?> Ar</h3>
-                </div>
-                <div class="flex items-center gap-gutter">
-                    <div class="h-1.5 flex-grow bg-surface-container-highest rounded-full overflow-hidden">
-                        <div class="h-full bg-primary" style="width: <?= $pctR ?>%"></div>
-                    </div>
-                    <span class="font-label-md text-label-md text-primary"><?= $pctR ?>%</span>
+                    <h3 class="font-headline-lg text-headline-lg text-on-surface mt-xs"><?= number_format($gainsSepares['retrait'], 0) ?> Ar</h3>
                 </div>
             </div>
             <div class="glass-card p-md rounded-xl shadow-sm flex flex-col justify-between h-40">
                 <div>
                     <p class="font-label-sm text-label-sm text-outline uppercase tracking-wider">Transfert Interne</p>
-                    <h3 class="font-headline-lg text-headline-lg text-on-surface mt-xs"><?= number_format($gainsS['interne'], 0) ?> Ar</h3>
-                </div>
-                <div class="flex items-center gap-gutter">
-                    <div class="h-1.5 flex-grow bg-surface-container-highest rounded-full overflow-hidden">
-                        <div class="h-full bg-tertiary-fixed-dim" style="width: <?= $pctI ?>%"></div>
-                    </div>
-                    <span class="font-label-md text-label-md text-on-tertiary-container font-bold"><?= $pctI ?>%</span>
+                    <h3 class="font-headline-lg text-headline-lg text-on-surface mt-xs"><?= number_format($gainsSepares['interne'], 0) ?> Ar</h3>
                 </div>
             </div>
             <div class="glass-card p-md rounded-xl shadow-sm flex flex-col justify-between h-40">
                 <div>
                     <p class="font-label-sm text-label-sm text-outline uppercase tracking-wider">Transfert Autres Op.</p>
-                    <h3 class="font-headline-lg text-headline-lg text-on-surface mt-xs"><?= number_format($gainsS['autres'], 0) ?> Ar</h3>
-                </div>
-                <div class="flex items-center gap-gutter">
-                    <div class="h-1.5 flex-grow bg-surface-container-highest rounded-full overflow-hidden">
-                        <div class="h-full bg-secondary-fixed-dim" style="width: <?= $pctA ?>%"></div>
-                    </div>
-                    <span class="font-label-md text-label-md text-secondary"><?= $pctA ?>%</span>
+                    <h3 class="font-headline-lg text-headline-lg text-on-surface mt-xs"><?= number_format($gainsSepares['autres'], 0) ?> Ar</h3>
                 </div>
             </div>
         </div>
@@ -243,47 +221,22 @@
                 <tbody class="divide-y divide-outline-variant/30">
                     <tr class="hover:bg-surface-container-low transition-colors">
                         <td class="py-2 px-1 font-body-md">Retrait</td>
-                        <td class="py-2 px-1 font-body-md text-right font-bold"><?= number_format($gainsSepares['retrait'] ?? 0, 0) ?></td>
+                        <td class="py-2 px-1 font-body-md text-right font-bold"><?= $gainsSepares['retrait'] ?></td>
                     </tr>
                     <tr class="hover:bg-surface-container-low transition-colors">
                         <td class="py-2 px-1 font-body-md">Transfert interne</td>
-                        <td class="py-2 px-1 font-body-md text-right font-bold"><?= number_format($gainsSepares['interne'] ?? 0, 0) ?></td>
+                        <td class="py-2 px-1 font-body-md text-right font-bold"><?= $gainsSepares['interne'] ?></td>
                     </tr>
                     <tr class="hover:bg-surface-container-low transition-colors">
                         <td class="py-2 px-1 font-body-md">Transfert autres opérateurs</td>
-                        <td class="py-2 px-1 font-body-md text-right font-bold"><?= number_format($gainsSepares['autres'] ?? 0, 0) ?></td>
+                        <td class="py-2 px-1 font-body-md text-right font-bold"><?= $gainsSepares['autres'] ?></td>
                     </tr>
                     <tr class="border-t-2 border-outline-variant bg-surface-container-low">
                         <td class="py-2 px-1 font-body-md font-bold">TOTAL</td>
-                        <td class="py-2 px-1 font-body-md text-right font-bold text-primary"><?= number_format(($gainsSepares['retrait'] ?? 0) + ($gainsSepares['interne'] ?? 0) + ($gainsSepares['autres'] ?? 0), 0) ?></td>
+                        <td class="py-2 px-1 font-body-md text-right font-bold text-primary"><?= $gainsSepares['retrait']  + $gainsSepares['interne'] + $gainsSepares['autres']  ?></td>
                     </tr>
                 </tbody>
             </table>
-        </div>
-
-        <!-- Montants à envoyer aux opérateurs -->
-        <div class="glass-card rounded-xl p-md shadow-sm mt-xl">
-            <h4 class="font-headline-md text-headline-md text-on-surface mb-sm">Montants à envoyer aux opérateurs</h4>
-            <p class="font-body-md text-body-md text-outline mb-md">Montants des transferts vers d'autres opérateurs non encore envoyés.</p>
-            <?php if (isset($montantsAEnvoyer) && !empty($montantsAEnvoyer)): ?>
-            <table class="w-full text-left">
-                <thead><tr class="border-b border-outline-variant"><th class="py-2 px-1 font-label-sm text-outline uppercase">Opérateur</th><th class="py-2 px-1 font-label-sm text-outline uppercase text-right">Montant (Ar)</th></tr></thead>
-                <tbody class="divide-y divide-outline-variant/30">
-                    <?php foreach ($montantsAEnvoyer as $m): ?>
-                    <tr class="hover:bg-surface-container-low transition-colors">
-                        <td class="py-2 px-1 font-body-md font-bold"><?= $m->nom ?></td>
-                        <td class="py-2 px-1 font-body-md text-right font-bold"><?= number_format($m->total, 0) ?> Ar</td>
-                    </tr>
-                    <?php endforeach; ?>
-                    <tr class="border-t-2 border-outline-variant bg-surface-container-low">
-                        <td class="py-2 px-1 font-body-md font-bold">TOTAL</td>
-                        <td class="py-2 px-1 font-body-md text-right font-bold text-primary"><?= number_format(array_sum(array_map(function($m) { return $m->total; }, $montantsAEnvoyer)), 0) ?> Ar</td>
-                    </tr>
-                </tbody>
-            </table>
-            <?php else: ?>
-            <p class="text-outline font-body-md">Aucun montant à envoyer pour le moment.</p>
-            <?php endif; ?>
         </div>
 
         <!-- Commissions inter-opérateurs : dû et à recevoir -->
@@ -297,21 +250,21 @@
             ?>
             <?php if (!empty($allOpIds)): ?>
             <table class="w-full text-left">
-                <thead><tr class="border-b border-outline-variant"><th class="py-2 px-1 font-label-sm text-outline uppercase">Opérateur</th><th class="py-2 px-1 font-label-sm text-outline uppercase text-right">Commission due (Ar)</th><th class="py-2 px-1 font-label-sm text-outline uppercase text-right">Commission à recevoir (Ar)</th><th class="py-2 px-1 font-label-sm text-outline uppercase text-right">Net (Ar)</th></tr></thead>
+                <thead><tr class="border-b border-outline-variant"><th class="py-2 px-1 font-label-sm text-outline uppercase">Opérateur</th>
+                <th class="py-2 px-1 font-label-sm text-outline uppercase text-right">Commission à recevoir (Ar)</th>
+                <th class="py-2 px-1 font-label-sm text-outline uppercase text-right">Net (Ar)</th></tr></thead>
                 <tbody class="divide-y divide-outline-variant/30">
                     <?php foreach ($allOpIds as $oid => $onom): ?>
                     <?php
                     $du = 0; $recevoir = 0;
                     if (isset($montantsAPayer)) foreach ($montantsAPayer as $m) { if ($m->id == $oid) { $du = $m->total; break; } }
-                    if (isset($montantsARecevoir)) foreach ($montantsARecevoir as $m) { if ($m->id == $oid) { $recevoir = $m->total; break; } }
-                    $net = $du - $recevoir;
+                    $net = $du;
                     ?>
                     <tr class="hover:bg-surface-container-low transition-colors">
                         <td class="py-2 px-1 font-body-md font-bold"><?= $onom ?></td>
-                        <td class="py-2 px-1 font-body-md text-right"><?= number_format($du, 0) ?></td>
-                        <td class="py-2 px-1 font-body-md text-right"><?= number_format($recevoir, 0) ?></td>
+                        <td class="py-2 px-1 font-body-md text-right"><?= $du ?></td>
                         <td class="py-2 px-1 font-body-md text-right font-bold <?= $net > 0 ? 'text-error' : 'text-on-tertiary-container' ?>">
-                            <?= number_format($net, 0) ?>
+                            <?= $net ?>
                         </td>
                     </tr>
                     <?php endforeach; ?>
