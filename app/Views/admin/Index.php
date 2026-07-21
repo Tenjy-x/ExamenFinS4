@@ -104,7 +104,7 @@
                         </p>
                     </div>
                     <div class="mt-2">
-                        <h3 class="font-display-lg text-headline-lg text-on-surface"><?= $clientCount ?? 0 ?></h3>
+                        <h3 class="font-display-lg text-headline-lg text-on-surface"><?= $clientCount ?></h3>
                     </div>
                 </div>
                 <!-- Fee Income Card -->
@@ -124,57 +124,51 @@
                 <!-- Large Performance Chart -->
                 <div class="lg:col-span-2 glass-card p-md rounded-xl tonal-elevation space-y-md">
                     <div class="flex justify-between items-center">
-                        <h3 class="font-headline-md text-headline-md text-primary">Performance Mensuelle</h3>
+                        <h3 class="font-headline-md text-headline-md text-primary">Situation des Gains</h3>
                         <div class="flex gap-4">
                             <div class="flex items-center gap-2">
                                 <span class="w-3 h-3 rounded-full bg-primary-container"></span>
-                                <span class="text-label-sm font-label-sm text-on-surface-variant">Revenus</span>
+                                <span class="text-label-sm font-label-sm text-on-surface-variant">Montant</span>
                             </div>
                             <div class="flex items-center gap-2">
                                 <span class="w-3 h-3 rounded-full bg-secondary-fixed-dim"></span>
-                                <span class="text-label-sm font-label-sm text-on-surface-variant">Volume</span>
+                                <span class="text-label-sm font-label-sm text-on-surface-variant">Proportion</span>
                             </div>
                         </div>
                     </div>
+                    <?php
+                    $gs = $gainsSepares ?? ['retrait' => 0, 'interne' => 0, 'autres' => 0];
+                    $tg = $gs['retrait'] + $gs['interne'] + $gs['autres'];
+                    $maxG = max($gs['retrait'], $gs['interne'], $gs['autres'], 1);
+                    $gainBars = [
+                        'Retrait'          => ['montant' => $gs['retrait'], 'color' => 'bg-primary-container'],
+                        'Transfert Interne' => ['montant' => $gs['interne'], 'color' => 'bg-tertiary-container'],
+                        'Autres Op.'       => ['montant' => $gs['autres'],  'color' => 'bg-secondary-container'],
+                    ];
+                    ?>
                     <div
                         class="relative h-64 w-full flex items-end justify-between px-4 pb-8 border-b border-outline-variant/30">
-                        <!-- Simplified Visualization Bars -->
+                        <?php foreach ($gainBars as $label => $data):
+                        $pct = round($data['montant'] / $maxG * 100);
+                        $pctTotal = $tg > 0 ? round($data['montant'] / $tg * 100) : 0;
+                        ?>
                         <div
-                            class="w-12 bg-primary-container/20 hover:bg-primary-container/40 transition-colors rounded-t-lg h-[40%] group relative">
-                            <div class="absolute inset-x-0 bottom-0 bg-primary-container rounded-t-lg h-[70%]"></div>
+                            class="w-24 bg-surface-container-high/50 hover:bg-surface-container-high transition-colors rounded-t-lg relative group"
+                            style="height: <?= $pct ?>%">
+                            <div class="absolute inset-x-0 bottom-0 <?= $data['color'] ?> rounded-t-lg transition-all duration-500"
+                                style="height: <?= $pctTotal ?>%">
+                                <div class="opacity-0 group-hover:opacity-100 transition-opacity absolute -top-8 left-1/2 -translate-x-1/2 bg-on-surface text-surface text-xs rounded px-2 py-1 whitespace-nowrap">
+                                    <?= number_format($data['montant'], 0) ?> Ar
+                                </div>
+                            </div>
                             <span
-                                class="absolute -bottom-6 left-1/2 -translate-x-1/2 text-label-sm text-outline">Jan</span>
+                                class="absolute -bottom-6 left-1/2 -translate-x-1/2 text-label-sm text-outline"><?= $label ?></span>
                         </div>
-                        <div
-                            class="w-12 bg-primary-container/20 hover:bg-primary-container/40 transition-colors rounded-t-lg h-[55%] group relative">
-                            <div class="absolute inset-x-0 bottom-0 bg-primary-container rounded-t-lg h-[65%]"></div>
-                            <span
-                                class="absolute -bottom-6 left-1/2 -translate-x-1/2 text-label-sm text-outline">Fév</span>
-                        </div>
-                        <div
-                            class="w-12 bg-primary-container/20 hover:bg-primary-container/40 transition-colors rounded-t-lg h-[75%] group relative">
-                            <div class="absolute inset-x-0 bottom-0 bg-primary-container rounded-t-lg h-[80%]"></div>
-                            <span
-                                class="absolute -bottom-6 left-1/2 -translate-x-1/2 text-label-sm text-outline">Mar</span>
-                        </div>
-                        <div
-                            class="w-12 bg-primary-container/20 hover:bg-primary-container/40 transition-colors rounded-t-lg h-[60%] group relative">
-                            <div class="absolute inset-x-0 bottom-0 bg-primary-container rounded-t-lg h-[75%]"></div>
-                            <span
-                                class="absolute -bottom-6 left-1/2 -translate-x-1/2 text-label-sm text-outline">Avr</span>
-                        </div>
-                        <div
-                            class="w-12 bg-primary-container/20 hover:bg-primary-container/40 transition-colors rounded-t-lg h-[90%] group relative">
-                            <div class="absolute inset-x-0 bottom-0 bg-primary-container rounded-t-lg h-[85%]"></div>
-                            <span
-                                class="absolute -bottom-6 left-1/2 -translate-x-1/2 text-label-sm text-outline">Mai</span>
-                        </div>
-                        <div
-                            class="w-12 bg-primary-container/20 hover:bg-primary-container/40 transition-colors rounded-t-lg h-[100%] group relative">
-                            <div class="absolute inset-x-0 bottom-0 bg-primary-container rounded-t-lg h-[95%]"></div>
-                            <span
-                                class="absolute -bottom-6 left-1/2 -translate-x-1/2 text-label-sm text-outline">Juin</span>
-                        </div>
+                        <?php endforeach; ?>
+                    </div>
+                    <div class="flex justify-between items-center pt-2 px-2">
+                        <span class="font-label-md text-label-md text-on-surface-variant">Total des Gains</span>
+                        <span class="font-headline-md text-headline-md font-bold text-primary"><?= number_format($tg, 0) ?> Ar</span>
                     </div>
                 </div>
                 <!-- Fee Distribution -->
@@ -202,11 +196,6 @@
                             </div>
                         </div>
                         <?php endforeach; ?>
-                    </div>
-                    <div class="pt-6">
-                        <button
-                            class="w-full py-3 bg-surface-container-low text-primary font-label-md text-label-md rounded-lg hover:bg-surface-container-high transition-colors">Voir
-                            le détail des frais</button>
                     </div>
                 </div>
             </div>

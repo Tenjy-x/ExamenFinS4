@@ -102,6 +102,7 @@
                     <p class="font-label-sm text-label-sm text-outline uppercase tracking-wider">Transfert Autres Op.</p>
                     <h3 class="font-headline-lg text-headline-lg text-on-surface mt-xs"><?= number_format($gainsSepares['autres'], 0) ?> Ar</h3>
                 </div>
+
             </div>
         </div>
 

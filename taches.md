@@ -74,9 +74,15 @@ Non fini :
 - operateur
     - Creation table Commission
     - Creation Model
-        - Commission.php
+        - CommissionInterOperateur.php
             - Function 
                 - getAll()
-                - getByPaire()
-                - insertCommission
-    - Creation Controller
+                - getCommission()
+        - TransactionModel.php:
+                - getGainsSepares()
+                - getMontantsAPayer()
+    - Gestion des fonctions dans les controller
+
+    -Creation du view :
+        -MontantsAEnvoyer.php: Pour calculer les montants a envoyer aux autres operateurs
+    
