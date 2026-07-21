@@ -21,7 +21,7 @@ class AuthController extends BaseController
         $prefixeTelephone = substr($telephone, 0, 3);
         $prefixesValides = [];
 
-        foreach ($prefixeModel->findAll() as $prefixe) {
+        foreach ($prefixeModel->getPrefixes() as $prefixe) {
             $prefixesValides[] = $prefixe->Prefix;
         }
 
