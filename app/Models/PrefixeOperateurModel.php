@@ -7,10 +7,14 @@ use CodeIgniter\Model;
 class PrefixeOperateurModel extends Model {
     protected $table = 'Prefix_operateur';
     protected $primarykey = 'id';
-    protected $allowedFields = ['prefixe'];
+    protected $allowedFields = ['Prefix', 'id_operateur'];
     protected $returnType = 'object';
 
     public function getAllPrefix(){
         return $this->findAll();
+    }
+
+    public function getPrefixes(){
+        return $this->Where('id_operateur',1)->findAll();
     }
 }

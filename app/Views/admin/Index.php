@@ -43,7 +43,7 @@
 </head>
 
 <body class="bg-surface text-on-surface font-body-md text-body-md min-h-screen">
-    <?= view('partials/sidebar', ['active' => 'dashboard']); ?>
+    <?= view('partials/sidebar_admin', ['active' => 'dashboard']); ?>
     <!-- Top Navigation Bar -->
     <header
         class="sticky top-0 z-40 w-full h-16 bg-surface shadow-sm md:pl-64 flex justify-between items-center px-margin-mobile md:px-margin-desktop transition-all">
@@ -83,18 +83,6 @@
                     <p class="text-on-surface-variant mt-1">Résumé exécutif de la performance mensuelle d'AuraWealth.
                     </p>
                 </div>
-                <div class="flex gap-3">
-                    <button
-                        class="flex items-center gap-2 px-4 py-2 border border-outline rounded-lg font-label-md text-label-md text-on-surface-variant hover:bg-surface-container-low transition-colors">
-                        <span class="material-symbols-outlined text-sm">calendar_today</span>
-                        Derniers 30 jours
-                    </button>
-                    <button
-                        class="flex items-center gap-2 px-4 py-2 bg-primary text-on-primary rounded-lg font-label-md text-label-md shadow-md hover:opacity-90 transition-all">
-                        <span class="material-symbols-outlined text-sm">download</span>
-                        Exporter
-                    </button>
-                </div>
             </div>
             <!-- Executive Summary Bento Grid -->
             <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-gutter">
@@ -106,16 +94,6 @@
                     </div>
                     <div class="mt-2">
                         <h3 class="font-display-lg text-headline-lg text-on-surface"><?= number_format($totalGains ?? 0, 0) ?> Ar</h3>
-                    </div>
-                </div>
-                <!-- Transaction Volume Card -->
-                <div
-                    class="glass-card p-md rounded-xl tonal-elevation flex flex-col justify-between h-40 group transition-transform hover:scale-[1.02]">
-                    <div class="flex justify-between items-start">
-                        <p class="font-label-sm text-label-sm text-outline uppercase tracking-wider">Volume Transac.</p>
-                    </div>
-                    <div class="mt-2">
-                        <h3 class="font-display-lg text-headline-lg text-on-surface"><?= $transactionCount ?? 0 ?></h3>
                     </div>
                 </div>
                 <!-- New Clients Card -->
@@ -203,16 +181,20 @@
                 <div class="glass-card p-md rounded-xl tonal-elevation space-y-md">
                     <h3 class="font-headline-md text-headline-md text-primary">Répartition des Frais</h3>
                     <?php
-                    $totalG = 0;
-                    if (isset($gains)) foreach ($gains as $g) $totalG += $g->total_gains;
+                    $gainsS = $gainsSepares ?? ['retrait' => 0, 'interne' => 0, 'autres' => 0];
+                    $totalG = $gainsS['retrait'] + $gainsS['interne'] + $gainsS['autres'];
+                    $categories = [
+                        'Retrait' => $gainsS['retrait'],
+                        'Transfert Interne' => $gainsS['interne'],
+                        'Transfert Autres Op.' => $gainsS['autres'],
+                    ];
                     ?>
                     <div class="flex flex-col gap-6 pt-4">
-                        <?php if (isset($gains)): ?>
-                        <?php foreach ($gains as $g): ?>
-                        <?php $pct = $totalG > 0 ? round($g->total_gains / $totalG * 100) : 0; ?>
+                        <?php foreach ($categories as $label => $montant): ?>
+                        <?php $pct = $totalG > 0 ? round($montant / $totalG * 100) : 0; ?>
                         <div class="space-y-2">
                             <div class="flex justify-between items-center">
-                                <span class="font-label-md text-label-md text-on-surface"><?= $g->libelle ?? '' ?></span>
+                                <span class="font-label-md text-label-md text-on-surface"><?= $label ?></span>
                                 <span class="font-label-md text-label-md font-bold"><?= $pct ?>%</span>
                             </div>
                             <div class="w-full bg-surface-container-high rounded-full h-2">
@@ -220,7 +202,6 @@
                             </div>
                         </div>
                         <?php endforeach; ?>
-                        <?php endif; ?>
                     </div>
                     <div class="pt-6">
                         <button

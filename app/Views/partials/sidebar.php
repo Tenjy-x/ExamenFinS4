@@ -2,6 +2,13 @@
 $active = $active ?? 'dashboard';
 
 $navItems = [
+    'dashboard'  => ['icon' => 'dashboard', 'label' => 'Dashboard', 'url' => base_url('/index')],
+    'depot'      => ['icon' => 'add_circle', 'label' => 'Dépôt', 'url' => base_url('/depot')],
+    'retrait'    => ['icon' => 'remove_circle', 'label' => 'Retrait', 'url' => base_url('/retrait')],
+    'transfert'  => ['icon' => 'send', 'label' => 'Transfert', 'url' => base_url('/transfert')],
+    'clients'    => ['icon' => 'group', 'label' => 'Clients', 'url' => '#'],
+
+    
     'dashboard'  => ['icon' => 'dashboard', 'label' => 'Dashboard', 'url' => base_url('/admin')],
     'clients'    => ['icon' => 'group', 'label' => 'Clients', 'url' => base_url('/gestionClients')],
     'fees'       => ['icon' => 'payments', 'label' => 'Frais', 'url' => base_url('/gestionFrais')],

@@ -1,11 +1,11 @@
 <!DOCTYPE html>
 
-<html lang="fr">
+<html class="light" lang="fr">
 
 <head>
     <meta charset="utf-8" />
     <meta content="width=device-width, initial-scale=1.0" name="viewport" />
-    <title>AuraWealth - Opérations et Transferts</title>
+    <title>Opérations | AuraWealth</title>
     <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
     <script src="<?= base_url('Js/tailwind-config.js') ?>"></script>
     <link
@@ -18,282 +18,190 @@
         href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap"
         rel="stylesheet" />
     <style>
-        .material-symbols-outlined {
-            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        body {
+            background-color: #F8FAFC;
+            color: #191C1E;
+            -webkit-font-smoothing: antialiased;
         }
 
         .glass-card {
             background: rgba(255, 255, 255, 0.8);
             backdrop-filter: blur(12px);
-            -webkit-backdrop-filter: blur(12px);
-            border: 1px solid rgba(226, 232, 240, 0.4);
+            border: 1px solid rgba(226, 232, 240, 0.5);
+            box-shadow: 0px 4px 20px rgba(15, 23, 42, 0.05);
         }
 
-        .no-scrollbar::-webkit-scrollbar {
-            display: none;
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
         }
 
-        .no-scrollbar {
-            -ms-overflow-style: none;
-            scrollbar-width: none;
+        .tap-highlight-none {
+            -webkit-tap-highlight-color: transparent;
         }
     </style>
 </head>
 
-<body class="bg-background text-on-surface font-body-md min-h-screen">
-    <?= view('partials/sidebar', ['active' => 'depot']); ?>
-    <!-- TopAppBar (Mobile & Shared Context) -->
+<body class="font-body-md text-body-md overflow-x-hidden">
+    <?= view('partials/sidebar_client', ['active' => 'operations']); ?>
+    <!-- Top AppBar Mobile/Desktop Header -->
     <header
-        class="w-full h-16 sticky top-0 z-40 bg-surface shadow-sm flex justify-between items-center px-margin-mobile md:pl-[280px] md:pr-margin-desktop">
+        class="w-full h-16 sticky top-0 z-50 bg-surface shadow-sm md:ml-64 md:w-[calc(100%-16rem)] flex justify-between items-center px-margin-mobile md:px-margin-desktop">
         <h1 class="font-headline-md text-headline-md font-bold text-primary">Opérations</h1>
         <div class="flex items-center gap-base">
-            <button
-                class="w-10 h-10 flex items-center justify-center rounded-full hover:bg-surface-container-low transition-colors text-primary">
+            <button class="p-sm rounded-full hover:bg-surface-container-low transition-colors text-on-surface-variant">
                 <span class="material-symbols-outlined">notifications</span>
             </button>
-            <div class="w-10 h-10 rounded-full overflow-hidden border border-outline-variant">
+            <div
+                class="h-10 w-10 rounded-full bg-primary-fixed-dim flex items-center justify-center text-primary font-bold overflow-hidden cursor-pointer">
                 <img class="w-full h-full object-cover"
-                    data-alt="A professional studio portrait of a high-net-worth individual, a middle-aged woman with a confident and serene expression, wearing a tailored navy blue blazer. The lighting is soft and cinematic, with a clean, minimalist off-white background that evokes a sense of modern luxury and financial security. The aesthetic is sharp, high-end, and perfectly aligned with a premium wealth management identity."
-                    src="https://lh3.googleusercontent.com/aida-public/AB6AXuCN8k8fS1rY-3Lbv9fDDvyXxsVVR3JP9SLCbSgD-HwBleUfcwFZU5CWsQsr5I4uumQMiv2VnM8zQbdaLSkFHszYHBCvnoL4gJdbD5JbUYVtrf6NJjbtTlocvz91Js3hEaUSUW7E6eqxsmsp8MuiQVt2ZuiWW5bjXvDJzje2zVmZlP9WVt3g5tsN4OADtmcUE-5tlP1LwajSAdgAq2kWSQet0O3Ja-EgHeH2eqZD8SQQHOuUE4fNLZ9y" />
+                    data-alt="Professional portrait of a client."
+                    src="https://lh3.googleusercontent.com/aida-public/AB6AXuDV2JyOY01g6HPPbLe_n3pss7Ty7aXSG-ec_D30rhtOMsfzgSgrEIT8Dqv7Use1ftRMRotoJptpCpWjorWVqmmbezUs4tWf_theXFc99jTv3-YHwr5z9AFGXXdBTNpam1RkCqZMesreJ7Jo8wxHHz1Gf0qbEa-MwtICMKf7rLE8Y5g8n9JbnqGxCb0mTUAS307zoRm0gbwHCUtrClzlPtQXcU0CbKcUo-ASVaKj4WG2iFheYFY5vPEr" />
             </div>
         </div>
     </header>
-    <!-- Main Content -->
-    <main class="md:ml-64 p-margin-mobile md:p-margin-desktop pb-24 md:pb-margin-desktop">
+    <!-- Main Content Canvas -->
+    <main class="md:ml-64 p-margin-mobile md:p-margin-desktop min-h-[calc(100vh-4rem)] flex flex-col gap-lg">
         <!-- Balance Display -->
-        <section class="mb-lg">
-            <div class="relative overflow-hidden rounded-xl bg-primary-container p-xl text-on-primary">
-                <div class="relative z-10">
-                    <p class="font-label-md text-on-primary-container mb-xs">Solde Disponible</p>
-                    <div class="flex items-end gap-base">
-                        <h2 class="font-display-lg text-display-lg">1,284,500.00</h2>
-                        <span class="font-headline-md text-headline-md mb-base">EUR</span>
+        <section class="grid grid-cols-1 lg:grid-cols-3 gap-gutter">
+            <div
+                class="lg:col-span-2 relative overflow-hidden rounded-xl bg-primary text-on-primary p-xl shadow-lg group">
+                <div class="relative z-10 flex flex-col gap-base">
+                    <span class="font-label-sm text-primary-fixed-dim uppercase tracking-[0.2em]">Solde Disponible</span>
+                    <h2 class="font-display-lg text-display-lg"><?= $solde ?> Ar</h2>
+                    <div class="flex items-center gap-sm mt-md">
+                        <span class="px-sm py-xs bg-tertiary-container text-on-tertiary-container rounded-full font-label-sm flex items-center gap-1">
+                            <?= $user['numero']?>
+                        </span>
+                        <span class="text-primary-fixed-dim font-label-md">vs mois dernier</span>
                     </div>
-                    <div class="mt-md flex gap-gutter">
-                        <div>
-                            <p class="font-label-sm text-on-primary-container opacity-80 uppercase">Compte Courant</p>
-                            <p class="font-label-md">**** 4421</p>
+                </div>
+                <div class="absolute right-xl bottom-xl hidden md:block opacity-10 scale-150 rotate-12">
+                    <span class="material-symbols-outlined text-[120px]">sync_alt</span>
+                </div>
+            </div>
+            <div class="glass-card rounded-xl p-md flex flex-col justify-between">
+                <div>
+                    <h3 class="font-label-sm text-outline uppercase mb-md">Flux Mensuel</h3>
+                    <div class="space-y-lg">
+                        <div class="space-y-xs">
+                            <div class="flex justify-between items-end">
+                                <span class="font-label-md text-on-surface-variant">Entrées</span>
+                                <span class="font-headline-md text-primary">+ 0 Ar</span>
+                            </div>
+                            <div class="w-full h-2 bg-surface-container-highest rounded-full overflow-hidden">
+                                <div class="h-full bg-on-tertiary-container w-[0%] rounded-full"></div>
+                            </div>
                         </div>
-                        <div>
-                            <p class="font-label-sm text-on-primary-container opacity-80 uppercase">Dernière Opération
-                            </p>
-                            <p class="font-label-md">-12,400.00 EUR (Hier)</p>
+                        <div class="space-y-xs">
+                            <div class="flex justify-between items-end">
+                                <span class="font-label-md text-on-surface-variant">Sorties</span>
+                                <span class="font-headline-md text-error">- 0 Ar</span>
+                            </div>
+                            <div class="w-full h-2 bg-surface-container-highest rounded-full overflow-hidden">
+                                <div class="h-full bg-error w-[0%] rounded-full"></div>
+                            </div>
                         </div>
                     </div>
                 </div>
             </div>
         </section>
-        <!-- Two Column Layout: Form & Favorites -->
-        <div class="grid grid-cols-1 lg:grid-cols-3 gap-gutter">
-            <!-- Transfer Form -->
-            <div class="lg:col-span-2 space-y-gutter">
-                <div class="bg-surface-container-lowest border border-outline-variant rounded-xl p-md shadow-sm">
-                    <div class="flex flex-col gap-md mb-md">
-                        <div class="flex items-center gap-base">
-                            <span class="material-symbols-outlined text-primary">account_balance_wallet</span>
-                            <h3 class="font-headline-md text-headline-md">Nouvelle Opération</h3>
-                        </div>
-                        <div class="flex bg-surface-container-low p-1 rounded-lg w-full md:w-fit">
-                            <button
-                                class="flex-1 md:px-6 py-2 bg-primary text-on-primary rounded-md font-label-md transition-all shadow-sm">Transfert</button>
-                            <button
-                                class="flex-1 md:px-6 py-2 text-on-surface-variant hover:bg-surface-container-high rounded-md font-label-md transition-all">Dépôt</button>
-                            <button
-                                class="flex-1 md:px-6 py-2 text-on-surface-variant hover:bg-surface-container-high rounded-md font-label-md transition-all">Retrait</button>
-                        </div>
-                    </div>
-                    <form class="space-y-md" id="transfer-form">
-                        <div class="grid grid-cols-1 md:grid-cols-2 gap-md">
-                            <!-- Recipient -->
-                            <div class="space-y-xs">
-                                <label class="font-label-md text-on-surface-variant ml-1">Bénéficiaire ou Compte</label>
-                                <div class="relative">
-                                    <span
-                                        class="material-symbols-outlined absolute left-4 top-1/2 -translate-y-1/2 text-outline">account_balance</span>
-                                    <input
-                                        class="w-full h-12 pl-12 pr-4 bg-surface-container-low border-none rounded-lg focus:ring-2 focus:ring-surface-tint transition-all font-body-md"
-                                        placeholder="IBAN, N° de compte ou téléphone" type="text" />
-                                </div>
-                            </div>
-                            <!-- Amount -->
-                            <div class="space-y-xs">
-                                <label class="font-label-md text-on-surface-variant ml-1">Montant</label>
-                                <div class="relative">
-                                    <span
-                                        class="material-symbols-outlined absolute left-4 top-1/2 -translate-y-1/2 text-outline">euro</span>
-                                    <input
-                                        class="w-full h-12 pl-12 pr-4 bg-surface-container-low border-none rounded-lg focus:ring-2 focus:ring-surface-tint transition-all font-body-md"
-                                        id="transfer-amount" placeholder="0.00" type="number" />
-                                </div>
-                            </div>
-                        </div>
-                        <!-- Reason -->
-                        <div class="space-y-xs">
-                            <label class="font-label-md text-on-surface-variant ml-1">Motif du transfert</label>
+        <!-- Transfer Form -->
+        <div class="glass-card rounded-xl p-md lg:p-lg">
+            <div class="flex items-center gap-sm mb-lg">
+                <div class="w-12 h-12 rounded-full bg-primary-container flex items-center justify-center">
+                    <span class="material-symbols-outlined text-on-tertiary-container">send</span>
+                </div>
+                <div>
+                    <h3 class="font-headline-md text-primary">Nouvelle Opération</h3>
+                    <p class="font-body-md text-on-surface-variant">Effectuez un transfert sécurisé.</p>
+                </div>
+            </div>
+            <?php $erreur = session()->getFlashdata('error'); ?>
+            <?php if ($erreur): ?>
+                <div class="flex items-center gap-sm rounded-lg border border-red-200 bg-red-50 px-md py-sm text-red-700 font-body-md mb-md">
+                    <span class="material-symbols-outlined text-[20px]">error</span>
+                    <?= $erreur ?>
+                </div>
+            <?php endif; ?>
+            <form class="space-y-md" method="get" action="<?= base_url('traitement_transfert')?>">
+                <div class="space-y-xs">
+                    <label class="font-label-md text-on-surface-variant">Bénéficiaires (même opérateur)</label>
+                    <div id="numeros-list" class="space-y-xs">
+                        <div class="numero-row flex items-center gap-sm">
                             <input
-                                class="w-full h-12 px-4 bg-surface-container-low border-none rounded-lg focus:ring-2 focus:ring-surface-tint transition-all font-body-md"
-                                placeholder="ex: Facture de gestion trimestrielle" type="text" />
-                        </div>
-                        <!-- Fee Estimation Box -->
-                        <div
-                            class="bg-surface-container p-md rounded-lg flex items-center justify-between border-l-4 border-primary">
-                            <div class="flex items-center gap-sm">
-                                <span class="material-symbols-outlined text-on-surface-variant">info</span>
-                                <div>
-                                    <p class="font-label-sm text-on-surface-variant">Estimation des frais</p>
-                                    <p class="font-body-md font-semibold text-primary">Standard (24-48h)</p>
-                                </div>
-                            </div>
-                            <div class="text-right">
-                                <p class="font-headline-md text-headline-md font-bold" id="fee-display">0.00 EUR</p>
-                            </div>
-                        </div>
-                        <!-- Action Buttons -->
-                        <div class="flex gap-md pt-md">
-                            <button
-                                class="flex-1 h-12 border border-outline text-on-surface font-label-md rounded-lg hover:bg-surface-container-high transition-colors"
-                                type="button">
-                                Annuler
+                                class="flex-1 h-12 bg-surface-container-low border-none rounded-lg px-md focus:ring-2 focus:ring-primary/20 text-body-md"
+                                placeholder="Numéro du bénéficiaire" type="text" name="numero[]" />
+                            <button type="button"
+                                class="btn-remove-numero p-2 text-red-400 hover:text-red-600 transition-colors hidden">
+                                <span class="material-symbols-outlined text-[20px]">remove_circle</span>
                             </button>
-                            <button
-                                class="flex-[2] h-12 bg-primary text-on-primary font-label-md rounded-lg hover:opacity-90 transition-all flex items-center justify-center gap-sm"
-                                type="submit">Confirmer l'opération <span
-                                    class="material-symbols-outlined">arrow_forward</span></button>
-                        </div>
-                    </form>
-                </div>
-                <!-- Recent Activity (Asymmetric Bento Element) -->
-                <div class="bg-surface-container-lowest border border-outline-variant rounded-xl p-md">
-                    <h4 class="font-label-md text-on-surface-variant uppercase tracking-wider mb-md">Transferts Récents
-                    </h4>
-                    <div class="space-y-2">
-                        <div
-                            class="flex items-center justify-between p-base hover:bg-surface-container-low rounded-lg transition-colors group">
-                            <div class="flex items-center gap-sm">
-                                <div
-                                    class="w-10 h-10 rounded-full bg-secondary-container flex items-center justify-center">
-                                    <span
-                                        class="material-symbols-outlined text-on-secondary-container">trending_down</span>
-                                </div>
-                                <div>
-                                    <p class="font-label-md">Cabinet Lefebvre &amp; Associés</p>
-                                    <p class="font-label-sm text-outline">Hier, 14:30</p>
-                                </div>
-                            </div>
-                            <div class="text-right">
-                                <p class="font-label-md font-bold text-error">-2,450.00 EUR</p>
-                                <span
-                                    class="font-label-sm text-on-tertiary-container bg-tertiary-fixed px-2 py-0.5 rounded-full">Complété</span>
-                            </div>
-                        </div>
-                        <div
-                            class="flex items-center justify-between p-base hover:bg-surface-container-low rounded-lg transition-colors group">
-                            <div class="flex items-center gap-sm">
-                                <div
-                                    class="w-10 h-10 rounded-full bg-secondary-container flex items-center justify-center">
-                                    <span
-                                        class="material-symbols-outlined text-on-secondary-container">trending_down</span>
-                                </div>
-                                <div>
-                                    <p class="font-label-md">Acquisition Immobilière - Lyon</p>
-                                    <p class="font-label-sm text-outline">12 Oct 2023</p>
-                                </div>
-                            </div>
-                            <div class="text-right">
-                                <p class="font-label-md font-bold text-error">-45,000.00 EUR</p>
-                                <span
-                                    class="font-label-sm text-on-tertiary-container bg-tertiary-fixed px-2 py-0.5 rounded-full">Complété</span>
-                            </div>
                         </div>
                     </div>
+                    <button type="button" id="btn-add-numero"
+                        class="flex items-center gap-xs text-primary text-label-md hover:underline">
+                        <span class="material-symbols-outlined text-[18px]">add_circle</span>
+                        Ajouter un numéro
+                    </button>
+                    <p id="montant-par-beneficiaire" class="font-label-sm text-primary hidden"></p>
                 </div>
-            </div>
-            <!-- Favorites Sidebar -->
-            <div class="lg:col-span-1">
-                <div
-                    class="bg-surface-container-lowest border border-outline-variant rounded-xl p-md shadow-sm sticky top-24">
-                    <div class="flex items-center justify-between mb-md">
-                        <h3 class="font-label-md font-bold text-primary flex items-center gap-xs">
-                            <span class="material-symbols-outlined"
-                                style="font-variation-settings: 'FILL' 1;">star</span>
-                            Favoris
-                        </h3>
-                        <button class="text-primary hover:underline font-label-sm">Gérer</button>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-md">
+                    <div class="space-y-xs">
+                        <label class="font-label-md text-on-surface-variant">Montant du transfert</label>
+                        <div class="relative">
+                            <input
+                                class="w-full h-12 bg-surface-container-low border-none rounded-lg px-md pr-16 focus:ring-2 focus:ring-primary/20 text-headline-md font-bold text-primary"
+                                placeholder="0.00" type="number" name="amount" />
+                            <span class="absolute right-md top-1/2 -translate-y-1/2 font-bold text-primary">Ar</span>
+                        </div>
+                        <p class="font-label-sm text-outline-variant">Solde disponible : <?= $solde ?> Ar</p>
                     </div>
-                    <div class="space-y-sm">
-                        <button
-                            class="w-full flex items-center gap-sm p-3 border border-outline-variant rounded-lg hover:border-primary hover:bg-primary-fixed transition-all group text-left">
-                            <div class="w-12 h-12 rounded-full overflow-hidden">
-                                <img class="w-full h-full object-cover"
-                                    data-alt="A clean, minimalist portrait of a professional male architect, late 30s, wearing glasses and a simple white t-shirt. The background is a soft, architectural gray with subtle lines, reflecting a modern and creative profession. The lighting is natural and bright, conveying accessibility and trust in a premium financial dashboard environment."
-                                    src="https://lh3.googleusercontent.com/aida-public/AB6AXuAmZU5_1o_Wl8YIdlxLuKzw3TgDLySZNSn9QWFb2g72Pda4VuYpSvIGIcUJoRRJjlP87L9dq__FBOohWxaXzvvKwHybTXwTYAyaL3rbvKjHUJGMYGGHpchYddUpi21b1FGlPMiVrDqstvvoXGjt8sPNDc_tj-rSKy8c45baG1nN3A5wN103-c0g5mVwwkwZJLLzQIhOtqoqZr2pu5Or9CPUXOZoDWAIg9fmReWHOUMUqeZYiyol101D" />
-                            </div>
-                            <div class="flex-grow overflow-hidden">
-                                <p class="font-label-md truncate">Jean-Marc Vallet</p>
-                                <p class="font-label-sm text-outline truncate">Architecte Conseil</p>
-                            </div>
-                            <span class="material-symbols-outlined text-outline group-hover:text-primary">bolt</span>
-                        </button>
-                        <button
-                            class="w-full flex items-center gap-sm p-3 border border-outline-variant rounded-lg hover:border-primary hover:bg-primary-fixed transition-all group text-left">
-                            <div
-                                class="w-12 h-12 rounded-full bg-tertiary-container flex items-center justify-center text-on-tertiary-container font-bold">
-                                JD
-                            </div>
-                            <div class="flex-grow overflow-hidden">
-                                <p class="font-label-md truncate">Julien Dupont</p>
-                                <p class="font-label-sm text-outline truncate">Gestionnaire Patrimoine</p>
-                            </div>
-                            <span class="material-symbols-outlined text-outline group-hover:text-primary">bolt</span>
-                        </button>
-                        <button
-                            class="w-full flex items-center gap-sm p-3 border border-outline-variant rounded-lg hover:border-primary hover:bg-primary-fixed transition-all group text-left">
-                            <div class="w-12 h-12 rounded-full overflow-hidden">
-                                <img class="w-full h-full object-cover"
-                                    data-alt="A serene portrait of a high-end interior designer, a woman with stylish bob haircut and professional attire. The backdrop is a blurred, luxury modern interior with warm ambient lighting. The color palette is composed of soft beige and charcoal tones, maintaining a sophisticated, trustworthy atmosphere for a boutique fintech app."
-                                    src="https://lh3.googleusercontent.com/aida-public/AB6AXuC8QahpQ3lZgUqO-O1VfLYbuMdTZjM24y5nPXhKVwwG1eDckE8w-KZ8Uw3n12pdvMPEed6QAWYUvjPs1Jgv0mK7olXM60z4A94OE0Z3dzyvOrAikgciTadtTQzRfIZ13k8O46mRLmetg7CrGOHb22lNr5OrF29KFMjjlVzFDETjI2QvI3K4I4790NoDMgskPzhxoO_p81rNVxqotQKoeJjJ1fzbNluKIsQb6sTJUbi-GZ4a_rJbIvKK" />
-                            </div>
-                            <div class="flex-grow overflow-hidden">
-                                <p class="font-label-md truncate">Marie Castain</p>
-                                <p class="font-label-sm text-outline truncate">Design Intérieur</p>
-                            </div>
-                            <span class="material-symbols-outlined text-outline group-hover:text-primary">bolt</span>
-                        </button>
-                        <button
-                            class="w-full flex items-center justify-center gap-sm p-3 border-2 border-dashed border-outline-variant rounded-lg hover:border-primary hover:text-primary transition-all text-outline font-label-md">
-                            <span class="material-symbols-outlined">add_circle</span>
-                            Ajouter un favori
-                        </button>
-                    </div>
-                    <div class="mt-xl p-md bg-secondary-container/30 rounded-lg border border-secondary-container">
-                        <p class="font-label-sm text-on-secondary-container mb-base">CONSEIL DE SÉCURITÉ</p>
-                        <p class="font-body-md text-sm text-on-secondary-fixed opacity-90 leading-relaxed">
-                            Vérifiez toujours le nom du bénéficiaire avant de confirmer votre virement. AuraWealth ne
-                            vous demandera jamais votre code secret par SMS.
-                        </p>
+                    <div class="space-y-xs flex items-end">
+                        <label class="inline-flex items-center gap-sm text-body-md text-on-surface-variant cursor-pointer">
+                            <input
+                                class="w-4 h-4 rounded border-outline-variant text-primary focus:ring-primary"
+                                type="checkbox"
+                                name="include_fee"
+                                value="1" />
+                            <span>Inclure les frais de retrait</span>
+                        </label>
                     </div>
                 </div>
-            </div>
+                <div class="space-y-xs">
+                    <label class="font-label-md text-on-surface-variant">Motif du transfert (Optionnel)</label>
+                    <textarea
+                        class="w-full bg-surface-container-low border-none rounded-lg p-md focus:ring-2 focus:ring-primary/20 text-body-md resize-none"
+                        placeholder="Ex: Achat immobilier, Honoraires conseil..." rows="3"></textarea>
+                </div>
+                <button
+                    class="w-full h-12 bg-primary text-white rounded-lg font-headline-md text-[16px] hover:bg-primary-container transition-all active:scale-[0.98] flex items-center justify-center gap-sm">
+                    <span>Confirmer le transfert</span>
+                    <span class="material-symbols-outlined text-[20px]">arrow_forward</span>
+                </button>
+            </form>
         </div>
     </main>
-    <!-- BottomNavBar (Mobile) -->
+    <!-- Mobile Navigation Shell -->
     <nav
-        class="fixed bottom-0 w-full z-50 md:hidden bg-surface border-t border-outline-variant shadow-lg flex justify-around items-center h-16 px-margin-mobile">
-        <a class="flex flex-col items-center justify-center text-on-surface-variant font-label-sm text-[10px]" href="#">
+        class="fixed bottom-0 w-full z-50 md:hidden bg-surface border-t border-outline-variant shadow-lg h-16 flex justify-around items-center px-margin-mobile">
+        <a class="flex flex-col items-center justify-center text-primary font-bold transition-transform active:scale-90 tap-highlight-none"
+            href="<?= base_url('/index') ?>">
             <span class="material-symbols-outlined">home</span>
-            Home
+            <span class="font-label-sm text-[10px]">Home</span>
         </a>
-        <a class="flex flex-col items-center justify-center text-primary font-bold font-label-sm text-[10px]" href="#">
-            <span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">sync_alt</span>
-            Transfers
+        <a class="flex flex-col items-center justify-center text-on-surface-variant transition-transform active:scale-90 tap-highlight-none"
+            href="<?= base_url('/transfert') ?>">
+            <span class="material-symbols-outlined">sync_alt</span>
+            <span class="font-label-sm text-[10px]">Transfers</span>
         </a>
-        <a class="flex flex-col items-center justify-center text-on-surface-variant font-label-sm text-[10px]" href="#">
+        <a class="flex flex-col items-center justify-center text-on-surface-variant transition-transform active:scale-90 tap-highlight-none"
+            href="#">
             <span class="material-symbols-outlined">receipt_long</span>
-            History
+            <span class="font-label-sm text-[10px]">History</span>
         </a>
-        <a class="flex flex-col items-center justify-center text-on-surface-variant font-label-sm text-[10px]" href="#">
+        <a class="flex flex-col items-center justify-center text-on-surface-variant transition-transform active:scale-90 tap-highlight-none"
+            href="#">
             <span class="material-symbols-outlined">menu</span>
-            Menu
+            <span class="font-label-sm text-[10px]">Menu</span>
         </a>
     </nav>
     <script src="<?= base_url('Js/Operations.js') ?>"></script>

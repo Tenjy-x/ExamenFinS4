@@ -44,7 +44,7 @@
 </head>
 
 <body class="text-on-surface">
-    <?= view('partials/sidebar', ['active' => 'fees']); ?>
+    <?= view('partials/sidebar_admin', ['active' => 'fees']); ?>
     <!-- Top Bar -->
     <header class="w-full h-16 sticky top-0 z-30 bg-surface shadow-sm md:pl-64">
         <div class="flex justify-between items-center px-margin-mobile md:px-margin-desktop h-full">
@@ -72,55 +72,39 @@
     <!-- Main Content -->
     <main class="md:ml-64 p-margin-mobile md:p-margin-desktop min-h-[calc(100vh-64px)] pb-24 md:pb-margin-desktop">
         <?php
-        $gainRetrait = 0; $gainTransfert = 0;
-        if (isset($gains)) foreach ($gains as $g) {
-            if (strtolower($g->libelle) === 'retrait') $gainRetrait = $g->total_gains;
-            if (strtolower($g->libelle) === 'transfert') $gainTransfert = $g->total_gains;
-        }
-        $totalG = $gainRetrait + $gainTransfert;
-        $pctR = $totalG > 0 ? round($gainRetrait / $totalG * 100) : 0;
-        $pctT = $totalG > 0 ? round($gainTransfert / $totalG * 100) : 0;
-        ?>
+
+        ?> 
         <!-- Summary Stats Bento -->
-        <div class="grid grid-cols-1 md:grid-cols-3 gap-gutter mb-xl">
+        <div class="grid grid-cols-1 md:grid-cols-4 gap-gutter mb-xl">
             <div
                 class="stats-gradient-1 p-md rounded-xl text-on-primary shadow-lg flex flex-col justify-between h-40 relative overflow-hidden group">
                 <div class="relative z-10">
                     <p class="font-label-sm text-label-sm opacity-80 uppercase tracking-wider">Gain Total Système</p>
                     <h3 class="font-display-lg text-display-lg mt-xs"><?= number_format($totalGains ?? 0, 0) ?> Ar</h3>
                 </div>
-                <div class="relative z-10 flex items-center gap-xs text-on-tertiary-container">
-                    <span class="material-symbols-outlined text-sm">trending_up</span>
-                    <span class="font-label-md text-label-md">+12.5% ce mois</span>
-                </div>
                 <span
                     class="material-symbols-outlined absolute -right-4 -bottom-4 text-9xl opacity-10 group-hover:scale-110 transition-transform duration-500">payments</span>
             </div>
             <div class="glass-card p-md rounded-xl shadow-sm flex flex-col justify-between h-40">
                 <div>
-                    <p class="font-label-sm text-label-sm text-outline uppercase tracking-wider">Frais Retraits</p>
-                    <h3 class="font-headline-lg text-headline-lg text-on-surface mt-xs"><?= number_format($gainRetrait, 0) ?> Ar</h3>
-                </div>
-                <div class="flex items-center gap-gutter">
-                    <div class="h-1.5 flex-grow bg-surface-container-highest rounded-full overflow-hidden">
-                        <div class="h-full bg-primary" style="width: <?= $pctR ?>%"></div>
-                    </div>
-                    <span class="font-label-md text-label-md text-primary"><?= $pctR ?>%</span>
+                    <p class="font-label-sm text-label-sm text-outline uppercase tracking-wider">Retrait</p>
+                    <h3 class="font-headline-lg text-headline-lg text-on-surface mt-xs"><?= number_format($gainsSepares['retrait'], 0) ?> Ar</h3>
                 </div>
             </div>
             <div class="glass-card p-md rounded-xl shadow-sm flex flex-col justify-between h-40">
                 <div>
-                    <p class="font-label-sm text-label-sm text-outline uppercase tracking-wider">Frais Transferts</p>
-                    <h3 class="font-headline-lg text-headline-lg text-on-surface mt-xs"><?= number_format($gainTransfert, 0) ?> Ar</h3>
+                    <p class="font-label-sm text-label-sm text-outline uppercase tracking-wider">Transfert Interne</p>
+                    <h3 class="font-headline-lg text-headline-lg text-on-surface mt-xs"><?= number_format($gainsSepares['interne'], 0) ?> Ar</h3>
                 </div>
-                <div class="flex items-center gap-gutter">
-                    <div class="h-1.5 flex-grow bg-surface-container-highest rounded-full overflow-hidden">
-                        <div class="h-full bg-tertiary-fixed-dim" style="width: <?= $pctT ?>%"></div>
-                    </div>
-                    <span class="font-label-md text-label-md text-on-tertiary-container font-bold"><?= $pctT ?>%</span>
+            </div>
+            <div class="glass-card p-md rounded-xl shadow-sm flex flex-col justify-between h-40">
+                <div>
+                    <p class="font-label-sm text-label-sm text-outline uppercase tracking-wider">Transfert Autres Op.</p>
+                    <h3 class="font-headline-lg text-headline-lg text-on-surface mt-xs"><?= number_format($gainsSepares['autres'], 0) ?> Ar</h3>
                 </div>
             </div>
         </div>
+
         <div class="grid grid-cols-1 lg:grid-cols-12 gap-gutter">
             <!-- Fee Brackets Table -->
             <div class="lg:col-span-8 space-y-md">
@@ -165,6 +149,40 @@
                     <?php endforeach; ?>
                     <?php endif; ?>
                 </div>
+                <!-- Configuration Commissions Inter-Opérateurs -->
+                <div class="glass-card rounded-xl p-md shadow-sm">
+                    <h4 class="font-headline-md text-headline-md text-on-surface mb-sm">Commissions Inter-Opérateurs</h4>
+                    <p class="font-body-md text-body-md text-outline mb-md">Commission (%) pour les transferts vers d'autres opérateurs (revient à l'opérateur destinataire).</p>
+                    <table class="w-full text-left">
+                        <thead><tr class="border-b border-outline-variant"><th class="py-2 px-1 font-label-sm text-outline uppercase">Opérateur</th><th class="py-2 px-1 font-label-sm text-outline uppercase">Commission (%)</th><th class="py-2 px-1 font-label-sm text-outline uppercase text-right">Actions</th></tr></thead>
+                        <tbody class="divide-y divide-outline-variant/30">
+                            <?php if (isset($operateurs)): ?>
+                            <?php foreach ($operateurs as $op): ?>
+                            <?php if ($op->id === 1) continue; ?>
+                            <?php
+                            $com = null;
+                            if (isset($commissions)) foreach ($commissions as $c) {
+                                if ($c->id_operateur == $op->id) {
+                                    $com = $c;
+                                    break;
+                                }
+                            }
+                            $val = $com ? $com->pourcentage : 0;
+                            ?>
+                            <tr class="hover:bg-surface-container-low transition-colors">
+                                <td class="py-2 px-1 font-body-md"><?= $op->nom ?></td>
+                                <td class="py-2 px-1">
+                                    <input class="w-20 bg-surface-container-high rounded px-1 py-0.5 text-sm com-input-<?= $op->id ?>" type="number" step="0.1" value="<?= $val ?>" />
+                                </td>
+                                <td class="py-2 px-1 text-right">
+                                    <button class="p-1 text-primary hover:text-on-tertiary-container transition-colors" onclick="saveCommission(<?= $op->id ?>, '<?= $op->id ?>')" title="Sauvegarder"><span class="material-symbols-outlined text-[18px]">check</span></button>
+                                </td>
+                            </tr>
+                            <?php endforeach; ?>
+                            <?php endif; ?>
+                        </tbody>
+                    </table>
+                </div>
             </div>
             <!-- Prefix Configuration Side Panel -->
             <div class="lg:col-span-4 space-y-md">
@@ -193,6 +211,69 @@
                 </div>
             </div>
         </div>
+
+        <!-- Situation des Gains -->
+        <div class="glass-card rounded-xl p-md shadow-sm mt-xl">
+            <h4 class="font-headline-md text-headline-md text-on-surface mb-sm">Situation des Gains</h4>
+            <p class="font-body-md text-body-md text-outline mb-md">Détail des gains par catégorie.</p>
+            <table class="w-full text-left">
+                <thead><tr class="border-b border-outline-variant"><th class="py-2 px-1 font-label-sm text-outline uppercase">Catégorie</th><th class="py-2 px-1 font-label-sm text-outline uppercase text-right">Montant (Ar)</th></tr></thead>
+                <tbody class="divide-y divide-outline-variant/30">
+                    <tr class="hover:bg-surface-container-low transition-colors">
+                        <td class="py-2 px-1 font-body-md">Retrait</td>
+                        <td class="py-2 px-1 font-body-md text-right font-bold"><?= $gainsSepares['retrait'] ?></td>
+                    </tr>
+                    <tr class="hover:bg-surface-container-low transition-colors">
+                        <td class="py-2 px-1 font-body-md">Transfert interne</td>
+                        <td class="py-2 px-1 font-body-md text-right font-bold"><?= $gainsSepares['interne'] ?></td>
+                    </tr>
+                    <tr class="hover:bg-surface-container-low transition-colors">
+                        <td class="py-2 px-1 font-body-md">Transfert autres opérateurs</td>
+                        <td class="py-2 px-1 font-body-md text-right font-bold"><?= $gainsSepares['autres'] ?></td>
+                    </tr>
+                    <tr class="border-t-2 border-outline-variant bg-surface-container-low">
+                        <td class="py-2 px-1 font-body-md font-bold">TOTAL</td>
+                        <td class="py-2 px-1 font-body-md text-right font-bold text-primary"><?= $gainsSepares['retrait']  + $gainsSepares['interne'] + $gainsSepares['autres']  ?></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <!-- Commissions inter-opérateurs : dû et à recevoir -->
+        <div class="glass-card rounded-xl p-md shadow-sm mt-xl">
+            <h4 class="font-headline-md text-headline-md text-on-surface mb-sm">Commissions Inter-Opérateurs</h4>
+            <p class="font-body-md text-body-md text-outline mb-md">Commissions dues et à recevoir par opérateur.</p>
+            <?php
+            $allOpIds = [];
+            if (isset($montantsAPayer)) foreach ($montantsAPayer as $m) $allOpIds[$m->id] = $m->nom;
+            if (isset($montantsARecevoir)) foreach ($montantsARecevoir as $m) $allOpIds[$m->id] = $m->nom;
+            ?>
+            <?php if (!empty($allOpIds)): ?>
+            <table class="w-full text-left">
+                <thead><tr class="border-b border-outline-variant"><th class="py-2 px-1 font-label-sm text-outline uppercase">Opérateur</th>
+                <th class="py-2 px-1 font-label-sm text-outline uppercase text-right">Commission à recevoir (Ar)</th>
+                <th class="py-2 px-1 font-label-sm text-outline uppercase text-right">Net (Ar)</th></tr></thead>
+                <tbody class="divide-y divide-outline-variant/30">
+                    <?php foreach ($allOpIds as $oid => $onom): ?>
+                    <?php
+                    $du = 0; $recevoir = 0;
+                    if (isset($montantsAPayer)) foreach ($montantsAPayer as $m) { if ($m->id == $oid) { $du = $m->total; break; } }
+                    $net = $du;
+                    ?>
+                    <tr class="hover:bg-surface-container-low transition-colors">
+                        <td class="py-2 px-1 font-body-md font-bold"><?= $onom ?></td>
+                        <td class="py-2 px-1 font-body-md text-right"><?= $du ?></td>
+                        <td class="py-2 px-1 font-body-md text-right font-bold <?= $net > 0 ? 'text-error' : 'text-on-tertiary-container' ?>">
+                            <?= $net ?>
+                        </td>
+                    </tr>
+                    <?php endforeach; ?>
+                </tbody>
+            </table>
+            <?php else: ?>
+            <p class="text-outline font-body-md">Aucune commission inter-opérateur pour le moment.</p>
+            <?php endif; ?>
+        </div>
     </main>
     <!-- Bottom Navigation (Mobile Only) -->
     <nav
@@ -214,7 +295,7 @@
             <span class="font-label-sm text-[10px]">Menu</span>
         </a>
     </nav>
-    <!-- Floating Action Button (Only relevant on main pages) -->
+    <!-- Floating Action Button -->
     <button
         class="fixed bottom-20 right-6 md:bottom-8 md:right-8 w-14 h-14 bg-primary text-on-primary rounded-full shadow-2xl flex items-center justify-center hover:scale-110 active:scale-95 transition-transform z-40">
         <span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">add</span>
@@ -261,6 +342,23 @@
                 views[2].textContent = Number(inputs[2].value).toLocaleString() + ' Ar';
                 document.querySelectorAll('.view-' + id).forEach(el => el.classList.remove('hidden'));
                 document.querySelectorAll('.edit-' + id).forEach(el => el.classList.add('hidden'));
+            } else {
+                alert('Erreur lors de la sauvegarde');
+            }
+        });
+    }
+
+    function saveCommission(idOperateur, pairId) {
+        const val = document.querySelector('.com-input-' + pairId).value;
+        fetch('<?= base_url('saveCommission') ?>', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ id_operateur: idOperateur, pourcentage: val })
+        })
+        .then(r => r.json())
+        .then(r => {
+            if (r.success) {
+                alert('Commission sauvegardée');
             } else {
                 alert('Erreur lors de la sauvegarde');
             }
