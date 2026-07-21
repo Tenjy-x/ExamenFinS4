@@ -8,24 +8,20 @@ class CommissionInterOperateurModel extends Model {
     protected $table = 'Commission_inter_operateur';
     protected $primaryKey = 'id';
     protected $allowedFields = [
-        'operateur_emetteur_id',
-        'operateur_destinataire_id',
-        'commission_pourcentage'
+        'id_operateur',
+        'pourcentage'
     ];
     protected $returnType = 'object';
 
     public function getAll() {
         $db = $this->db->table('Commission_inter_operateur c');
-        $db->select('c.*, oe.nom AS emetteur_nom, od.nom AS destinataire_nom');
-        $db->join('Operateur oe', 'c.operateur_emetteur_id = oe.id');
-        $db->join('Operateur od', 'c.operateur_destinataire_id = od.id');
-        $db->orderBy('oe.nom, od.nom');
+        $db->select('c.*, o.nom AS operateur_nom');
+        $db->join('Operateur o', 'c.id_operateur = o.id');
+        $db->orderBy('o.nom');
         return $db->get()->getResult();
     }
 
-    public function getCommission($emetteur_id, $destinataire_id) {
-        return $this->where('operateur_emetteur_id', $emetteur_id)
-            ->where('operateur_destinataire_id', $destinataire_id)
-            ->first();
+    public function getCommission($id_operateur) {
+        return $this->where('id_operateur', $id_operateur)->first();
     }
 }

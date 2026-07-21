@@ -27,6 +27,9 @@ class OperateurController extends BaseController {
         $operateur = $operateurModel->getOperateurByNomAndPassword($nom, $mot_de_passe);
 
         if ($operateur) {
+            if ($operateur->id !== 1) {
+                return view('Login_Operateur', ['error' => 'Accès non autorisé']);
+            }
             $prefixes = $operateurModel->getPrefixesByOperateur($operateur->id);
             $session->set('operateur', $operateur);
             $session->set('operateur_prefixes', $prefixes);
@@ -56,9 +59,9 @@ class OperateurController extends BaseController {
 
         $prefixNumbers = $this->getPrefixNumbers();
 
-        $gains = $transactionModel->getGainsByType();
-        $totalGains = 0;
-        foreach ($gains as $g) $totalGains += $g->total_gains;
+        $gains = $transactionModel->getGainsSepares($operateur->id);
+
+        $totalGains = $gains['retrait'] + $gains['interne'] + $gains['autres'];
 
         $clients = $clientModel->whereIn('SUBSTR(numero, 1, 3)', $prefixNumbers)->findAll();
         $clientCount = count($clients);
@@ -68,7 +71,7 @@ class OperateurController extends BaseController {
 
         return view('admin/Index', [
             'operateur' => $operateur,
-            'gains' => $gains,
+            'gainsSepares' => $gains,
             'totalGains' => $totalGains,
             'clientCount' => $clientCount,
             'transactionCount' => $transactionCount,
@@ -109,36 +112,32 @@ class OperateurController extends BaseController {
 
         $types = $typeModel->findAll();
         $prefixes = $prefixeModel->findAll();
-        $gains = $transactionModel->getGainsByType();
-        $operateurs = $operateurModel->getAllOperateurs();
+        $operateurs = $operateurModel->findAll();
         $commissions = $commissionModel->getAll();
 
-        $totalGains = 0;
-        foreach ($gains as $g) $totalGains += $g->total_gains;
+        $gainsSepares = $transactionModel->getGainsSepares($operateurSession->id);
+        $totalGains = $gainsSepares['retrait'] + $gainsSepares['interne'] + $gainsSepares['autres'];
 
         $tranches = [];
         foreach ($types as $t) {
             $tranches[$t->id] = $trancheModel->getTrancheByType($t->id);
         }
 
-        $gainsPropres = $transactionModel->getGainsByOperateur($operateurSession->id, 'propre');
-        $gainsInter = $transactionModel->getGainsByOperateur($operateurSession->id, 'inter');
-
         $montantsAPayer = $transactionModel->getMontantsAPayer($operateurSession->id);
         $montantsARecevoir = $transactionModel->getMontantsARecevoir($operateurSession->id);
+        $montantsAEnvoyer = $transactionModel->getMontantsAEnvoyer($operateurSession->id);
 
         return view('admin/Gestion_Frais', [
             'types'       => $types,
             'prefixe'     => $prefixes,
-            'gains'       => $gains,
             'tranches'    => $tranches,
             'totalGains'  => $totalGains,
             'operateurs'  => $operateurs,
             'commissions' => $commissions,
-            'gainsPropres' => $gainsPropres,
-            'gainsInter'   => $gainsInter,
+            'gainsSepares' => $gainsSepares,
             'montantsAPayer'   => $montantsAPayer,
             'montantsARecevoir' => $montantsARecevoir,
+            'montantsAEnvoyer' => $montantsAEnvoyer,
         ]);
     }
 
@@ -152,14 +151,11 @@ class OperateurController extends BaseController {
         $commissionModel = new CommissionInterOperateurModel();
 
         $data = [
-            'operateur_emetteur_id'     => (int) $json->emetteur_id,
-            'operateur_destinataire_id' => (int) $json->destinataire_id,
-            'commission_pourcentage'    => (float) $json->pourcentage,
+            'id_operateur' => (int) $json->id_operateur,
+            'pourcentage'  => (float) $json->pourcentage,
         ];
 
-        $existing = $commissionModel->where('operateur_emetteur_id', $data['operateur_emetteur_id'])
-            ->where('operateur_destinataire_id', $data['operateur_destinataire_id'])
-            ->first();
+        $existing = $commissionModel->where('id_operateur', $data['id_operateur'])->first();
 
         if ($existing) {
             $commissionModel->update($existing->id, $data);
@@ -168,6 +164,22 @@ class OperateurController extends BaseController {
         }
 
         return $this->response->setJSON(['success' => true]);
+    }
+
+    public function montantsAEnvoyer() {
+        $session = session();
+        $operateur = $session->get('operateur');
+        if (!$operateur) return redirect()->to('/login_Operateur');
+
+        $transactionModel = new TransactionModel();
+        $montants = $transactionModel->getMontantsAEnvoyer($operateur->id);
+        $totalGeneral = array_sum(array_map(function($m) { return $m->total; }, $montants));
+
+        return view('admin/MontantsAEnvoyer', [
+            'operateur' => $operateur,
+            'montants' => $montants,
+            'totalGeneral' => $totalGeneral,
+        ]);
     }
 
     public function updateTranche() {
