@@ -31,11 +31,17 @@ class TransactionController extends BaseController
         $user = session()->get('user');
         $montant = $this->request->getVar('amount');
 
-        if (!$montant) {
+        if (!$montant || $montant <= 0) {
             return redirect()->back()->with('error', 'Montant invalide');
         }
 
         $transaction = new TransactionModel();
+        $solde = $transaction->getSolde($user['id']);
+
+        if ($montant > $solde) {
+            return redirect()->back()->with('error', 'Solde insuffisant. Votre solde disponible est de ' . $solde . ' Ar.');
+        }
+
         $trancheModel = new TrancheModel();
         $tranche = $trancheModel->findTranche(2, $montant);
 
@@ -82,6 +88,14 @@ class TransactionController extends BaseController
 
         $transaction  = new TransactionModel();
         $trancheModel = new TrancheModel();
+
+        $solde = $transaction->getSolde($user['id']);
+        if ($montant > $solde) {
+            return redirect()->back()
+                ->withInput()
+                ->with('error', 'Solde insuffisant. Votre solde disponible est de ' . $solde . ' Ar.');
+        }
+
         $nb           = count($beneficiaires);
         $montantPart  = intval($montant / $nb);
 

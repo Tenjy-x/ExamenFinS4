@@ -71,8 +71,7 @@
     <!-- Content Overlay -->
     <div class="relative z-20 px-xl max-w-2xl text-on-primary">
       <h1 class="font-display-lg text-display-lg mb-md leading-tight">
-        Emerald Ledger
-      </h1>
+Aura Wealth      </h1>
       <p class="font-body-lg text-body-lg text-primary-fixed opacity-90 mb-lg">
         Gérez votre patrimoine avec une précision absolue. Une plateforme
         sécurisée conçue pour l'excellence financière et la sérénité.

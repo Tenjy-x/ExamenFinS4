@@ -10,6 +10,7 @@ $routes->get('/login_Operateur','OperateurController::login');
 
 $routes->post('/auth_operateur','OperateurController::authentification');
 $routes->get('/logout','OperateurController::logout');
+$routes->get('/logoutClient','AuthController::logout');
 
 $routes->post('/loginClient','AuthController::login');
 $routes->get('/index','ClientController::index');

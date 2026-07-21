@@ -11,7 +11,7 @@ $navItems = [
 ];
 
 $bottomItems = [
-    'logout'  => ['icon' => 'logout', 'label' => 'Déconnexion', 'url' => base_url('/logout')],
+    'logout'  => ['icon' => 'logout', 'label' => 'Déconnexion', 'url' => base_url('/logoutClient')],
 ];
 ?>
 

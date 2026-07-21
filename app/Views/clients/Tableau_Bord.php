@@ -165,15 +165,13 @@
 
         </section>
         <!-- Recent Activity & Performance -->
-        <section class="grid grid-cols-1 lg:grid-cols-3 gap-gutter pb-xl">
-            <!-- Recent Activity List -->
+        <!-- <section class="grid grid-cols-1 lg:grid-cols-3 gap-gutter pb-xl">
             <div class="lg:col-span-2 glass-card rounded-xl p-md">
                 <div class="flex justify-between items-center mb-xl">
                     <h3 class="font-headline-md text-primary">Activité Récente</h3>
                     <button class="text-on-tertiary-fixed-variant font-label-md hover:underline">Voir tout</button>
                 </div>
                 <div class="space-y-1">
-                    <!-- Item 1 -->
                     <div
                         class="flex items-center justify-between p-sm hover:bg-surface-container-low rounded-lg transition-colors cursor-pointer group">
                         <div class="flex items-center gap-md">
@@ -191,7 +189,6 @@
                             <p class="font-label-sm text-outline">Confirmé</p>
                         </div>
                     </div>
-                    <!-- Item 2 -->
                     <div
                         class="flex items-center justify-between p-sm hover:bg-surface-container-low rounded-lg transition-colors cursor-pointer">
                         <div class="flex items-center gap-md">
@@ -209,7 +206,6 @@
                             <p class="font-label-sm text-on-tertiary-container font-bold">Réception</p>
                         </div>
                     </div>
-                    <!-- Item 3 -->
                     <div
                         class="flex items-center justify-between p-sm hover:bg-surface-container-low rounded-lg transition-colors cursor-pointer">
                         <div class="flex items-center gap-md">
@@ -227,7 +223,6 @@
                             <p class="font-label-sm text-outline">Confirmé</p>
                         </div>
                     </div>
-                    <!-- Item 4 -->
                     <div
                         class="flex items-center justify-between p-sm hover:bg-surface-container-low rounded-lg transition-colors cursor-pointer">
                         <div class="flex items-center gap-md">
@@ -247,7 +242,6 @@
                     </div>
                 </div>
             </div>
-            <!-- Contextual Card / Insights -->
             <div class="flex flex-col gap-gutter">
                 <div
                     class="bg-secondary-fixed text-on-secondary-fixed rounded-xl p-md border border-outline-variant/30 flex flex-col gap-base">
@@ -264,7 +258,7 @@
                         4% de rendement supplémentaire en étant réalloué."</p>
                 </div>
             </div>
-        </section>
+        </section> -->
     </main>
     <!-- Mobile Navigation Shell -->
     <nav
