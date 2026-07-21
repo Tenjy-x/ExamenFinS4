@@ -19,6 +19,7 @@ $routes->get('/depot','ClientController::depot');
 $routes->get('/retrait','ClientController::retrait');
 $routes->get('/transfert','ClientController::transfert');
 $routes->get('/historique','ClientController::historique');
+$routes->get('/epargne', 'ClientController::Epargne');
 
 //admin
 $routes->get('/indexAdmin','AdminController::index');

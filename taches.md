@@ -80,3 +80,13 @@ Non fini :
                 - getByPaire()
                 - insertCommission
     - Creation Controller
+
+
+
+
+
+aleas 2:
+Notion epargne pourcentage epargne
+        creer page epargne
+        exemple 50
+        100000ar 20 pour cent epargne et autre solde

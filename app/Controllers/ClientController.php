@@ -3,6 +3,7 @@
 namespace App\Controllers;
 use App\Models\ClientModel;
 use App\Models\TransactionModel;
+use App\Models\EpargneModel;
 class ClientController extends BaseController
 {
     public function index(): string
@@ -64,6 +65,19 @@ class ClientController extends BaseController
             'user' => $user,
             'solde' => $solde,
             'historique' => $historique,
+        ]);
+    }
+
+    public function Epargne(){
+        $user = session()->get('user');
+        $EpargneModel = new EpargneModel();
+
+    
+        $epargne = $EpargneModel->getByClient($user['id']);
+
+        return view('clients/Epargne', [
+            'user' => $user,
+            'epargne' => $epargne,
         ]);
     }
 }

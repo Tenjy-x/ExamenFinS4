@@ -63,6 +63,13 @@ CREATE TABLE Commission_inter_operateur (
     FOREIGN KEY (id_operateur) REFERENCES Operateur(id)
 );
 
+CREATE TABLE Epargne(
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    id_client INTEGER NOT NULL,
+    pourcentage REAL NOT NULL DEFAULT 0,
+    FOREIGN KEY (id_client) REFERENCES Client(id)
+);
+
 INSERT INTO Type_transaction (libelle) VALUES ('depot');
 INSERT INTO Type_transaction (libelle) VALUES ('retrait');
 INSERT INTO Type_transaction (libelle) VALUES ('transfert');
