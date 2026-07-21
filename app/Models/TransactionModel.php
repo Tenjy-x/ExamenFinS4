@@ -137,8 +137,8 @@ class TransactionModel extends Model
             ->total ?? 0;
 
         $autres = $this->db->table('Transaction')
-            ->selectSum('commission_inter_operateur', 'total')
-            ->where('operateur_destinataire_id', $operateur_id)
+            ->selectSum('frais', 'total')
+            ->where('operateur_destinataire_id IS NOT NULL')
             ->get()
             ->getRow()
             ->total ?? 0;
@@ -178,7 +178,7 @@ class TransactionModel extends Model
         if (empty($clientIds)) return [];
 
         $builder = $this->db->table('Transaction t');
-        $builder->select('o.id, o.nom, SUM(t.montant) AS total');
+        $builder->select('o.id, o.nom, SUM(t.montant + t.commission_inter_operateur) AS total');
         $builder->join('Operateur o', 't.operateur_destinataire_id = o.id');
         $builder->whereIn('t.id_client', $clientIds);
         $builder->where('t.operateur_destinataire_id IS NOT NULL');
